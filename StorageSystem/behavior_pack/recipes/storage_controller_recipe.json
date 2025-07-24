@@ -1,0 +1,35 @@
+{
+  "format_version": "1.19.0",
+  "minecraft:recipe_shaped": {
+    "description": {
+      "identifier": "storage:controller_recipe"
+    },
+    "tags": ["crafting_table"],
+    "pattern": [
+      "DGD",
+      "RCR",
+      "IRI"
+    ],
+    "key": {
+      "D": {
+        "item": "minecraft:diamond"
+      },
+      "G": {
+        "item": "minecraft:glass"
+      },
+      "R": {
+        "item": "minecraft:redstone"
+      },
+      "C": {
+        "item": "minecraft:chest"
+      },
+      "I": {
+        "item": "minecraft:iron_ingot"
+      }
+    },
+    "result": {
+      "item": "storage:controller",
+      "count": 1
+    }
+  }
+}

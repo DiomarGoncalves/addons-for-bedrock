@@ -1,0 +1,26 @@
+{
+  "format_version": "1.19.0",
+  "minecraft:recipe_shaped": {
+    "description": {
+      "identifier": "storage:antenna_recipe"
+    },
+    "tags": ["crafting_table"],
+    "pattern": [
+      "  I",
+      " I ",
+      "R  "
+    ],
+    "key": {
+      "I": {
+        "item": "minecraft:iron_ingot"
+      },
+      "R": {
+        "item": "minecraft:redstone"
+      }
+    },
+    "result": {
+      "item": "storage:antenna",
+      "count": 4
+    }
+  }
+}

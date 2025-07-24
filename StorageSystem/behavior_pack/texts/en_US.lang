@@ -1,0 +1,25 @@
+item.storage:controller=Storage Controller
+tile.storage:controller.name=Storage Controller
+item.storage:antenna=Connection Antenna
+tile.storage:antenna.name=Connection Antenna
+item.storage:remote_control=Remote Control
+tile.storage:remote_control.name=Remote Control
+
+## System Interface
+storage.interface.title=§6§l💾 STORAGE SYSTEM
+storage.interface.search=Search items...
+storage.interface.craft_tab=§e⚒️ CRAFTING
+storage.interface.storage_tab=§b📦 STORAGE
+storage.interface.no_items=§7No items found
+storage.interface.total_items=§7Total: %s items
+storage.interface.connected_chests=§7Chests with antenna: %s
+
+## System messages
+storage.controller.placed=§a✅ Storage controller placed!
+storage.controller.removed=§c❌ Controller removed!
+storage.antenna.connected=§a✅ Antenna connected to chest!
+storage.antenna.removed=§c❌ Antenna removed from chest!
+storage.network.scanning=§e🔍 Scanning storage network...
+storage.network.found_chests=§a📦 Found %s chests with antenna!
+storage.craft.success=§a✅ Item crafted successfully!
+storage.craft.missing_materials=§c❌ Insufficient materials!

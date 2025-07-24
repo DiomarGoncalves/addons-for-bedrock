@@ -1,0 +1,14 @@
+{
+  "format_version": "1.21.0",
+  "storage:controller": {
+    "textures": {
+      "up": "storage_controller_top",
+      "down": "storage_controller_bottom",
+      "north": "storage_controller_front",
+      "south": "storage_controller_back",
+      "east": "storage_controller_side",
+      "west": "storage_controller_side"
+    },
+    "sound": "stone"
+  }
+}

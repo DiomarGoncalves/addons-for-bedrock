@@ -1,0 +1,18 @@
+{
+  "format_version": 2,
+  "header": {
+    "description": "Resource Pack - Addon de Mineradora Automática",
+    "name": "Quarry Addon - RP",
+    "uuid": "bbbbbbbb-cccc-dddd-eeee-ffffffffffff",
+    "version": [1, 0, 0],
+    "min_engine_version": [1, 21, 0]
+  },
+  "modules": [
+    {
+      "description": "Resource Pack",
+      "type": "resources",
+      "uuid": "33333333-4444-5555-6666-777777777777",
+      "version": [1, 0, 0]
+    }
+  ]
+}

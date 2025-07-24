@@ -1,0 +1,39 @@
+{
+  "format_version": 2,
+  "header": {
+    "description": "Behavior Pack - Addon de Proteção de Bases",
+    "name": "Protection Block Addon - BP",
+    "uuid": "12345678-1234-5678-9012-123456789012",
+    "version": [1, 0, 0],
+    "min_engine_version": [1, 21, 0]
+  },
+  "modules": [
+    {
+      "description": "Behavior Pack",
+      "type": "data",
+      "uuid": "87654321-4321-8765-2109-876543210987",
+      "version": [1, 0, 0]
+    },
+    {
+      "description": "Script Module",
+      "type": "script",
+      "uuid": "11111111-2222-3333-4444-555555555555",
+      "version": [1, 0, 0],
+      "entry": "scripts/main.js"
+    }
+  ],
+  "dependencies": [
+    {
+      "module_name": "@minecraft/server",
+      "version": "1.14.0"
+    },
+    {
+      "module_name": "@minecraft/server-ui",
+      "version": "1.2.0"
+    },
+    {
+      "uuid": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
+      "version": [1, 0, 0]
+    }
+  ]
+}

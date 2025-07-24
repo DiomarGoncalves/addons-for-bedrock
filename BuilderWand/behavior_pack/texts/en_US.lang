@@ -1,0 +1,7 @@
+## Builder Wand - English Texts
+
+# System messages
+builder.wand.help.title=§6§l=== 🪄 ULTRA SIMPLE WAND ===
+builder.wand.help.usage=§f§l📋 How to use:\n§71. Get a §eStick §7(your wand)\n§72. Have blocks in inventory\n§73. Hold the stick and right-click on a block\n§74. 5 blocks will be placed in the clicked face direction
+builder.wand.help.features=§f§l✨ Features:\n§7• §aParticles §7show where you clicked\n§7• §bAutomatic building §7of 5 blocks\n§7• §eConsumes blocks §7from your inventory\n§7• §dCooldown §7of 0.5 seconds
+builder.wand.help.tips=§f§l💡 Tips:\n§7• Works with any solid block\n§7• Click on block face to choose direction\n§7• Use §f!wand-help §7to see this help

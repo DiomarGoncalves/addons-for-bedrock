@@ -1,0 +1,18 @@
+{
+  "format_version": 2,
+  "header": {
+    "description": "Resource Pack - Sistema de Armazenamento Inteligente",
+    "name": "Storage System Addon - RP",
+    "uuid": "dddddddd-eeee-ffff-aaaa-dddddddddddd",
+    "version": [1, 0, 0],
+    "min_engine_version": [1, 21, 0]
+  },
+  "modules": [
+    {
+      "description": "Resource Pack",
+      "type": "resources",
+      "uuid": "77777777-8888-9999-aaaa-bbbbbbbbbbbb",
+      "version": [1, 0, 0]
+    }
+  ]
+}

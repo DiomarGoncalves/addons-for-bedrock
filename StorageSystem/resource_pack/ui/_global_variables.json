@@ -1,0 +1,20 @@
+{
+  "namespace": "storage_ui",
+  
+  "$storage_primary_color": [0.25, 0.41, 0.88],
+  "$storage_secondary_color": [0.15, 0.31, 0.78],
+  "$storage_accent_color": [1.0, 0.84, 0.0],
+  "$storage_text_color": [1.0, 1.0, 1.0],
+  "$storage_background_color": [0.0, 0.0, 0.0, 0.8],
+  
+  "$search_field_width": 280,
+  "$search_field_height": 20,
+  "$items_grid_columns": 9,
+  "$items_grid_rows": 6,
+  "$item_slot_size": 32,
+  "$ui_padding": 10,
+  
+  "$animation_duration": 0.2,
+  "$hover_alpha": 0.7,
+  "$selected_alpha": 0.9
+}

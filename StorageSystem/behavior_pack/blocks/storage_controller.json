@@ -1,0 +1,52 @@
+{
+  "format_version": "1.21.0",
+  "minecraft:block": {
+    "description": {
+      "identifier": "storage:controller",
+      "menu_category": {
+        "category": "construction"
+      }
+    },
+    "components": {
+      "minecraft:material_instances": {
+        "up": {
+          "texture": "storage_controller_top",
+          "render_method": "opaque"
+        },
+        "down": {
+          "texture": "storage_controller_bottom",
+          "render_method": "opaque"
+        },
+        "north": {
+          "texture": "storage_controller_front",
+          "render_method": "opaque"
+        },
+        "south": {
+          "texture": "storage_controller_back",
+          "render_method": "opaque"
+        },
+        "east": {
+          "texture": "storage_controller_side",
+          "render_method": "opaque"
+        },
+        "west": {
+          "texture": "storage_controller_side",
+          "render_method": "opaque"
+        }
+      },
+      "minecraft:geometry": "minecraft:geometry.full_block",
+      "minecraft:destructible_by_mining": {
+        "seconds_to_destroy": 3.0
+      },
+      "minecraft:destructible_by_explosion": {
+        "explosion_resistance": 15.0
+      },
+      "minecraft:flammable": {
+        "flame_odds": 0,
+        "burn_odds": 0
+      },
+      "minecraft:map_color": "#4169E1",
+      "minecraft:light_emission": 12
+    }
+  }
+}

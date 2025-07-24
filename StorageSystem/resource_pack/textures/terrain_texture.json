@@ -1,0 +1,29 @@
+{
+  "resource_pack_name": "storage_system_addon",
+  "texture_name": "atlas.terrain",
+  "padding": 8,
+  "num_mip_levels": 4,
+  "texture_data": {
+    "storage_controller_top": {
+      "textures": "textures/blocks/storage_controller_top"
+    },
+    "storage_controller_bottom": {
+      "textures": "textures/blocks/storage_controller_bottom"
+    },
+    "storage_controller_front": {
+      "textures": "textures/blocks/storage_controller_front"
+    },
+    "storage_controller_back": {
+      "textures": "textures/blocks/storage_controller_back"
+    },
+    "storage_controller_side": {
+      "textures": "textures/blocks/storage_controller_side"
+    },
+    "storage_cable": {
+      "textures": "textures/blocks/storage_cable"
+    },
+    "storage_cable_cube": {
+      "textures": "textures/blocks/storage_cable_cube"
+    }
+  }
+}

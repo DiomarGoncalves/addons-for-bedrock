@@ -1,0 +1,25 @@
+item.storage:controller=Controlador de Armazenamento
+tile.storage:controller.name=Controlador de Armazenamento
+item.storage:antenna=Antena de Conexão
+tile.storage:antenna.name=Antena de Conexão
+item.storage:remote_control=Controle Remoto
+tile.storage:remote_control.name=Controle Remoto
+
+## Interface do Sistema
+storage.interface.title=§6§l💾 SISTEMA DE ARMAZENAMENTO
+storage.interface.search=Pesquisar itens...
+storage.interface.craft_tab=§e⚒️ CRAFTING
+storage.interface.storage_tab=§b📦 ARMAZENAMENTO
+storage.interface.no_items=§7Nenhum item encontrado
+storage.interface.total_items=§7Total: %s itens
+storage.interface.connected_chests=§7Baús com antena: %s
+
+## Mensagens do sistema
+storage.controller.placed=§a✅ Controlador de armazenamento colocado!
+storage.controller.removed=§c❌ Controlador removido!
+storage.antenna.connected=§a✅ Antena conectada ao baú!
+storage.antenna.removed=§c❌ Antena removida do baú!
+storage.network.scanning=§e🔍 Escaneando rede de armazenamento...
+storage.network.found_chests=§a📦 Encontrados %s baús com antena!
+storage.craft.success=§a✅ Item craftado com sucesso!
+storage.craft.missing_materials=§c❌ Materiais insuficientes!

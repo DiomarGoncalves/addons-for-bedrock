@@ -1,0 +1,15 @@
+{
+  "resource_pack_name": "storage_system_addon",
+  "texture_name": "atlas.items",
+  "texture_data": {
+    "storage:controller": {
+      "textures": "textures/blocks/storage_controller_front"
+    },
+    "storage:antenna": {
+      "textures": "textures/blocks/storage_antenna"
+    },
+    "storage:remote_control": {
+      "textures": "textures/items/remote_control"
+    }
+  }
+}

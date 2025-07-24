@@ -1,0 +1,6 @@
+item.storage:controller=Storage Controller
+tile.storage:controller.name=Storage Controller
+item.storage:antenna=Connection Antenna
+tile.storage:antenna.name=Connection Antenna
+item.storage:remote_control=Remote Control
+tile.storage:remote_control.name=Remote Control

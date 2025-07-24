@@ -1,0 +1,169 @@
+{
+  "namespace": "storage_ui",
+  
+  "storage_screen@common.base_screen": {
+    "button_mappings": [
+      {
+        "from_button_id": "button.menu_cancel",
+        "to_button_id": "button.menu_exit",
+        "mapping_type": "global"
+      }
+    ],
+    "$screen_content": "storage_ui.storage_main_panel"
+  },
+
+  "storage_main_panel": {
+    "type": "panel",
+    "size": [320, 240],
+    "controls": [
+      {
+        "background@common.common_panel": {
+          "size": [320, 240],
+          "layer": 1
+        }
+      },
+      {
+        "title_label": {
+          "type": "label",
+          "text": "§l§6Sistema de Armazenamento",
+          "color": [1.0, 1.0, 1.0],
+          "anchor_from": "top_middle",
+          "anchor_to": "top_middle",
+          "offset": [0, 8],
+          "layer": 10
+        }
+      },
+      {
+        "search_panel": {
+          "type": "panel",
+          "size": [300, 30],
+          "anchor_from": "top_middle",
+          "anchor_to": "top_middle",
+          "offset": [0, 25],
+          "layer": 10,
+          "controls": [
+            {
+              "search_background@common.common_panel": {
+                "size": [300, 30],
+                "layer": 1
+              }
+            },
+            {
+              "search_field@common.text_edit_box": {
+                "size": [280, 25],
+                "anchor_from": "center",
+                "anchor_to": "center",
+                "max_length": 50,
+                "text": "#search_text",
+                "text_box_name": "search_field",
+                "place_holder_text": "§7Pesquisar itens...",
+                "layer": 10,
+                "$text_background_default": "common.text_edit_box_background_default",
+                "$text_background_hover": "common.text_edit_box_background_hover"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "items_grid_panel": {
+          "type": "panel",
+          "size": [288, 144],
+          "anchor_from": "top_middle",
+          "anchor_to": "top_middle",
+          "offset": [0, 65],
+          "layer": 10,
+          "controls": [
+            {
+              "items_background@common.common_panel": {
+                "size": [288, 144],
+                "layer": 1
+              }
+            },
+            {
+              "items_grid": {
+                "type": "grid",
+                "size": [288, 144],
+                "anchor_from": "center",
+                "anchor_to": "center",
+                "grid_dimensions": [9, 4],
+                "collection_name": "storage_items",
+                "layer": 10,
+                "$grid_item_template": "storage_ui.storage_item_slot"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "info_panel": {
+          "type": "panel",
+          "size": [300, 25],
+          "anchor_from": "bottom_middle",
+          "anchor_to": "bottom_middle",
+          "offset": [0, -10],
+          "layer": 10,
+          "controls": [
+            {
+              "info_background@common.common_panel": {
+                "size": [300, 25],
+                "layer": 1
+              }
+            },
+            {
+              "connected_chests_label": {
+                "type": "label",
+                "text": "§7Baús: §f#connected_chests",
+                "color": [1.0, 1.0, 1.0],
+                "anchor_from": "left_middle",
+                "anchor_to": "left_middle",
+                "offset": [10, 0],
+                "layer": 10
+              }
+            },
+            {
+              "total_items_label": {
+                "type": "label",
+                "text": "§7Itens: §f#total_items",
+                "color": [1.0, 1.0, 1.0],
+                "anchor_from": "right_middle",
+                "anchor_to": "right_middle",
+                "offset": [-10, 0],
+                "layer": 10
+              }
+            }
+          ]
+        }
+      }
+    ]
+  },
+
+  "storage_item_slot@common.container_slot": {
+    "size": [32, 32],
+    "controls": [
+      {
+        "item_renderer@common.item_renderer": {
+          "size": [32, 32],
+          "layer": 10
+        }
+      },
+      {
+        "stack_count_label@common.stack_count_label": {
+          "layer": 11
+        }
+      },
+      {
+        "hover_text@common.hover_text": {
+          "layer": 12
+        }
+      }
+    ],
+    "button_mappings": [
+      {
+        "from_button_id": "button.menu_select",
+        "to_button_id": "button.container_slot_select",
+        "mapping_type": "pressed"
+      }
+    ]
+  }
+}

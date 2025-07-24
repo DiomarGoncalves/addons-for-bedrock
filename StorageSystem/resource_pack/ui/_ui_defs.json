@@ -1,0 +1,7 @@
+{
+  "ui_defs": [
+    "ui/storage_ui.json",
+    "ui/_global_variables.json",
+    "ui/hud_screen.json"
+  ]
+}

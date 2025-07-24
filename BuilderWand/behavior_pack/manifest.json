@@ -1,0 +1,39 @@
+{
+  "format_version": 2,
+  "header": {
+    "description": "Behavior Pack - Varinha de Construção Simples",
+    "name": "Builder Wand Addon - BP",
+    "uuid": "33345678-3334-5678-9012-333456789012",
+    "version": [1, 0, 0],
+    "min_engine_version": [1, 21, 0]
+  },
+  "modules": [
+    {
+      "description": "Behavior Pack",
+      "type": "data",
+      "uuid": "44654321-4321-8765-2109-446543210987",
+      "version": [1, 0, 0]
+    },
+    {
+      "description": "Script Module",
+      "type": "script",
+      "uuid": "55111111-5555-3333-4444-555555555555",
+      "version": [1, 0, 0],
+      "entry": "scripts/visual_wand.js"
+    }
+  ],
+  "dependencies": [
+    {
+      "module_name": "@minecraft/server",
+      "version": "1.14.0"
+    },
+    {
+      "module_name": "@minecraft/server-ui",
+      "version": "1.2.0"
+    },
+    {
+      "uuid": "cccccccc-dddd-eeee-ffff-cccccccccccc",
+      "version": [1, 0, 0]
+    }
+  ]
+}

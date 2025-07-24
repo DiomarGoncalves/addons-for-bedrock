@@ -1,0 +1,9 @@
+{
+  "resource_pack_name": "quarry_addon",
+  "texture_name": "atlas.items",
+  "texture_data": {
+    "quarry_block": {
+      "textures": "textures/blocks/Quarry"
+    }
+  }
+}

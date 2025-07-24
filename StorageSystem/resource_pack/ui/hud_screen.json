@@ -1,0 +1,65 @@
+{
+  "namespace": "hud",
+  
+  "storage_hud_panel": {
+    "type": "panel",
+    "size": [200, 40],
+    "anchor_from": "top_right",
+    "anchor_to": "top_right",
+    "offset": [-10, 50],
+    "visible": "#storage_hud_visible",
+    "controls": [
+      {
+        "background@common.common_panel": {
+          "size": [200, 40],
+          "layer": 1
+        }
+      },
+      {
+        "storage_icon": {
+          "type": "image",
+          "texture": "textures/ui/storage_icon",
+          "size": [16, 16],
+          "anchor_from": "left_middle",
+          "anchor_to": "left_middle",
+          "offset": [8, 0],
+          "layer": 10
+        }
+      },
+      {
+        "network_status_label": {
+          "type": "label",
+          "text": "§6Rede: §a#network_status",
+          "color": [1.0, 1.0, 1.0],
+          "anchor_from": "left_middle",
+          "anchor_to": "left_middle",
+          "offset": [30, -8],
+          "layer": 10,
+          "bindings": [
+            {
+              "binding_name": "#network_status_text",
+              "binding_name_override": "#network_status"
+            }
+          ]
+        }
+      },
+      {
+        "items_count_label": {
+          "type": "label",
+          "text": "§7Itens: §f#items_count",
+          "color": [1.0, 1.0, 1.0],
+          "anchor_from": "left_middle",
+          "anchor_to": "left_middle",
+          "offset": [30, 8],
+          "layer": 10,
+          "bindings": [
+            {
+              "binding_name": "#items_count_text",
+              "binding_name_override": "#items_count"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

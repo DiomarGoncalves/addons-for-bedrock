@@ -1,0 +1,39 @@
+{
+  "format_version": 2,
+  "header": {
+    "description": "Behavior Pack - Sistema de Armazenamento Inteligente",
+    "name": "Storage System Addon - BP",
+    "uuid": "44445678-4444-5678-9012-444456789012",
+    "version": [1, 0, 0],
+    "min_engine_version": [1, 21, 0]
+  },
+  "modules": [
+    {
+      "description": "Behavior Pack",
+      "type": "data",
+      "uuid": "55554321-4321-8765-2109-555543210987",
+      "version": [1, 0, 0]
+    },
+    {
+      "description": "Script Module",
+      "type": "script",
+      "uuid": "66661111-6666-3333-4444-666666666666",
+      "version": [1, 0, 0],
+      "entry": "scripts/storage_system.js"
+    }
+  ],
+  "dependencies": [
+    {
+      "module_name": "@minecraft/server",
+      "version": "1.14.0"
+    },
+    {
+      "module_name": "@minecraft/server-ui",
+      "version": "1.2.0"
+    },
+    {
+      "uuid": "dddddddd-eeee-ffff-aaaa-dddddddddddd",
+      "version": [1, 0, 0]
+    }
+  ]
+}

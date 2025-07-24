@@ -1,0 +1,32 @@
+{
+  "format_version": "1.21.30",
+  "minecraft:block": {
+    "description": {
+      "identifier": "protection:protection_block",
+      "menu_category": {
+        "category": "construction"
+      }
+    },
+    "components": {
+      "minecraft:material_instances": {
+        "*": {
+          "texture": "protection_block",
+          "render_method": "opaque"
+        }
+      },
+      "minecraft:geometry": "minecraft:geometry.full_block",
+      "minecraft:destructible_by_mining": {
+        "seconds_to_destroy": 999999.0
+      },
+      "minecraft:destructible_by_explosion": {
+        "explosion_resistance": 999999.0
+      },
+      "minecraft:flammable": {
+        "flame_odds": 0,
+        "burn_odds": 0
+      },
+      "minecraft:map_color": "#8B008B",
+      "minecraft:light_emission": 0
+    }
+  }
+}

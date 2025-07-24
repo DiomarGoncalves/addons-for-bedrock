@@ -1,0 +1,32 @@
+{
+  "format_version": "1.19.0",
+  "minecraft:recipe_shaped": {
+    "description": {
+      "identifier": "quarry:quarry_block_recipe"
+    },
+    "tags": ["crafting_table"],
+    "pattern": [
+      "DRD",
+      "IPI",
+      "DRD"
+    ],
+    "key": {
+      "D": {
+        "item": "minecraft:diamond"
+      },
+      "R": {
+        "item": "minecraft:redstone"
+      },
+      "I": {
+        "item": "minecraft:iron_ingot"
+      },
+      "P": {
+        "item": "minecraft:diamond_pickaxe"
+      }
+    },
+    "result": {
+      "item": "quarry:quarry_block",
+      "count": 1
+    }
+  }
+}

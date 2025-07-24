@@ -1,0 +1,7 @@
+{
+  "format_version": "1.21.0",
+  "quarry:quarry_block": {
+    "textures": "quarry_block",
+    "sound": "stone"
+  }
+}

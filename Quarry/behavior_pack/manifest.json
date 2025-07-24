@@ -1,0 +1,39 @@
+{
+  "format_version": 2,
+  "header": {
+    "description": "Behavior Pack - Addon de Mineradora Automática",
+    "name": "Quarry Addon - BP",
+    "uuid": "22345678-2234-5678-9012-223456789012",
+    "version": [1, 0, 0],
+    "min_engine_version": [1, 21, 0]
+  },
+  "modules": [
+    {
+      "description": "Behavior Pack",
+      "type": "data",
+      "uuid": "97654321-4321-8765-2109-976543210987",
+      "version": [1, 0, 0]
+    },
+    {
+      "description": "Script Module",
+      "type": "script",
+      "uuid": "21111111-2222-3333-4444-555555555555",
+      "version": [1, 0, 0],
+      "entry": "scripts/quarry.js"
+    }
+  ],
+  "dependencies": [
+    {
+      "module_name": "@minecraft/server",
+      "version": "1.14.0"
+    },
+    {
+      "module_name": "@minecraft/server-ui",
+      "version": "1.2.0"
+    },
+    {
+      "uuid": "bbbbbbbb-cccc-dddd-eeee-ffffffffffff",
+      "version": [1, 0, 0]
+    }
+  ]
+}
