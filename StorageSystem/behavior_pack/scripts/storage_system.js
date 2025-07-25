@@ -179,7 +179,12 @@ class StorageSystem {
                     
                     // Controle remoto
                     if (itemStack?.typeId === 'storage:remote_control') {
-                        this.useRemoteControl(player, itemStack);
+                        // Verificar se está segurando shift para vincular
+                        if (player.isSneaking) {
+                            this.linkRemoteControl(player, itemStack);
+                        } else {
+                            this.useRemoteControl(player, itemStack);
+                        }
                         return;
                     }
                 });
@@ -216,6 +221,11 @@ class StorageSystem {
                         event.cancel = true;
                         this.giveRemoteToPlayer(event.sender);
                     }
+                    
+                    if (message === "!remote-help") {
+                        event.cancel = true;
+                        this.showRemoteHelp(event.sender);
+                    }
                 });
             }
 
@@ -245,7 +255,7 @@ class StorageSystem {
             this.controllers.get(controllerId).network = networkId;
 
             // Criar controle remoto automaticamente
-            this.createRemoteControl(player, controllerId, networkId);
+            this.createLinkedRemoteControl(player, controllerId, networkId);
 
             player.sendMessage("§a✅ Controlador colocado!");
             player.sendMessage("§e📱 Controle remoto adicionado ao inventário!");
@@ -258,7 +268,7 @@ class StorageSystem {
         }
     }
 
-    createRemoteControl(player, controllerId, networkId) {
+    createLinkedRemoteControl(player, controllerId, networkId) {
         try {
             const remoteId = `remote_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
             
@@ -267,7 +277,8 @@ class StorageSystem {
                 id: remoteId,
                 controllerId: controllerId,
                 networkId: networkId,
-                owner: player.name
+                owner: player.name,
+                linked: true
             });
 
             // Criar item com NBT personalizado
@@ -275,9 +286,10 @@ class StorageSystem {
             
             // Adicionar dados customizados ao item
             remoteItem.setLore([
-                `§7Vinculado ao controlador`,
+                `§a✅ Vinculado ao controlador`,
                 `§8ID: ${remoteId.substr(0, 8)}...`,
-                `§7Dono: §f${player.name}`
+                `§7Dono: §f${player.name}`,
+                `§7Shift + Clique direito para gerenciar`
             ]);
 
             // Dar ao jogador
@@ -291,7 +303,117 @@ class StorageSystem {
         }
     }
 
-    useRemoteControl(player, remoteItem) {
+    linkRemoteControl(player, remoteItem) {
+        try {
+            const lore = remoteItem.getLore();
+            
+            // Verificar se já está vinculado
+            if (lore && lore.length > 0 && lore[0].includes('✅ Vinculado')) {
+                // Já vinculado - abrir menu de gerenciamento
+                this.showRemoteManagementMenu(player, remoteItem);
+                return;
+            }
+            
+            // Não vinculado - mostrar controladores disponíveis
+            this.showControllerLinkMenu(player, remoteItem);
+            
+        } catch (error) {
+            world.sendMessage(`§c[Storage] Erro no link: ${error}`);
+        }
+    }
+
+    showControllerLinkMenu(player, remoteItem) {
+        try {
+            // Encontrar controladores do jogador
+            const playerControllers = [];
+            for (const [controllerId, controller] of this.controllers) {
+                if (controller.owner === player.name) {
+                    playerControllers.push({
+                        id: controllerId,
+                        location: controller.location,
+                        network: controller.network
+                    });
+                }
+            }
+            
+            if (playerControllers.length === 0) {
+                player.sendMessage("§c❌ Você não possui controladores para vincular!");
+                return;
+            }
+            
+            const form = new ActionFormData()
+                .title("§6§l📱 VINCULAR CONTROLE REMOTO")
+                .body("§f§lEscolha um controlador para vincular:\n\n§7O controle remoto será vinculado permanentemente ao controlador escolhido");
+            
+            playerControllers.forEach((controller, index) => {
+                const network = this.networks.get(controller.network);
+                const chestCount = network ? network.antennaChests.size : 0;
+                form.button(`§b📦 Controlador ${index + 1}\n§7Posição: (${controller.location.x}, ${controller.location.y}, ${controller.location.z})\n§7Baús: ${chestCount}`);
+            });
+            
+            form.button("§c❌ Cancelar");
+            
+            form.show(player).then((response) => {
+                if (response.canceled || response.selection === playerControllers.length) {
+                    player.sendMessage("§7Vinculação cancelada");
+                    return;
+                }
+                
+                const selectedController = playerControllers[response.selection];
+                this.linkRemoteToController(player, remoteItem, selectedController);
+            });
+            
+        } catch (error) {
+            world.sendMessage(`§c[Storage] Erro no menu de link: ${error}`);
+        }
+    }
+
+    linkRemoteToController(player, remoteItem, controller) {
+        try {
+            const remoteId = `remote_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+            
+            // Registrar controle remoto
+            this.remoteControls.set(remoteId, {
+                id: remoteId,
+                controllerId: controller.id,
+                networkId: controller.network,
+                owner: player.name,
+                linked: true
+            });
+            
+            // Atualizar lore do item
+            remoteItem.setLore([
+                `§a✅ Vinculado ao controlador`,
+                `§8ID: ${remoteId.substr(0, 8)}...`,
+                `§7Dono: §f${player.name}`,
+                `§7Shift + Clique direito para gerenciar`
+            ]);
+            
+            // Atualizar item no inventário
+            const inventory = player.getComponent('minecraft:inventory');
+            if (inventory?.container) {
+                for (let i = 0; i < inventory.container.size; i++) {
+                    const item = inventory.container.getItem(i);
+                    if (item?.typeId === 'storage:remote_control' && 
+                        (!item.getLore() || !item.getLore()[0]?.includes('✅'))) {
+                        inventory.container.setItem(i, remoteItem);
+                        break;
+                    }
+                }
+            }
+            
+            player.sendMessage("§a✅ Controle remoto vinculado com sucesso!");
+            player.sendMessage("§7Use normalmente para acessar o armazenamento");
+            player.sendMessage("§7Shift + Clique direito para gerenciar controles");
+            
+            this.saveData();
+            
+        } catch (error) {
+            world.sendMessage(`§c[Storage] Erro ao vincular: ${error}`);
+        }
+    }
+
+    showRemoteManagementMenu(player, remoteItem) {
         try {
             const lore = remoteItem.getLore();
             if (!lore || lore.length < 2) {
@@ -299,11 +421,11 @@ class StorageSystem {
                 return;
             }
 
-            // Extrair ID do controle do lore
+            // Extrair ID do controle
             const idLine = lore[1];
             const remoteIdPrefix = idLine.replace('§8ID: ', '').replace('...', '');
             
-            // Encontrar controle remoto correspondente
+            // Encontrar controle remoto
             let foundRemote = null;
             for (const [remoteId, remoteData] of this.remoteControls) {
                 if (remoteId.startsWith(`remote_`) && remoteId.includes(remoteIdPrefix.substr(0, 6))) {
@@ -314,6 +436,223 @@ class StorageSystem {
 
             if (!foundRemote) {
                 player.sendMessage("§c❌ Controle remoto não encontrado!");
+                return;
+            }
+
+            // Verificar se é o dono do controlador
+            const controller = this.controllers.get(foundRemote.controllerId);
+            if (!controller || controller.owner !== player.name) {
+                player.sendMessage("§c❌ Apenas o dono do controlador pode gerenciar controles!");
+                return;
+            }
+
+            // Contar controles remotos vinculados a este controlador
+            let linkedRemotes = 0;
+            for (const [, remoteData] of this.remoteControls) {
+                if (remoteData.controllerId === foundRemote.controllerId) {
+                    linkedRemotes++;
+                }
+            }
+
+            const form = new ActionFormData()
+                .title("§6§l⚙️ GERENCIAR CONTROLES REMOTOS")
+                .body(`§f§lControlador: §a(${controller.location.x}, ${controller.location.y}, ${controller.location.z})\n§7Controles vinculados: §f${linkedRemotes}\n\n§7Escolha uma ação:`)
+                .button("§2§l➕ CRIAR NOVO CONTROLE\n§7Adicionar controle remoto extra")
+                .button("§e§l📋 LISTAR CONTROLES\n§7Ver todos os controles vinculados")
+                .button("§c§l🗑️ DESVINCULAR ESTE CONTROLE\n§7Remover vinculação deste controle");
+
+            form.show(player).then((response) => {
+                if (response.canceled) return;
+
+                switch (response.selection) {
+                    case 0:
+                        this.createExtraRemoteControl(player, foundRemote.controllerId, foundRemote.networkId);
+                        break;
+                    case 1:
+                        this.listLinkedRemotes(player, foundRemote.controllerId);
+                        break;
+                    case 2:
+                        this.unlinkRemoteControl(player, remoteItem, foundRemote);
+                        break;
+                }
+            });
+
+        } catch (error) {
+            world.sendMessage(`§c[Storage] Erro no gerenciamento: ${error}`);
+        }
+    }
+
+    createExtraRemoteControl(player, controllerId, networkId) {
+        try {
+            const remoteId = `remote_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+            
+            // Registrar controle remoto
+            this.remoteControls.set(remoteId, {
+                id: remoteId,
+                controllerId: controllerId,
+                networkId: networkId,
+                owner: player.name,
+                linked: true
+            });
+
+            // Criar item
+            const remoteItem = new ItemStack('storage:remote_control', 1);
+            remoteItem.setLore([
+                `§a✅ Vinculado ao controlador`,
+                `§8ID: ${remoteId.substr(0, 8)}...`,
+                `§7Dono: §f${player.name}`,
+                `§7Shift + Clique direito para gerenciar`
+            ]);
+
+            // Dar ao jogador
+            const inventory = player.getComponent('minecraft:inventory');
+            if (inventory?.container) {
+                inventory.container.addItem(remoteItem);
+                player.sendMessage("§a✅ Novo controle remoto criado!");
+                player.sendMessage("§7Agora você tem um controle extra vinculado ao mesmo controlador");
+            }
+            
+            this.saveData();
+            
+        } catch (error) {
+            world.sendMessage(`§c[Storage] Erro ao criar controle extra: ${error}`);
+        }
+    }
+
+    listLinkedRemotes(player, controllerId) {
+        try {
+            const linkedRemotes = [];
+            for (const [remoteId, remoteData] of this.remoteControls) {
+                if (remoteData.controllerId === controllerId) {
+                    linkedRemotes.push({
+                        id: remoteId,
+                        shortId: remoteId.substr(7, 8),
+                        owner: remoteData.owner
+                    });
+                }
+            }
+
+            let message = `§6§l=== 📋 CONTROLES VINCULADOS ===\n`;
+            message += `§7Total: §f${linkedRemotes.length} controles\n\n`;
+            
+            linkedRemotes.forEach((remote, index) => {
+                message += `§f${index + 1}. §e${remote.shortId}... §7(${remote.owner})\n`;
+            });
+            
+            if (linkedRemotes.length === 0) {
+                message += `§7Nenhum controle vinculado.`;
+            }
+
+            player.sendMessage(message);
+            
+        } catch (error) {
+            world.sendMessage(`§c[Storage] Erro ao listar: ${error}`);
+        }
+    }
+
+    unlinkRemoteControl(player, remoteItem, remoteData) {
+        try {
+            const form = new MessageFormData()
+                .title("§c§l🗑️ DESVINCULAR CONTROLE")
+                .body("§c§l⚠️ ATENÇÃO!\n\n§fTem certeza que deseja desvincular este controle remoto?\n\n§7O controle se tornará um item normal e precisará ser vinculado novamente para funcionar.")
+                .button1("§c§l✅ SIM, DESVINCULAR")
+                .button2("§7§l❌ CANCELAR");
+
+            form.show(player).then((response) => {
+                if (response.canceled || response.selection === 1) return;
+
+                // Remover do registro
+                for (const [remoteId, data] of this.remoteControls) {
+                    if (data.controllerId === remoteData.controllerId && 
+                        data.owner === remoteData.owner &&
+                        remoteId.includes(remoteItem.getLore()[1].replace('§8ID: ', '').replace('...', '').substr(0, 6))) {
+                        this.remoteControls.delete(remoteId);
+                        break;
+                    }
+                }
+
+                // Atualizar item para não vinculado
+                remoteItem.setLore([
+                    `§7❌ Não vinculado`,
+                    `§7Shift + Clique direito para vincular`
+                ]);
+
+                // Atualizar no inventário
+                const inventory = player.getComponent('minecraft:inventory');
+                if (inventory?.container) {
+                    for (let i = 0; i < inventory.container.size; i++) {
+                        const item = inventory.container.getItem(i);
+                        if (item?.typeId === 'storage:remote_control' && 
+                            item.getLore()?.[1]?.includes(remoteItem.getLore()[1].replace('§8ID: ', '').replace('...', '').substr(0, 6))) {
+                            inventory.container.setItem(i, remoteItem);
+                            break;
+                        }
+                    }
+                }
+
+                player.sendMessage("§a✅ Controle remoto desvinculado!");
+                player.sendMessage("§7Use Shift + Clique direito para vincular novamente");
+                
+                this.saveData();
+            });
+            
+        } catch (error) {
+            world.sendMessage(`§c[Storage] Erro ao desvincular: ${error}`);
+        }
+    }
+
+    showRemoteHelp(player) {
+        const helpText = `§6§l=== 📱 AJUDA - CONTROLE REMOTO ===
+
+§f§l📋 Como usar:
+§71. §eCrafte §7um controle remoto (precisa de antena)
+§72. §eShift + Clique direito §7para vincular a um controlador
+§73. §eClique direito normal §7para acessar o armazenamento
+
+§f§l⚙️ Gerenciamento (apenas donos):
+§7• §eShift + Clique direito §7em controle vinculado
+§7• §aCriar controles extras §7para o mesmo controlador
+§7• §cDesvincular controles §7desnecessários
+§7• §eListar todos §7os controles vinculados
+
+§f§l🔧 Recipe do Controle:
+§7G G    §8(G = Vidro)
+§7RAR    §8(R = Redstone, A = Antena)
+§7 I     §8(I = Ferro)
+
+§f§l💡 Dicas:
+§7• Controles vinculados funcionam à distância
+§7• Apenas o dono do controlador pode gerenciar
+§7• Controles não vinculados precisam ser configurados`;
+
+        player.sendMessage(helpText);
+    }
+
+    useRemoteControl(player, remoteItem) {
+        try {
+            const lore = remoteItem.getLore();
+            if (!lore || lore.length < 2 || !lore[0].includes('✅ Vinculado')) {
+                player.sendMessage("§c❌ Controle remoto inválido!");
+                player.sendMessage("§7Use Shift + Clique direito para vincular");
+                return;
+            }
+
+            // Extrair ID do controle do lore
+            const idLine = lore[1];
+            const remoteIdPrefix = idLine.replace('§8ID: ', '').replace('...', '');
+            
+            // Encontrar controle remoto correspondente
+            let foundRemote = null;
+            for (const [remoteId, remoteData] of this.remoteControls) {
+                if (remoteId.startsWith(`remote_`) && remoteId.includes(remoteIdPrefix.substr(0, 6)) && remoteData.linked) {
+                    foundRemote = remoteData;
+                    break;
+                }
+            }
+
+            if (!foundRemote) {
+                player.sendMessage("§c❌ Controle remoto não encontrado!");
+                player.sendMessage("§7Use Shift + Clique direito para vincular novamente");
                 return;
             }
 
@@ -341,18 +680,18 @@ class StorageSystem {
     }
 
     giveRemoteToPlayer(player) {
-        // Comando de debug para dar controle remoto
+        // Comando de debug para dar controle remoto não vinculado
         const remoteItem = new ItemStack('storage:remote_control', 1);
         remoteItem.setLore([
-            `§7Controle de Debug`,
-            `§8ID: debug123...`,
-            `§7Dono: §f${player.name}`
+            `§7❌ Não vinculado`,
+            `§7Shift + Clique direito para vincular`
         ]);
 
         const inventory = player.getComponent('minecraft:inventory');
         if (inventory?.container) {
             inventory.container.addItem(remoteItem);
-            player.sendMessage("§a✅ Controle remoto de debug adicionado!");
+            player.sendMessage("§a✅ Controle remoto não vinculado adicionado!");
+            player.sendMessage("§7Use Shift + Clique direito para vincular a um controlador");
         }
     }
 

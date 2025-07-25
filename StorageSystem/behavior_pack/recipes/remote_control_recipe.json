@@ -1,0 +1,32 @@
+{
+  "format_version": "1.19.0",
+  "minecraft:recipe_shaped": {
+    "description": {
+      "identifier": "storage:remote_control_recipe"
+    },
+    "tags": ["crafting_table"],
+    "pattern": [
+      "G G",
+      "RAR",
+      " I "
+    ],
+    "key": {
+      "G": {
+        "item": "minecraft:glass"
+      },
+      "R": {
+        "item": "minecraft:redstone"
+      },
+      "A": {
+        "item": "storage:antenna"
+      },
+      "I": {
+        "item": "minecraft:iron_ingot"
+      }
+    },
+    "result": {
+      "item": "storage:remote_control",
+      "count": 1
+    }
+  }
+}
