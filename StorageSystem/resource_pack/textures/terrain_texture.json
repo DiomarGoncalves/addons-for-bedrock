@@ -18,12 +18,6 @@
     },
     "storage_controller_side": {
       "textures": "textures/blocks/storage_controller_side"
-    },
-    "storage_cable": {
-      "textures": "textures/blocks/storage_cable"
-    },
-    "storage_cable_cube": {
-      "textures": "textures/blocks/storage_cable_cube"
     }
   }
 }

@@ -9,6 +9,7 @@
       "east": "storage_controller_side",
       "west": "storage_controller_side"
     },
-    "sound": "stone"
+    "sound": "stone",
+    "isotropic": false
   }
 }
