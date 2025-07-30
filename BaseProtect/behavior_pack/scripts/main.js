@@ -165,18 +165,30 @@ class ProtectionSystem {
     }
 
     teleportPlayerOut(player, area, currentPos) {
-        try {
-            // Calcular posição segura fora da área
-            const safePos = this.findSafePositionOutside(area, currentPos);
-            
-            player.teleport(safePos);
-            player.sendMessage(`§c🛡️ Você foi teleportado para fora da área protegida!`);
-            player.sendMessage(`§7Área: §f${area.name} §7- Dono: §f${area.owner}`);
-            
-        } catch (error) {
-            world.sendMessage(`§c[Error] Erro no teleporte defensivo: ${error}`);
+    try {
+        let safePos;
+
+        // Se o dono definiu um ponto de expulsão, usar ele
+        if (area.expulsionPoint) {
+            safePos = {
+                x: Math.floor(area.expulsionPoint.x),
+                y: Math.floor(area.expulsionPoint.y),
+                z: Math.floor(area.expulsionPoint.z)
+            };
+        } else {
+            // Caso contrário, usar lógica automática
+            safePos = this.findSafePositionOutside(area, currentPos);
         }
+
+        player.teleport(safePos);
+        player.sendMessage(`§c🛡️ Você foi teleportado para fora da área protegida!`);
+        player.sendMessage(`§7Área: §f${area.name} §7- Dono: §f${area.owner}`);
+
+    } catch (error) {
+        world.sendMessage(`§c[Error] Erro no teleporte defensivo: ${error}`);
     }
+}
+
 
     findSafePositionOutside(area, currentPos) {
         const centerX = (area.x1 + area.x2) / 2;
@@ -464,56 +476,61 @@ class ProtectionSystem {
     }
 
     showAreaDefinitionForm(player) {
-        try {
-            const form = new ModalFormData()
-                .title("§6§l📍 DEFINIR ÁREA PROTEGIDA")
-                .textField("§f§lCoordenada X1 (Canto 1):\n§7Digite a coordenada X do primeiro canto", "Ex: 100", "")
-                .textField("§f§lCoordenada Y1 (Canto 1):\n§7Digite a coordenada Y do primeiro canto", "Ex: 64", "")
-                .textField("§f§lCoordenada Z1 (Canto 1):\n§7Digite a coordenada Z do primeiro canto", "Ex: 200", "")
-                .textField("§f§lCoordenada X2 (Canto 2):\n§7Digite a coordenada X do segundo canto", "Ex: 150", "")
-                .textField("§f§lCoordenada Y2 (Canto 2):\n§7Digite a coordenada Y do segundo canto", "Ex: 100", "")
-                .textField("§f§lCoordenada Z2 (Canto 2):\n§7Digite a coordenada Z do segundo canto", "Ex: 250", "")
-                .textField("§f§lNome da Área:\n§7Digite um nome para sua área protegida", "Ex: Minha Base", "");
+    try {
+        const form = new ModalFormData()
+            .title("§6§l📍 DEFINIR ÁREA PROTEGIDA")
+            .textField("§f§lCanto 1:\n§7Digite as coordenadas X Y Z (ex: 100 64 200)", "Ex: 100 64 200", "")
+            .textField("§f§lCanto 2:\n§7Digite as coordenadas X Y Z (ex: 150 80 250)", "Ex: 150 80 250", "")
+            .textField("§f§lNome da Área:\n§7Digite um nome para sua área protegida", "Ex: Minha Base", "");
 
-            form.show(player).then((response) => {
-                if (response.canceled || !response.formValues) {
-                    player.sendMessage("§7Formulário cancelado");
-                    return;
-                }
+        form.show(player).then((response) => {
+            if (response.canceled || !response.formValues) {
+                player.sendMessage("§7Formulário cancelado");
+                return;
+            }
 
-                const [x1, y1, z1, x2, y2, z2, areaName] = response.formValues;
+            const [corner1, corner2, areaName] = response.formValues;
 
-                if (!this.validateCoordinates(x1, y1, z1, x2, y2, z2)) {
-                    player.sendMessage("§c❌ Coordenadas inválidas! Use apenas números.");
-                    return;
-                }
+            // Função auxiliar para parsear coordenadas
+            const parseCoords = (input) => {
+                const parts = input.replace(/,/g, " ").split(/\s+/).map(p => p.trim()).filter(Boolean);
+                if (parts.length !== 3 || parts.some(p => isNaN(parseFloat(p)))) return null;
+                return { x: parseInt(parts[0]), y: parseInt(parts[1]), z: parseInt(parts[2]) };
+            };
 
-                const existingArea = this.findPlayerArea(player.name);
-                if (existingArea) {
-                    player.sendMessage("§c❌ Você já possui uma área protegida! Remova a atual primeiro.");
-                    return;
-                }
+            const c1 = parseCoords(corner1);
+            const c2 = parseCoords(corner2);
 
-                const areaId = this.createProtectedArea(player, {
-                    x1: parseInt(x1), y1: parseInt(y1), z1: parseInt(z1),
-                    x2: parseInt(x2), y2: parseInt(y2), z2: parseInt(z2),
-                    name: areaName || "Área Protegida"
-                });
+            if (!c1 || !c2) {
+                player.sendMessage("§c❌ Coordenadas inválidas! Use formato: X Y Z ou X,Y,Z");
+                return;
+            }
 
-                this.saveData(); // Salvar dados
+            const existingArea = this.findPlayerArea(player.name);
+            if (existingArea) {
+                player.sendMessage("§c❌ Você já possui uma área protegida! Remova a atual primeiro.");
+                return;
+            }
 
-                player.sendMessage(`§a✅ Área protegida criada com sucesso!`);
-                player.sendMessage(`§7Nome: §f${areaName || "Área Protegida"}`);
-                player.sendMessage(`§7Coordenadas: §f(${x1}, ${y1}, ${z1}) até (${x2}, ${y2}, ${z2})`);
-                
-                world.sendMessage(`§a[Protection] ${player.name} criou uma nova área protegida: ${areaName || "Área Protegida"}`);
-            }).catch((error) => {
-                world.sendMessage(`§c[Error] Erro no formulário de área: ${error}`);
+            const areaId = this.createProtectedArea(player, {
+                x1: c1.x, y1: c1.y, z1: c1.z,
+                x2: c2.x, y2: c2.y, z2: c2.z,
+                name: areaName || "Área Protegida"
             });
-        } catch (error) {
-            world.sendMessage(`§c[Error] Erro ao criar formulário de área: ${error}`);
-        }
+
+            this.saveData();
+
+            player.sendMessage(`§a✅ Área protegida criada com sucesso!`);
+            player.sendMessage(`§7Nome: §f${areaName || "Área Protegida"}`);
+            player.sendMessage(`§7Coordenadas: §f(${c1.x}, ${c1.y}, ${c1.z}) até (${c2.x}, ${c2.y}, ${c2.z})`);
+        }).catch((error) => {
+            world.sendMessage(`§c[Error] Erro no formulário de área: ${error}`);
+        });
+    } catch (error) {
+        world.sendMessage(`§c[Error] Erro ao criar formulário de área: ${error}`);
     }
+}
+
 
     showTagManagementForm(player) {
         try {

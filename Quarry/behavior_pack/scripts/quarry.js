@@ -45,8 +45,7 @@ class QuarrySystem {
             this.initialized = true;
             world.sendMessage("§a[Quarry] Sistema ativo! Minera apenas minérios automaticamente!");
             
-        } catch (error) {
-            world.sendMessage(`§c[Quarry] Erro: ${error}`);
+        } catch (error) {;
         }
     }
 
@@ -80,10 +79,8 @@ class QuarrySystem {
                 world.afterEvents.itemUse.subscribe((event) => {
                     const { source: player } = event;
                     if (!player) return;
-                    
                     const blockRaycast = player.getBlockFromViewDirection();
                     if (!blockRaycast?.block) return;
-                    
                     if (blockRaycast.block.typeId === 'quarry:quarry_block') {
                         system.runTimeout(() => {
                             this.openQuarryInterface(player, blockRaycast.block.location);
@@ -103,27 +100,40 @@ class QuarrySystem {
             }
 
             // Comandos de debug
-            if (world.beforeEvents?.chatSend) {
-                world.beforeEvents.chatSend.subscribe((event) => {
-                    const message = event.message.toLowerCase();
+            // if (world.beforeEvents?.chatSend) {
+            //     world.beforeEvents.chatSend.subscribe((event) => {
+            //         const message = event.message.toLowerCase();
                     
-                    if (message === "!quarry-debug") {
-                        event.cancel = true;
-                        const player = event.sender;
-                        player.sendMessage(`§6=== QUARRY DEBUG ===`);
-                        player.sendMessage(`§7Mineradoras ativas: §f${this.quarries.size}`);
+            //         if (message === "!quarry-debug") {
+            //             event.cancel = true;
+            //             const player = event.sender;
+            //             player.sendMessage(`§6=== QUARRY DEBUG ===`);
+            //             player.sendMessage(`§7Mineradoras ativas: §f${this.quarries.size}`);
                         
-                        let activeCount = 0;
-                        for (const [, quarry] of this.quarries) {
-                            if (quarry.active) activeCount++;
-                        }
-                        player.sendMessage(`§7Mineradoras funcionando: §f${activeCount}`);
-                    }
-                });
-            }
+            //             let activeCount = 0;
+            //             for (const [, quarry] of this.quarries) {
+
+            // const quarryBlockCheck = (() => {
+            //     try {
+            //         return world.getDimension('overworld').getBlock(quarry.location);
+            //     } catch (e) {
+            //         return null;
+            //     }
+            // })();
+            // if (!quarryBlockCheck) {
+            //     // Chunk não carregado, pausar temporariamente
+            //     continue;
+            // }
+
+            //                 if (quarry.active) activeCount++;
+            //             }
+            //             player.sendMessage(`§7Mineradoras funcionando: §f${activeCount}`);
+            //         }
+            //     });
+            // }
 
         } catch (error) {
-            world.sendMessage(`§c[Quarry] Erro nos eventos: ${error}`);
+
         }
     }
 
@@ -152,7 +162,6 @@ class QuarrySystem {
             this.saveData();
             
         } catch (error) {
-            world.sendMessage(`§c[Quarry] Erro ao criar mineradora: ${error}`);
         }
     }
 
@@ -198,11 +207,9 @@ class QuarrySystem {
                 }
             }).catch((error) => {
                 player.sendMessage("§c❌ Erro ao abrir interface. Tente novamente!");
-                world.sendMessage(`§c[Quarry] Erro na interface: ${error}`);
             });
 
         } catch (error) {
-            world.sendMessage(`§c[Quarry] Erro na interface: ${error}`);
             player.sendMessage("§c❌ Erro ao abrir interface. Tente novamente!");
         }
     }
@@ -252,7 +259,6 @@ class QuarrySystem {
             });
 
         } catch (error) {
-            world.sendMessage(`§c[Quarry] Erro na conexão do baú: ${error}`);
         }
     }
 
@@ -288,7 +294,6 @@ class QuarrySystem {
             });
 
         } catch (error) {
-            world.sendMessage(`§c[Quarry] Erro nas configurações: ${error}`);
         }
     }
 
@@ -347,7 +352,6 @@ class QuarrySystem {
             this.saveData();
             
         } catch (error) {
-            world.sendMessage(`§c[Quarry] Erro ao alternar operação: ${error}`);
         }
     }
 
@@ -384,7 +388,6 @@ class QuarrySystem {
             });
 
         } catch (error) {
-            world.sendMessage(`§c[Quarry] Erro na remoção: ${error}`);
         }
     }
 
@@ -394,6 +397,19 @@ class QuarrySystem {
 
             try {
                 for (const [, quarry] of this.quarries) {
+
+            const quarryBlockCheck = (() => {
+                try {
+                    return world.getDimension('overworld').getBlock(quarry.location);
+                } catch (e) {
+                    return null;
+                }
+            })();
+            if (!quarryBlockCheck) {
+                // Chunk não carregado, pausar temporariamente
+                continue;
+            }
+
                     if (quarry.active && quarry.chestLocation) {
                         this.processQuarryMining(quarry);
                     }
@@ -447,7 +463,12 @@ class QuarrySystem {
                     const blockPos = { x, y: currentY, z };
                     
                     try {
-                        const block = world.getDimension('overworld').getBlock(blockPos);
+                        let block;
+                        try {
+                            block = world.getDimension('overworld').getBlock(blockPos);
+                        } catch (e) {
+                            continue;
+                        }
                         if (!block) continue;
 
                         // Verificar se é um minério
@@ -516,7 +537,12 @@ class QuarrySystem {
 
     storeItemsInChest(chestLocation, items) {
         try {
-            const chestBlock = world.getDimension('overworld').getBlock(chestLocation);
+            let chestBlock;
+        try {
+            chestBlock = world.getDimension('overworld').getBlock(chestLocation);
+        } catch (e) {
+            return false;
+        }
             if (!chestBlock || chestBlock.typeId !== 'minecraft:chest') {
                 return false;
             }
