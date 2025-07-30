@@ -6,7 +6,7 @@
       "textures": "textures/blocks/storage_controller_front"
     },
     "storage:antenna": {
-      "textures": "textures/blocks/storage_antenna"
+      "textures": "textures/items/storage_antenna"
     },
     "storage:remote_control": {
       "textures": "textures/items/remote_control"
