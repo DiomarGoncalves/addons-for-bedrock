@@ -35,7 +35,6 @@ class QuarrySystem {
 
     initialize() {
         try {
-            world.sendMessage("§e[Quarry] Iniciando sistema de mineradora...");
             
             this.loadData();
             this.setupEvents();
@@ -43,10 +42,10 @@ class QuarrySystem {
             this.startPeriodicSave();
             
             this.initialized = true;
-            world.sendMessage("§a[Quarry] Sistema ativo! Minera apenas minérios automaticamente!");
+            //world.sendMessage("§a[Quarry] Sistema ativo! Minera apenas minérios automaticamente!");
             
         } catch (error) {
-            world.sendMessage(`§c[Quarry] Erro: ${error}`);
+            //world.sendMessage(`§c[Quarry] Erro: ${error}`);
         }
     }
 
@@ -76,21 +75,16 @@ class QuarrySystem {
             }
 
             // Alternativa: usar item no bloco
-            if (world.afterEvents?.itemUse) {
-                world.afterEvents.itemUse.subscribe((event) => {
-                    const { source: player } = event;
-                    if (!player) return;
-                    
-                    const blockRaycast = player.getBlockFromViewDirection();
-                    if (!blockRaycast?.block) return;
-                    
-                    if (blockRaycast.block.typeId === 'quarry:quarry_block') {
-                        system.runTimeout(() => {
-                            this.openQuarryInterface(player, blockRaycast.block.location);
-                        }, 1);
-                    }
-                });
+            if (block.typeId === 'quarry:quarry_block') {
+                try {
+                    const isLoaded = player.dimension.getBlock(block.location);
+                    if (!isLoaded) return; // Evita erro de chunk não carregado
+                    this.createQuarry(player, block.location);
+                } catch (e) {
+                    // Silencia qualquer erro de chunk
+                }
             }
+
 
             // Quebrar bloco da mineradora
             if (world.beforeEvents?.playerBreakBlock) {
@@ -123,7 +117,7 @@ class QuarrySystem {
             }
 
         } catch (error) {
-            world.sendMessage(`§c[Quarry] Erro nos eventos: ${error}`);
+            //world.sendMessage(`§c[Quarry] Erro nos eventos: ${error}`);
         }
     }
 
@@ -152,7 +146,7 @@ class QuarrySystem {
             this.saveData();
             
         } catch (error) {
-            world.sendMessage(`§c[Quarry] Erro ao criar mineradora: ${error}`);
+            //world.sendMessage(`§c[Quarry] Erro ao criar mineradora: ${error}`);
         }
     }
 
@@ -198,11 +192,11 @@ class QuarrySystem {
                 }
             }).catch((error) => {
                 player.sendMessage("§c❌ Erro ao abrir interface. Tente novamente!");
-                world.sendMessage(`§c[Quarry] Erro na interface: ${error}`);
+                //world.sendMessage(`§c[Quarry] Erro na interface: ${error}`);
             });
 
         } catch (error) {
-            world.sendMessage(`§c[Quarry] Erro na interface: ${error}`);
+            //world.sendMessage(`§c[Quarry] Erro na interface: ${error}`);
             player.sendMessage("§c❌ Erro ao abrir interface. Tente novamente!");
         }
     }
@@ -252,7 +246,7 @@ class QuarrySystem {
             });
 
         } catch (error) {
-            world.sendMessage(`§c[Quarry] Erro na conexão do baú: ${error}`);
+            //world.sendMessage(`§c[Quarry] Erro na conexão do baú: ${error}`);
         }
     }
 
@@ -288,7 +282,7 @@ class QuarrySystem {
             });
 
         } catch (error) {
-            world.sendMessage(`§c[Quarry] Erro nas configurações: ${error}`);
+            //world.sendMessage(`§c[Quarry] Erro nas configurações: ${error}`);
         }
     }
 
@@ -347,7 +341,7 @@ class QuarrySystem {
             this.saveData();
             
         } catch (error) {
-            world.sendMessage(`§c[Quarry] Erro ao alternar operação: ${error}`);
+            //world.sendMessage(`§c[Quarry] Erro ao alternar operação: ${error}`);
         }
     }
 
@@ -384,7 +378,7 @@ class QuarrySystem {
             });
 
         } catch (error) {
-            world.sendMessage(`§c[Quarry] Erro na remoção: ${error}`);
+            //world.sendMessage(`§c[Quarry] Erro na remoção: ${error}`);
         }
     }
 
@@ -628,7 +622,7 @@ class QuarrySystem {
             }
 
             const loadTime = data.timestamp ? new Date(data.timestamp).toLocaleString() : "desconhecido";
-            world.sendMessage(`§a[Quarry] Carregado: ${this.quarries.size} mineradoras (salvos em: ${loadTime})`);
+            //world.sendMessage(`§a[Quarry] Carregado: ${this.quarries.size} mineradoras (salvos em: ${loadTime})`);
             
         } catch (error) {
             this.quarries = new Map();
@@ -637,7 +631,7 @@ class QuarrySystem {
 }
 
 // Inicializar sistema
-world.sendMessage("§e[Quarry] Carregando sistema de mineradora...");
+//world.sendMessage("§e[Quarry] Carregando sistema de mineradora...");
 const quarrySystem = new QuarrySystem();
 
 // Exportar para debug
