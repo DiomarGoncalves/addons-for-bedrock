@@ -20,7 +20,7 @@ export class InventoryManager {
                 items.push({
                     slot: i,
                     name: item.typeId.replace('minecraft:', ''),
-                    amount: item.amount,
+                    amount: itesm.amount,
                     typeId: item.typeId
                 });
             }
@@ -32,7 +32,7 @@ export class InventoryManager {
     clearInventory(player) {
         const container = this.getContainer(player);
         if (!container) return false;
-        for (let i = 0; i < container.size; i++) { try { container.setItem(i, undefined); } catch {} }
+        for (let i = 0; i < container.size; i++) { try { container.setItem(i, undefined); } catch { } }
         return true;
         player.sendMessage('§8[admin panel] seu inventário foi limpo por um administrador!');
     }

@@ -1,3 +1,10 @@
+'use strict';
+/**
+ * @file behavior_pack/scripts/main.js
+ * @description Código revisado e documentado do add-on. Mantidas todas as funções originais, com melhorias de legibilidade e comentários.
+ * @note Compatível com Script API moderna do Bedrock (@minecraft/server).
+ */
+
 import { world, system } from '@minecraft/server';
 import { WeaponSystem } from './weaponSystem.js';
 import { AmmoManager } from './ammoManager.js';
