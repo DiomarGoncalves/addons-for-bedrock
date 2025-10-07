@@ -1,0 +1,23 @@
+item.gun:ak47.name=§cAK-47
+item.gun:m4a1.name=§cM4A1
+item.gun:awp.name=§4AWP Sniper
+item.gun:desert_eagle.name=§6Desert Eagle
+item.gun:glock.name=§7Glock-18
+item.gun:mp5.name=§eMP5
+item.gun:shotgun.name=§8Shotgun
+item.gun:scar.name=§6SCAR-L
+item.gun:p90.name=§bP90
+item.gun:kar98k.name=§4Kar98k Sniper
+
+item.gun:ammo_762.name=§77.62x39mm Ammo
+item.gun:ammo_556.name=§75.56x45mm Ammo
+item.gun:ammo_338.name=§6.338 Lapua Ammo
+item.gun:ammo_50ae.name=§6.50 AE Ammo
+item.gun:ammo_9mm.name=§79x19mm Ammo
+item.gun:ammo_12gauge.name=§c12 Gauge Ammo
+item.gun:ammo_57.name=§b5.7x28mm Ammo
+item.gun:ammo_792.name=§67.92x57mm Ammo
+
+item.gun:frag_grenade.name=§cFrag Grenade
+item.gun:smoke_grenade.name=§7Smoke Grenade
+item.gun:flash_grenade.name=§fFlash Grenade

@@ -1,0 +1,30 @@
+{
+  "format_version": 2,
+  "header": {
+    "name": "Guns Addon BP",
+    "description": "Sistema completo de armas realistas com munição e granadas",
+    "uuid": "f1a2b3c4-d5e6-7f8a-9b0c-1d2e3f4a5b6c",
+    "version": [1, 0, 0],
+    "min_engine_version": [1, 20, 0]
+  },
+  "modules": [
+    {
+      "type": "data",
+      "uuid": "a2b3c4d5-e6f7-8a9b-0c1d-2e3f4a5b6c7d",
+      "version": [1, 0, 0]
+    },
+    {
+      "type": "script",
+      "uuid": "b3c4d5e6-f7a8-9b0c-1d2e-3f4a5b6c7d8e",
+      "version": [1, 0, 0],
+      "entry": "scripts/main.js",
+      "language": "javascript"
+    }
+  ],
+  "dependencies": [
+    {
+      "module_name": "@minecraft/server",
+      "version": "1.7.0"
+    }
+  ]
+}
