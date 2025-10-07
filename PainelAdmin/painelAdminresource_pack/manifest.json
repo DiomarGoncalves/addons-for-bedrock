@@ -1,0 +1,17 @@
+{
+  "format_version": 2,
+  "header": {
+    "name": "Admin Panel RP",
+    "description": "Recursos visuais do painel administrativo",
+    "uuid": "d4e5f6a7-b8c9-7d8e-1f2a-3b4c5d6e7f8a",
+    "version": [1, 0, 0],
+    "min_engine_version": [1, 20, 0]
+  },
+  "modules": [
+    {
+      "type": "resources",
+      "uuid": "e5f6a7b8-c9d0-8e9f-2a3b-4c5d6e7f8a9b",
+      "version": [1, 0, 0]
+    }
+  ]
+}

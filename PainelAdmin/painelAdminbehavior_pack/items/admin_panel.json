@@ -1,0 +1,23 @@
+{
+  "format_version": "1.20.0",
+  "minecraft:item": {
+    "description": {
+      "identifier": "admin:panel",
+      "menu_category": {
+        "category": "items"
+      }
+    },
+    "components": {
+      "minecraft:max_stack_size": 1,
+      "minecraft:icon": {
+        "texture": "admin_panel"
+      },
+      "minecraft:display_name": {
+        "value": "§6§lPainel Administrativo"
+      },
+      "minecraft:hand_equipped": true,
+      "minecraft:use_duration": 0,
+      "minecraft:use_animation": "bow"
+    }
+  }
+}
