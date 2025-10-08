@@ -20,7 +20,7 @@ export class InventoryManager {
                 items.push({
                     slot: i,
                     name: item.typeId.replace('minecraft:', ''),
-                    amount: itesm.amount,
+                    amount: item.amount,
                     typeId: item.typeId
                 });
             }

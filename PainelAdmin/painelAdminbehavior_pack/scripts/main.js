@@ -170,7 +170,7 @@ async function showPlayerActions(admin, targetPlayer) {
   const form = new ActionFormData()
     .title(`§8gerenciar: ${targetPlayer.name}`)
     .body('§8escolha uma ação:')
-    .button('§8ver inventário', 'textures/blocks/magnifying_glass')
+    .button('§8ver inventário', 'textures/ui/invisibility_effect')
     .button('§8kickar', 'textures/ui/cancel');
 
   if (isOwner) {
@@ -301,9 +301,9 @@ async function giveItemToPlayer(admin, targetPlayer) {
   const form = new ActionFormData()
     .title(`§8dar item para ${targetPlayer.name}`)
     .body('§8selecione um item ou personalize:')
-    .button('§8item personalizado', 'textures/ui/icon_gift');
+    .button('§8item personalizado');
 
-  basicItems.forEach(i => form.button(`§8${i}`, 'textures/items/storageIconColor'));
+  basicItems.forEach(i => form.button(`§8${i}`));
 
   const r = await form.show(admin);
   if (r.canceled) { return; } // X fecha tudo
