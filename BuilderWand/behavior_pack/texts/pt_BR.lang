@@ -2,6 +2,6 @@
 
 # Mensagens do sistema
 builder.wand.help.title=§6§l=== 🪄 VARINHA ULTRA SIMPLES ===
-builder.wand.help.usage=§f§l📋 Como usar:\n§71. Pegue um §eGraveto §7(sua varinha)\n§72. Tenha blocos no inventário\n§73. Segure o graveto e clique direito em um bloco\n§74. 5 blocos serão colocados na direção da face clicada
-builder.wand.help.features=§f§l✨ Funcionalidades:\n§7• §aPartículas §7mostram onde você clicou\n§7• §bConstrução automática §7de 5 blocos\n§7• §eConsome blocos §7do seu inventário\n§7• §dCooldown §7de 0.5 segundos
-builder.wand.help.tips=§f§l💡 Dicas:\n§7• Funciona com qualquer bloco sólido\n§7• Clique na face do bloco para escolher direção\n§7• Use §f!wand-help §7para ver esta ajuda
+builder.wand.help.usage=§f§l📋 Como usar:\n§81. Pegue um §eGraveto §8(sua varinha)\n§82. Tenha blocos no inventário\n§83. Segure o graveto e clique direito em um bloco\n§84. 5 blocos serão colocados na direção da face clicada
+builder.wand.help.features=§f§l✨ Funcionalidades:\n§8• §aPartículas §8mostram onde você clicou\n§8• §bConstrução automática §8de 5 blocos\n§8• §eConsome blocos §8do seu inventário\n§8• §dCooldown §8de 0.5 segundos
+builder.wand.help.tips=§f§l💡 Dicas:\n§8• Funciona com qualquer bloco sólido\n§8• Clique na face do bloco para escolher direção\n§8• Use §f!wand-help §8para ver esta ajuda

@@ -401,6 +401,6 @@ updateAmmoDisplay(player, itemStack) {
         if (!weapon) return;
 
         const currentAmmo = this.getCurrentAmmo(player, itemStack);
-        player.onScreenDisplay.setActionBar(`§7Munição: §f${currentAmmo}§7/§f${weapon.magazineSize}`);
+        player.onScreenDisplay.setActionBar(`§8Munição: §f${currentAmmo}§8/§f${weapon.magazineSize}`);
     }
 }

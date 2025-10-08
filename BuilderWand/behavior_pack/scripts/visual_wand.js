@@ -16,7 +16,7 @@ class SingleParticleWand {
                 this.setupEvents();
                 this.startDirectionDetection();
                 world.sendMessage("§a[Single Wand] Sistema ativo! Segure graveto e olhe para faces de blocos!");
-                world.sendMessage("§7Uma partícula aparece na direção que você olha | Clique direito para construir");
+                world.sendMessage("§8Uma partícula aparece na direção que você olha | Clique direito para construir");
             }, 20);
             
         } catch (error) {
@@ -349,12 +349,12 @@ class SingleParticleWand {
             // 🔧 CORREÇÃO: Se estiver olhando para baixo, anula construção vertical
             if (face === 'Down') {
                 direction.y = 0;
-                world.sendMessage(`§7[DEBUG] Face Down detectada - forçando Y=0`);
+                world.sendMessage(`§8[DEBUG] Face Down detectada - forçando Y=0`);
             }
             world.sendMessage(`§e[DEBUG] Construindo na direção: ${direction.name}`);
             // Debug melhorado
             world.sendMessage(`§e[DEBUG] Face detectada: ${face}`);
-            world.sendMessage(`§7[DEBUG] Direção original: (${direction.x}, ${direction.y}, ${direction.z}) - ${direction.name}`);
+            world.sendMessage(`§8[DEBUG] Direção original: (${direction.x}, ${direction.y}, ${direction.z}) - ${direction.name}`);
             
             // Construir blocos
             const blocksPlaced = this.buildBlocks(player, blockRaycast.block.location, direction, buildBlock, range);
@@ -376,9 +376,9 @@ class SingleParticleWand {
         
         // Debug da construção
         world.sendMessage(`§e[DEBUG] Iniciando construção:`);
-        world.sendMessage(`§7- Posição inicial: (${startLocation.x}, ${startLocation.y}, ${startLocation.z})`);
-        world.sendMessage(`§7- Direção: (${direction.x}, ${direction.y}, ${direction.z})`);
-        world.sendMessage(`§7- Alcance: ${range} blocos`);
+        world.sendMessage(`§8- Posição inicial: (${startLocation.x}, ${startLocation.y}, ${startLocation.z})`);
+        world.sendMessage(`§8- Direção: (${direction.x}, ${direction.y}, ${direction.z})`);
+        world.sendMessage(`§8- Alcance: ${range} blocos`);
         
         for (let i = 1; i <= range; i++) {
             // CORREÇÃO: Construir em linha reta, não em escadinha
@@ -388,7 +388,7 @@ class SingleParticleWand {
                 z: Math.floor(startLocation.z + (direction.z * i))
             };
             
-            world.sendMessage(`§7[DEBUG] Bloco ${i}: tentando posição (${buildPos.x}, ${buildPos.y}, ${buildPos.z})`);
+            world.sendMessage(`§8[DEBUG] Bloco ${i}: tentando posição (${buildPos.x}, ${buildPos.y}, ${buildPos.z})`);
             
             try {
                 const buildBlock = player.dimension.getBlock(buildPos);
@@ -528,27 +528,27 @@ class SingleParticleWand {
         const helpText = `§6§l=== 🪄 VARINHA ULTRA SIMPLES ===
 
 §f§l📋 Como usar:
-§71. Pegue um §eGraveto §7(sua varinha)
-§72. Tenha blocos no inventário
-§73. Segure o graveto e clique direito em um bloco
-§74. 5 blocos serão colocados na direção da face clicada
+§81. Pegue um §eGraveto §8(sua varinha)
+§82. Tenha blocos no inventário
+§83. Segure o graveto e clique direito em um bloco
+§84. 5 blocos serão colocados na direção da face clicada
 
 §f§l✨ Funcionalidades:
-§7• §aPartículas §7mostram onde você clicou
-§7• §bConstrução automática §7de 5 blocos
-§7• §eConsome blocos §7do seu inventário
-§7• §dCooldown §7de 0.5 segundos
+§8• §aPartículas §8mostram onde você clicou
+§8• §bConstrução automática §8de 5 blocos
+§8• §eConsome blocos §8do seu inventário
+§8• §dCooldown §8de 0.5 segundos
 
 §f§l💡 Dicas:
-§7• Funciona com qualquer bloco sólido
-§7• Clique na face do bloco para escolher direção
-§7• Use §f!wand-help §7para ver esta ajuda
+§8• Funciona com qualquer bloco sólido
+§8• Clique na face do bloco para escolher direção
+§8• Use §f!wand-help §8para ver esta ajuda
 
 §f§l⚙️ Configuração atual:
-§7• Distância: §e${currentRange} blocos
+§8• Distância: §e${currentRange} blocos
 
 §f§l🎯 Comandos:
-§7• §f!range [1-20] §7- Definir distância`;
+§8• §f!range [1-20] §8- Definir distância`;
 
         player.sendMessage(helpText);
     }

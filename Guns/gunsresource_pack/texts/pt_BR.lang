@@ -2,22 +2,22 @@ item.gun:ak47.name=§cAK-47
 item.gun:m4a1.name=§cM4A1
 item.gun:awp.name=§4AWP Sniper
 item.gun:desert_eagle.name=§6Desert Eagle
-item.gun:glock.name=§7Glock-18
+item.gun:glock.name=§8Glock-18
 item.gun:mp5.name=§eMP5
 item.gun:shotgun.name=§8Shotgun
 item.gun:scar.name=§6SCAR-L
 item.gun:p90.name=§bP90
 item.gun:kar98k.name=§4Kar98k Sniper
 
-item.gun:ammo_762.name=§7Munição 7.62x39mm
-item.gun:ammo_556.name=§7Munição 5.56x45mm
+item.gun:ammo_762.name=§8Munição 7.62x39mm
+item.gun:ammo_556.name=§8Munição 5.56x45mm
 item.gun:ammo_338.name=§6Munição .338 Lapua
 item.gun:ammo_50ae.name=§6Munição .50 AE
-item.gun:ammo_9mm.name=§7Munição 9x19mm
+item.gun:ammo_9mm.name=§8Munição 9x19mm
 item.gun:ammo_12gauge.name=§cMunição 12 Gauge
 item.gun:ammo_57.name=§bMunição 5.7x28mm
 item.gun:ammo_792.name=§6Munição 7.92x57mm
 
 item.gun:frag_grenade.name=§cGranada de Fragmentação
-item.gun:smoke_grenade.name=§7Granada de Fumaça
+item.gun:smoke_grenade.name=§8Granada de Fumaça
 item.gun:flash_grenade.name=§fGranada Flash

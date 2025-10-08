@@ -56,7 +56,7 @@
                 "max_length": 50,
                 "text": "#search_text",
                 "text_box_name": "search_field",
-                "place_holder_text": "§7Pesquisar itens...",
+                "place_holder_text": "§8Pesquisar itens...",
                 "layer": 10,
                 "$text_background_default": "common.text_edit_box_background_default",
                 "$text_background_hover": "common.text_edit_box_background_hover"
@@ -113,7 +113,7 @@
             {
               "connected_chests_label": {
                 "type": "label",
-                "text": "§7Baús: §f#connected_chests",
+                "text": "§8Baús: §f#connected_chests",
                 "color": [1.0, 1.0, 1.0],
                 "anchor_from": "left_middle",
                 "anchor_to": "left_middle",
@@ -124,7 +124,7 @@
             {
               "total_items_label": {
                 "type": "label",
-                "text": "§7Itens: §f#total_items",
+                "text": "§8Itens: §f#total_items",
                 "color": [1.0, 1.0, 1.0],
                 "anchor_from": "right_middle",
                 "anchor_to": "right_middle",

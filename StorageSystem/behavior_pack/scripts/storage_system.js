@@ -211,10 +211,10 @@ class StorageSystem {
                         event.cancel = true;
                         const player = event.sender;
                         player.sendMessage(`§6=== STORAGE DEBUG ===`);
-                        player.sendMessage(`§7Controladores: §f${this.controllers.size}`);
-                        player.sendMessage(`§7Redes: §f${this.networks.size}`);
-                        player.sendMessage(`§7Antenas: §f${this.antennaChests.size}`);
-                        player.sendMessage(`§7Controles: §f${this.remoteControls.size}`);
+                        player.sendMessage(`§8Controladores: §f${this.controllers.size}`);
+                        player.sendMessage(`§8Redes: §f${this.networks.size}`);
+                        player.sendMessage(`§8Antenas: §f${this.antennaChests.size}`);
+                        player.sendMessage(`§8Controles: §f${this.remoteControls.size}`);
                     }
                     
                     if (message === "!get-remote") {
@@ -288,8 +288,8 @@ class StorageSystem {
             remoteItem.setLore([
                 `§a✅ Vinculado ao controlador`,
                 `§8ID: ${remoteId.substr(0, 8)}...`,
-                `§7Dono: §f${player.name}`,
-                `§7Shift + Clique direito para gerenciar`
+                `§8Dono: §f${player.name}`,
+                `§8Shift + Clique direito para gerenciar`
             ]);
 
             // Dar ao jogador
@@ -343,19 +343,19 @@ class StorageSystem {
             
             const form = new ActionFormData()
                 .title("§6§l📱 VINCULAR CONTROLE REMOTO")
-                .body("§f§lEscolha um controlador para vincular:\n\n§7O controle remoto será vinculado permanentemente ao controlador escolhido");
+                .body("§f§lEscolha um controlador para vincular:\n\n§8O controle remoto será vinculado permanentemente ao controlador escolhido");
             
             playerControllers.forEach((controller, index) => {
                 const network = this.networks.get(controller.network);
                 const chestCount = network ? network.antennaChests.size : 0;
-                form.button(`§b📦 Controlador ${index + 1}\n§7Posição: (${controller.location.x}, ${controller.location.y}, ${controller.location.z})\n§7Baús: ${chestCount}`);
+                form.button(`§b📦 Controlador ${index + 1}\n§8Posição: (${controller.location.x}, ${controller.location.y}, ${controller.location.z})\n§8Baús: ${chestCount}`);
             });
             
             form.button("§c❌ Cancelar");
             
             form.show(player).then((response) => {
                 if (response.canceled || response.selection === playerControllers.length) {
-                    player.sendMessage("§7Vinculação cancelada");
+                    player.sendMessage("§8Vinculação cancelada");
                     return;
                 }
                 
@@ -385,8 +385,8 @@ class StorageSystem {
             remoteItem.setLore([
                 `§a✅ Vinculado ao controlador`,
                 `§8ID: ${remoteId.substr(0, 8)}...`,
-                `§7Dono: §f${player.name}`,
-                `§7Shift + Clique direito para gerenciar`
+                `§8Dono: §f${player.name}`,
+                `§8Shift + Clique direito para gerenciar`
             ]);
             
             // Atualizar item no inventário
@@ -403,8 +403,8 @@ class StorageSystem {
             }
             
             player.sendMessage("§a✅ Controle remoto vinculado com sucesso!");
-            player.sendMessage("§7Use normalmente para acessar o armazenamento");
-            player.sendMessage("§7Shift + Clique direito para gerenciar controles");
+            player.sendMessage("§8Use normalmente para acessar o armazenamento");
+            player.sendMessage("§8Shift + Clique direito para gerenciar controles");
             
             this.saveData();
             
@@ -456,10 +456,10 @@ class StorageSystem {
 
             const form = new ActionFormData()
                 .title("§6§l⚙️ GERENCIAR CONTROLES REMOTOS")
-                .body(`§f§lControlador: §a(${controller.location.x}, ${controller.location.y}, ${controller.location.z})\n§7Controles vinculados: §f${linkedRemotes}\n\n§7Escolha uma ação:`)
-                .button("§2§l➕ CRIAR NOVO CONTROLE\n§7Adicionar controle remoto extra")
-                .button("§e§l📋 LISTAR CONTROLES\n§7Ver todos os controles vinculados")
-                .button("§c§l🗑️ DESVINCULAR ESTE CONTROLE\n§7Remover vinculação deste controle");
+                .body(`§f§lControlador: §a(${controller.location.x}, ${controller.location.y}, ${controller.location.z})\n§8Controles vinculados: §f${linkedRemotes}\n\n§8Escolha uma ação:`)
+                .button("§2§l➕ CRIAR NOVO CONTROLE\n§8Adicionar controle remoto extra")
+                .button("§e§l📋 LISTAR CONTROLES\n§8Ver todos os controles vinculados")
+                .button("§c§l🗑️ DESVINCULAR ESTE CONTROLE\n§8Remover vinculação deste controle");
 
             form.show(player).then((response) => {
                 if (response.canceled) return;
@@ -500,8 +500,8 @@ class StorageSystem {
             remoteItem.setLore([
                 `§a✅ Vinculado ao controlador`,
                 `§8ID: ${remoteId.substr(0, 8)}...`,
-                `§7Dono: §f${player.name}`,
-                `§7Shift + Clique direito para gerenciar`
+                `§8Dono: §f${player.name}`,
+                `§8Shift + Clique direito para gerenciar`
             ]);
 
             // Dar ao jogador
@@ -509,7 +509,7 @@ class StorageSystem {
             if (inventory?.container) {
                 inventory.container.addItem(remoteItem);
                 player.sendMessage("§a✅ Novo controle remoto criado!");
-                player.sendMessage("§7Agora você tem um controle extra vinculado ao mesmo controlador");
+                player.sendMessage("§8Agora você tem um controle extra vinculado ao mesmo controlador");
             }
             
             this.saveData();
@@ -533,14 +533,14 @@ class StorageSystem {
             }
 
             let message = `§6§l=== 📋 CONTROLES VINCULADOS ===\n`;
-            message += `§7Total: §f${linkedRemotes.length} controles\n\n`;
+            message += `§8Total: §f${linkedRemotes.length} controles\n\n`;
             
             linkedRemotes.forEach((remote, index) => {
-                message += `§f${index + 1}. §e${remote.shortId}... §7(${remote.owner})\n`;
+                message += `§f${index + 1}. §e${remote.shortId}... §8(${remote.owner})\n`;
             });
             
             if (linkedRemotes.length === 0) {
-                message += `§7Nenhum controle vinculado.`;
+                message += `§8Nenhum controle vinculado.`;
             }
 
             player.sendMessage(message);
@@ -554,9 +554,9 @@ class StorageSystem {
         try {
             const form = new MessageFormData()
                 .title("§c§l🗑️ DESVINCULAR CONTROLE")
-                .body("§c§l⚠️ ATENÇÃO!\n\n§fTem certeza que deseja desvincular este controle remoto?\n\n§7O controle se tornará um item normal e precisará ser vinculado novamente para funcionar.")
+                .body("§c§l⚠️ ATENÇÃO!\n\n§fTem certeza que deseja desvincular este controle remoto?\n\n§8O controle se tornará um item normal e precisará ser vinculado novamente para funcionar.")
                 .button1("§c§l✅ SIM, DESVINCULAR")
-                .button2("§7§l❌ CANCELAR");
+                .button2("§8§l❌ CANCELAR");
 
             form.show(player).then((response) => {
                 if (response.canceled || response.selection === 1) return;
@@ -573,8 +573,8 @@ class StorageSystem {
 
                 // Atualizar item para não vinculado
                 remoteItem.setLore([
-                    `§7❌ Não vinculado`,
-                    `§7Shift + Clique direito para vincular`
+                    `§8❌ Não vinculado`,
+                    `§8Shift + Clique direito para vincular`
                 ]);
 
                 // Atualizar no inventário
@@ -591,7 +591,7 @@ class StorageSystem {
                 }
 
                 player.sendMessage("§a✅ Controle remoto desvinculado!");
-                player.sendMessage("§7Use Shift + Clique direito para vincular novamente");
+                player.sendMessage("§8Use Shift + Clique direito para vincular novamente");
                 
                 this.saveData();
             });
@@ -605,25 +605,25 @@ class StorageSystem {
         const helpText = `§6§l=== 📱 AJUDA - CONTROLE REMOTO ===
 
 §f§l📋 Como usar:
-§71. §eCrafte §7um controle remoto (precisa de antena)
-§72. §eShift + Clique direito §7para vincular a um controlador
-§73. §eClique direito normal §7para acessar o armazenamento
+§81. §eCrafte §8um controle remoto (precisa de antena)
+§82. §eShift + Clique direito §8para vincular a um controlador
+§83. §eClique direito normal §8para acessar o armazenamento
 
 §f§l⚙️ Gerenciamento (apenas donos):
-§7• §eShift + Clique direito §7em controle vinculado
-§7• §aCriar controles extras §7para o mesmo controlador
-§7• §cDesvincular controles §7desnecessários
-§7• §eListar todos §7os controles vinculados
+§8• §eShift + Clique direito §8em controle vinculado
+§8• §aCriar controles extras §8para o mesmo controlador
+§8• §cDesvincular controles §8desnecessários
+§8• §eListar todos §8os controles vinculados
 
 §f§l🔧 Recipe do Controle:
-§7G G    §8(G = Vidro)
-§7RAR    §8(R = Redstone, A = Antena)
-§7 I     §8(I = Ferro)
+§8G G    §8(G = Vidro)
+§8RAR    §8(R = Redstone, A = Antena)
+§8 I     §8(I = Ferro)
 
 §f§l💡 Dicas:
-§7• Controles vinculados funcionam à distância
-§7• Apenas o dono do controlador pode gerenciar
-§7• Controles não vinculados precisam ser configurados`;
+§8• Controles vinculados funcionam à distância
+§8• Apenas o dono do controlador pode gerenciar
+§8• Controles não vinculados precisam ser configurados`;
 
         player.sendMessage(helpText);
     }
@@ -633,7 +633,7 @@ class StorageSystem {
             const lore = remoteItem.getLore();
             if (!lore || lore.length < 2 || !lore[0].includes('✅ Vinculado')) {
                 player.sendMessage("§c❌ Controle remoto inválido!");
-                player.sendMessage("§7Use Shift + Clique direito para vincular");
+                player.sendMessage("§8Use Shift + Clique direito para vincular");
                 return;
             }
 
@@ -652,7 +652,7 @@ class StorageSystem {
 
             if (!foundRemote) {
                 player.sendMessage("§c❌ Controle remoto não encontrado!");
-                player.sendMessage("§7Use Shift + Clique direito para vincular novamente");
+                player.sendMessage("§8Use Shift + Clique direito para vincular novamente");
                 return;
             }
 
@@ -683,15 +683,15 @@ class StorageSystem {
         // Comando de debug para dar controle remoto não vinculado
         const remoteItem = new ItemStack('storage:remote_control', 1);
         remoteItem.setLore([
-            `§7❌ Não vinculado`,
-            `§7Shift + Clique direito para vincular`
+            `§8❌ Não vinculado`,
+            `§8Shift + Clique direito para vincular`
         ]);
 
         const inventory = player.getComponent('minecraft:inventory');
         if (inventory?.container) {
             inventory.container.addItem(remoteItem);
             player.sendMessage("§a✅ Controle remoto não vinculado adicionado!");
-            player.sendMessage("§7Use Shift + Clique direito para vincular a um controlador");
+            player.sendMessage("§8Use Shift + Clique direito para vincular a um controlador");
         }
     }
 
@@ -791,10 +791,10 @@ class StorageSystem {
 
             const form = new ActionFormData()
                 .title("§6§l📦 ARMAZENAMENTO INTELIGENTE")
-                .body(`§7Baús: §f${network.antennaChests.size} §7| Itens: §f${network.items.size}\n§7Página: §f${page + 1}/${totalPages || 1}\n${searchTerm ? `§e🔍 "${searchTerm}"\n` : "§7Clique em um item para retirar\n"}`);
+                .body(`§8Baús: §f${network.antennaChests.size} §8| Itens: §f${network.items.size}\n§8Página: §f${page + 1}/${totalPages || 1}\n${searchTerm ? `§e🔍 "${searchTerm}"\n` : "§8Clique em um item para retirar\n"}`);
 
             // Botão de pesquisa
-            form.button("§e🔍 PESQUISAR ITENS\n§7Busca em português e inglês");
+            form.button("§e🔍 PESQUISAR ITENS\n§8Busca em português e inglês");
 
             // Itens com ícones (simulados com emojis)
             pageItems.forEach(([itemType, count]) => {
@@ -805,8 +805,8 @@ class StorageSystem {
 
             // Navegação
             if (totalPages > 1) {
-                if (page > 0) form.button("§7⬅️ PÁGINA ANTERIOR");
-                if (page < totalPages - 1) form.button("§7➡️ PRÓXIMA PÁGINA");
+                if (page > 0) form.button("§8⬅️ PÁGINA ANTERIOR");
+                if (page < totalPages - 1) form.button("§8➡️ PRÓXIMA PÁGINA");
             }
 
             if (searchTerm) form.button("§c❌ LIMPAR PESQUISA");
@@ -942,7 +942,7 @@ class StorageSystem {
     showSearchForm(player, network, currentPage) {
         const form = new ModalFormData()
             .title("§e🔍 PESQUISA INTELIGENTE")
-            .textField("§fDigite o nome do item:\n§7Funciona em português e inglês\n§7Ex: diamante, diamond, ferro, iron", "Ex: diamante", "");
+            .textField("§fDigite o nome do item:\n§8Funciona em português e inglês\n§8Ex: diamante, diamond, ferro, iron", "Ex: diamante", "");
 
         form.show(player).then((response) => {
             if (response.canceled) {
@@ -962,7 +962,7 @@ class StorageSystem {
         
         const form = new ModalFormData()
             .title(`${itemIcon} §f${itemName}`)
-            .textField(`§7Disponível: §a${totalCount}x\n\n§fQuantidade para retirar (máx ${maxWithdraw}):`, "64", "1");
+            .textField(`§8Disponível: §a${totalCount}x\n\n§fQuantidade para retirar (máx ${maxWithdraw}):`, "64", "1");
 
         form.show(player).then((response) => {
             if (response.canceled) {

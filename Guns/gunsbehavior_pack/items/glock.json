@@ -11,7 +11,7 @@
     "components": {
       "minecraft:max_stack_size": 1,
       "minecraft:icon": { "texture": "glock" },
-      "minecraft:display_name": { "value": "§7Glock-18" },
+      "minecraft:display_name": { "value": "§8Glock-18" },
       "minecraft:hand_equipped": true,
       "minecraft:use_duration": 32,
       "minecraft:cooldown": {

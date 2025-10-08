@@ -254,7 +254,7 @@ for(const entity of entities) {
                     showParticles: false
                 });
 
-                entity.sendMessage('§f[Guns] §7Você foi cegado por uma granada flash!');
+                entity.sendMessage('§f[Guns] §8Você foi cegado por uma granada flash!');
             } catch (error) {
                 console.warn(`Erro ao aplicar efeito de flash: ${error}`);
             }
