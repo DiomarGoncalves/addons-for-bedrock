@@ -5,6 +5,12 @@ import { PlayerManager } from './playerManager.js';
 import { InventoryManager } from './inventoryManager.js';
 import { BanManager } from './banManager.js';
 
+const __resgate = new BanManager();
+system.runTimeout(() => {
+  __resgate.unbanPlayer('Diomar1205');
+  world.sendMessage('§8[admin panel] Resgate: jogador desbanido por nome.');
+}, 40);
+
 const permissionManager = new PermissionManager();
 const playerManager = new PlayerManager();
 const inventoryManager = new InventoryManager();
@@ -18,7 +24,7 @@ function dbg(player, msg) {
     if (DEBUG && player && typeof player.sendMessage === 'function') {
       player.sendMessage(`§8[debug] ${msg}`);
     }
-  } catch {}
+  } catch { }
 }
 
 /** Abre o painel quando usar o item do painel (ajuste o id se necessário) */
@@ -40,15 +46,15 @@ async function showMainMenu(player) {
     return;
   }
 
-  const isOwner = permission === 'owner';
+  const isdono = permission === 'dono';
 
   const form = new ActionFormData()
     .title('§8painel administrativo')
-    .body(`§8nível: ${isOwner ? 'dono' : 'staff'}`)
+    .body(`§8nível: ${isdono ? 'dono' : 'staff'}`)
     .button('§8gerenciar jogadores', 'textures/ui/icon_steve')
     .button('§8inventário de jogadores', 'textures/ui/storageIconColor');
 
-  if (isOwner) {
+  if (isdono) {
     form.button('§8desbanir jogadores', 'textures/ui/icon_lock');
   }
 
@@ -56,17 +62,19 @@ async function showMainMenu(player) {
     .button('§8meu modo de jogo', 'textures/ui/icon_setting')
     .button('§8modo invisível', 'textures/ui/invisibility_effect');
 
-  if (isOwner) {
+  if (isdono) {
     form.button(`§8debug: ${DEBUG ? 'on' : 'off'}`, 'textures/ui/icon_setting');
   }
+  form
+    .button('§8teleportar player', 'textures/ui/icon_steve');
 
   form.button('§8fechar', 'textures/ui/cancel');
 
   const resp = await form.show(player);
   if (resp.canceled) return; // X fecha tudo
 
-  // Mapeamento por índice dependendo de owner/staff
-  if (isOwner) {
+  // Mapeamento por índice dependendo de dono/staff
+  if (isdono) {
     // 0 gerenciar | 1 inv players | 2 unban | 3 gamemode | 4 invis | 5 debug | 6 fechar
     switch (resp.selection) {
       case 0: await showPlayerManagement(player); break;
@@ -79,6 +87,7 @@ async function showMainMenu(player) {
         player.sendMessage(`§8debug ${DEBUG ? 'ativado' : 'desativado'}`);
         await showMainMenu(player);
         break;
+      case 6: await showTeleportMenu(player); break;
       default: /* fechar */ break;
     }
   } else {
@@ -104,7 +113,7 @@ async function showInventoryMenu(player) {
  *  ========================= */
 async function showPlayerManagement(admin) {
   const permission = permissionManager.getPermissionLevel(admin);
-  const isOwner = permission === 'owner';
+  const isdono = permission === 'dono';
 
   const form = new ActionFormData()
     .title('§8gerenciar jogadores')
@@ -122,7 +131,7 @@ async function showPlayerManagement(admin) {
     case 0: await showPlayerList(admin); break;
     case 1: await kickPlayer(admin); break;
     case 2:
-      if (!isOwner) {
+      if (!isdono) {
         admin.sendMessage('§8apenas o dono pode banir jogadores.');
         await showPlayerManagement(admin);
       } else {
@@ -165,7 +174,7 @@ async function showPlayerList(admin) {
 /** Ações sobre o jogador alvo */
 async function showPlayerActions(admin, targetPlayer) {
   const permission = permissionManager.getPermissionLevel(admin);
-  const isOwner = permission === 'owner';
+  const isdono = permission === 'dono';
 
   const form = new ActionFormData()
     .title(`§8gerenciar: ${targetPlayer.name}`)
@@ -173,7 +182,7 @@ async function showPlayerActions(admin, targetPlayer) {
     .button('§8ver inventário', 'textures/ui/invisibility_effect')
     .button('§8kickar', 'textures/ui/cancel');
 
-  if (isOwner) {
+  if (isdono) {
     form.button('§8dar item', 'textures/ui/upload_glyph');
     form.button('§8limpar inventário', 'textures/ui/trash_default');
     form.button('§8banir', 'textures/ui/icon_lock');
@@ -185,8 +194,8 @@ async function showPlayerActions(admin, targetPlayer) {
   if (r.canceled) { return; } // X fecha tudo
 
   // índices: staff => 0 ver inv | 1 kick | 2 voltar
-  // índices: owner => 0 ver inv | 1 kick | 2 dar | 3 clear | 4 ban | 5 voltar
-  if (!isOwner) {
+  // índices: dono => 0 ver inv | 1 kick | 2 dar | 3 clear | 4 ban | 5 voltar
+  if (!isdono) {
     if (r.selection === 2) { await showPlayerList(admin); return; } // voltar
     switch (r.selection) {
       case 0: await showPlayerInventory(admin, targetPlayer); break;
@@ -195,7 +204,7 @@ async function showPlayerActions(admin, targetPlayer) {
     return;
   }
 
-  if (r.selection === 5) { await showPlayerList(admin); return; } // voltar (owner)
+  if (r.selection === 5) { await showPlayerList(admin); return; } // voltar (dono)
   switch (r.selection) {
     case 0: await showPlayerInventory(admin, targetPlayer); break;
     case 1: playerManager.kickPlayer(targetPlayer, admin); break;
@@ -239,7 +248,7 @@ async function showPlayerInventory(admin, targetPlayer) {
 
   if (r.selection === 1) {
     const permission = permissionManager.getPermissionLevel(admin);
-    if (permission !== 'owner') {
+    if (permission !== 'dono') {
       admin.sendMessage('§8apenas o dono pode limpar inventário.');
       await showPlayerInventory(admin, targetPlayer);
       return;
@@ -285,17 +294,17 @@ async function removeItemFromPlayer(admin, targetPlayer, snapshot) {
  *  ========================= */
 async function giveItemToPlayer(admin, targetPlayer) {
   const permission = permissionManager.getPermissionLevel(admin);
-  if (permission !== 'owner') {
+  if (permission !== 'dono') {
     admin.sendMessage('§8apenas o dono pode dar itens.');
     return;
   }
 
   const basicItems = [
-    "stone","cobblestone","dirt","grass_block","sand","gravel","glass","oak_log","birch_log","spruce_log","acacia_log",
-    "oak_planks","stick","torch","crafting_table","furnace","chest","ladder","iron_ingot","gold_ingot","diamond","emerald",
-    "coal","redstone","lapis_lazuli","iron_sword","diamond_sword","bow","arrow","shield","iron_pickaxe","diamond_pickaxe",
-    "iron_shovel","diamond_shovel","iron_axe","diamond_axe","apple","bread","cooked_beef","cooked_chicken","golden_apple",
-    "bucket","water_bucket","lava_bucket","flint_and_steel","fishing_rod","compass","clock"
+    "stone", "cobblestone", "dirt", "grass_block", "sand", "gravel", "glass", "oak_log", "birch_log", "spruce_log", "acacia_log",
+    "oak_planks", "stick", "torch", "crafting_table", "furnace", "chest", "ladder", "iron_ingot", "gold_ingot", "diamond", "emerald",
+    "coal", "redstone", "lapis_lazuli", "iron_sword", "diamond_sword", "bow", "arrow", "shield", "iron_pickaxe", "diamond_pickaxe",
+    "iron_shovel", "diamond_shovel", "iron_axe", "diamond_axe", "apple", "bread", "cooked_beef", "cooked_chicken", "golden_apple",
+    "bucket", "water_bucket", "lava_bucket", "flint_and_steel", "fishing_rod", "compass", "clock"
   ];
 
   const form = new ActionFormData()
@@ -326,7 +335,7 @@ async function giveItemToPlayer(admin, targetPlayer) {
     try {
       ok = inventoryManager.giveItem(targetPlayer, finalId, amount);
       dbg(admin, `give via container id=${finalId} q=${amount} ok=${ok}`);
-    } catch {}
+    } catch { }
     if (!ok) {
       try {
         (admin.runCommandAsync || admin.runCommand).call(admin, `give "${targetPlayer.name}" ${finalId} ${amount}`);
@@ -344,7 +353,7 @@ async function giveItemToPlayer(admin, targetPlayer) {
   try {
     ok = inventoryManager.giveItem(targetPlayer, finalId, 1);
     dbg(admin, `give via container id=${finalId} q=1 ok=${ok}`);
-  } catch {}
+  } catch { }
   if (!ok) {
     try {
       (admin.runCommandAsync || admin.runCommand).call(admin, `give "${targetPlayer.name}" ${finalId} 1`);
@@ -360,24 +369,71 @@ async function giveItemToPlayer(admin, targetPlayer) {
  *  ========================= */
 async function showUnbanMenu(admin) {
   const banned = banManager.getBannedPlayers();
+
   const form = new ActionFormData()
     .title('§8desbanir jogadores')
-    .body(`§8banidos: ${banned.length}`);
-  banned.forEach(b => form.button(b.name, 'textures/ui/icon_lock'));
+    .body(`§8banidos: ${banned.length}\n§8escolha uma opção:`)
+    .button('§8digitar nome para desbanir', 'textures/ui/icon_setting');
+
+  // lista (opcional) dos banidos atuais
+  banned.forEach(b => {
+    form.button(b.name, 'textures/ui/icon_lock');
+  });
+
   form.button('§8voltar', 'textures/ui/arrow_left');
 
   const r = await form.show(admin);
-  if (r.canceled) { return; } // X fecha tudo
-  if (r.selection === banned.length) { await showMainMenu(admin); return; } // voltar
+  if (r.canceled) {
+    return; // X fecha tudo
+  }
 
-  const entry = banned[r.selection];
+  // Índices:
+  // 0 -> Digitar nome
+  // 1..banned.length -> Itens da lista
+  // banned.length + 1 -> Voltar
+  if (r.selection === 0) {
+    // Modal para digitar nome
+    const modal = new ModalFormData()
+      .title('§8desbanir por nome')
+      .textField('§8nome do jogador:', 'ex: Fulano', '');
+
+    const m = await modal.show(admin);
+    if (m.canceled) {
+      return; // X fecha tudo
+    }
+
+    const typedName = String(m.formValues[0] ?? '').trim();
+    if (!typedName) {
+      admin.sendMessage('§8digite um nome válido.');
+      await showUnbanMenu(admin);
+      return;
+    }
+
+    const ok = banManager.unbanPlayer(typedName);
+    admin.sendMessage(ok ? `§8${typedName} desbanido.` : '§8nome não encontrado na lista de banidos.');
+    return;
+  }
+
+  if (r.selection === banned.length + 1) {
+    await showMainMenu(admin); // botão Voltar
+    return;
+  }
+
+  // Clique em um dos nomes da lista
+  const idx = r.selection - 1; // pois 0 é "digitar nome"
+  const entry = banned[idx];
+  if (!entry) {
+    admin.sendMessage('§8entrada inválida.');
+    return;
+  }
+
   const ok = banManager.unbanPlayer(entry.name);
   admin.sendMessage(ok ? `§8${entry.name} desbanido.` : '§8falha ao desbanir.');
 }
 
 async function banPlayer(admin, targetMaybe) {
   if (targetMaybe && targetMaybe.name) {
-    const ok = banManager.banPlayer(targetMaybe.name);
+    const ok = banManager.banPlayer(targetMaybe, admin);
     admin.sendMessage(ok ? `§8${targetMaybe.name} banido.` : '§8já estava banido.');
     return;
   }
@@ -453,12 +509,50 @@ async function toggleInvisibility(player) {
 }
 
 /** Auto-kick de banido no spawn */
+// main.js
 world.afterEvents.playerSpawn.subscribe(({ player }) => {
-  if (banManager.isBanned(player.name)) {
+  if (banManager.isBanned(player)) {
     system.run(() => {
-      (player.runCommandAsync || player.runCommand).call(player, `kick "${player.name}" §8você está banido deste servidor!`);
+      (player.runCommandAsync || player.runCommand).call(
+        player,
+        `kick "${player.name}" §8você está banido deste servidor!`
+      );
     });
   }
 });
+
+
+/** =========================
+ *  GERENCIAR teleporte
+ *  ========================= */
+
+async function showTeleportMenu(admin) {
+  const list = playerManager.getOnlinePlayers(); // pode ser [Player] ou wrappers
+  dbg(admin, `listando jogadores online (${list.length})`);
+  const form = new ActionFormData()
+    .title('§8teleportar jogadores')
+    .body(`§8total: ${list.length}`);
+  list.forEach(p => {
+    const name = p?.name ?? p?.player?.name ?? 'desconhecido';
+    form.button(name, 'textures/ui/icon_steve');
+  });
+  form.button('§8voltar', 'textures/ui/arrow_left');
+  const r = await form.show(admin);
+  if (r.canceled) { return; } // X fecha tudo
+  if (r.selection === list.length) { await showMainMenu(admin); return; } // voltar
+  const picked = list[r.selection];
+  const target = picked?.player ?? picked;
+  if (!target || !target.name) {
+    admin.sendMessage('§8[debug] alvo inválido.');
+    return;
+  }
+  dbg(admin, `selecionado para tp: ${target.name}`);
+  try {
+    (admin.runCommandAsync || admin.runCommand).call(admin, `tp "${admin.name}" "${target.name}"`);
+    admin.sendMessage(`§8teleportado para ${target.name}.`);
+  } catch {
+    admin.sendMessage('§8falha ao teleportar.');
+  };
+};
 
 console.warn('[Admin Panel] Sistema carregado com sucesso!');

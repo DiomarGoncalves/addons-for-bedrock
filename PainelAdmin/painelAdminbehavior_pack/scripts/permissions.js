@@ -1,12 +1,12 @@
 export class PermissionManager {
     constructor() {
-        this.ownerTag = 'admin_owner';
+        this.donoTag = 'admin_dono';
         this.staffTag = 'admin_staff';
     }
 
     getPermissionLevel(player) {
-        if (player.hasTag(this.ownerTag)) {
-            return 'owner';
+        if (player.hasTag(this.donoTag)) {
+            return 'dono';
         }
 
         if (player.hasTag(this.staffTag)) {
@@ -21,25 +21,25 @@ export class PermissionManager {
 
         if (level === 'none') return false;
         if (requiredLevel === 'staff') return true;
-        if (requiredLevel === 'owner') return level === 'owner';
+        if (requiredLevel === 'dono') return level === 'dono';
 
         return false;
     }
 
-    setOwner(player) {
-        player.addTag(this.ownerTag);
+    setdono(player) {
+        player.addTag(this.donoTag);
         player.removeTag(this.staffTag);
         player.sendMessage('§8[admin panel] você agora é dono!');
     }
 
     setStaff(player) {
-        player.removeTag(this.ownerTag);
+        player.removeTag(this.donoTag);
         player.addTag(this.staffTag);
         player.sendMessage('§8[admin panel] você agora é staff!');
     }
 
     removePermissions(player) {
-        player.removeTag(this.ownerTag);
+        player.removeTag(this.donoTag);
         player.removeTag(this.staffTag);
         player.sendMessage('§8[admin panel] suas permissões foram removidas!');
     }
