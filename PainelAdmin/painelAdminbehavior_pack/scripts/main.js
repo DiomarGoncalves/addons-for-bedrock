@@ -170,7 +170,7 @@ async function showPlayerActions(admin, targetPlayer) {
   const form = new ActionFormData()
     .title(`§8gerenciar: ${targetPlayer.name}`)
     .body('§8escolha uma ação:')
-    .button('§8ver inventário', 'textures/ui/magnifying_glass')
+    .button('§8ver inventário', 'textures/blocks/magnifying_glass')
     .button('§8kickar', 'textures/ui/cancel');
 
   if (isOwner) {
@@ -415,19 +415,21 @@ async function showGameModeMenu(player) {
   const form = new ActionFormData()
     .title('§8meu modo de jogo')
     .body('§8selecione seu modo:')
-    .button('§8survival', 'textures/ui/survival_mode')
-    .button('§8creative', 'textures/ui/creative_mode')
-    .button('§8spectator', 'textures/ui/spectator_mode')
+    .button('§8survival', 'textures/ui/hardcore/heart_half')
+    .button('§8creative', 'textures/items/iron_pickaxe')
+    .button('§8spectator', 'textures/ui/blindness_effect')
+    .button('§8invisível', 'textures/ui/invisibility_effect')
     .button('§8voltar', 'textures/ui/arrow_left');
 
   const r = await form.show(player);
   if (r.canceled) { return; } // X fecha tudo
-  if (r.selection === 3) { await showMainMenu(player); return; } // voltar
+  if (r.selection === 4) { await showMainMenu(player); return; } // voltar
 
   switch (r.selection) {
     case 0: player.runCommand('gamemode survival'); break;
     case 1: player.runCommand('gamemode creative'); break;
     case 2: player.runCommand('gamemode spectator'); break;
+    case 3: toggleInvisibility(player); break;
   }
   await showMainMenu(player);
 }
@@ -436,9 +438,11 @@ async function toggleInvisibility(player) {
   try {
     const invisible = player.getDynamicProperty('admin_invisible') ? true : false;
     if (invisible) {
+      player.runCommand('effect @s clear');
       player.setDynamicProperty('admin_invisible', false);
       player.sendMessage('§8modo invisível desativado.');
     } else {
+      player.runCommand('effect @s invisibility 999999 1 true');
       player.setDynamicProperty('admin_invisible', true);
       player.sendMessage('§8modo invisível ativado.');
     }
