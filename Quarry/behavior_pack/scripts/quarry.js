@@ -105,13 +105,13 @@ class QuarrySystem {
                         event.cancel = true;
                         const player = event.sender;
                         player.sendMessage(`§6=== QUARRY DEBUG ===`);
-                        player.sendMessage(`§7Mineradoras ativas: §f${this.quarries.size}`);
+                        player.sendMessage(`§8Mineradoras ativas: §f${this.quarries.size}`);
                         
                         let activeCount = 0;
                         for (const [, quarry] of this.quarries) {
                             if (quarry.active) activeCount++;
                         }
-                        player.sendMessage(`§7Mineradoras funcionando: §f${activeCount}`);
+                        player.sendMessage(`§8Mineradoras funcionando: §f${activeCount}`);
                     }
                 });
             }
@@ -141,7 +141,7 @@ class QuarrySystem {
             });
 
             player.sendMessage("§a✅ Mineradora colocada!");
-            player.sendMessage("§7Clique direito para configurar");
+            player.sendMessage("§8Clique direito para configurar");
             
             this.saveData();
             
@@ -167,7 +167,7 @@ class QuarrySystem {
 
             const form = new ActionFormData()
                 .title("§8 MINERADORA AUTOMATICA")
-                .body(`§8Status: ${quarry.active ? '§a ATIVA' : '§c PARADA'}\n§7Baú: ${quarry.chestLocation ? '§a Conectado' : '§c Não conectado'}\n§7Blocos minerados: §f${quarry.minedBlocks}\n§7Profundidade atual: §f${quarry.currentY}\n§7Tamanho: §f${quarry.size}x${quarry.size}\n§7Profundidade máx: §f${quarry.maxDepth}\n§7Velocidade: §f${this.getSpeedDescription(quarry.speed)}\n\n§7Minera apenas minérios automaticamente`)
+                .body(`§8Status: ${quarry.active ? '§a ATIVA' : '§c PARADA'}\n§8Baú: ${quarry.chestLocation ? '§a Conectado' : '§c Não conectado'}\n§8Blocos minerados: §f${quarry.minedBlocks}\n§8Profundidade atual: §f${quarry.currentY}\n§8Tamanho: §f${quarry.size}x${quarry.size}\n§8Profundidade máx: §f${quarry.maxDepth}\n§8Velocidade: §f${this.getSpeedDescription(quarry.speed)}\n\n§8Minera apenas minérios automaticamente`)
                 .button("§8 CONECTAR BAÚ\n§8Definir baú para armazenar")
                 .button("§8 CONFIGURAÇÕES\n§8Tamanho, profundidade e velocidade")
                 .button(quarry.active ? "§8 PARAR MINERACAO" : "§8 INICIAR MINERACAO")
@@ -254,9 +254,9 @@ class QuarrySystem {
         try {
             const form = new ModalFormData()
                 .title("§8 CONFIGURAÇÕES DA MINERADORA")
-                .slider("§8Tamanho da Área:\n§7Área quadrada de mineração (3x3 até 15x15)", 3, 15, 1, quarry.size)
-                .slider("§8Profundidade Máxima:\n§7Quantos blocos para baixo minerar", 10, 128, 1, quarry.maxDepth)
-                .dropdown("§8Velocidade de Mineração:\n§7Velocidade de operação da mineradora", [
+                .slider("§8Tamanho da Área:\n§8Área quadrada de mineração (3x3 até 15x15)", 3, 15, 1, quarry.size)
+                .slider("§8Profundidade Máxima:\n§8Quantos blocos para baixo minerar", 10, 128, 1, quarry.maxDepth)
+                .dropdown("§8Velocidade de Mineração:\n§8Velocidade de operação da mineradora", [
                     " Muito Lenta (10 segundos)",
                     " Lenta (5 segundos)", 
                     " Normal (3 segundos)",
@@ -274,9 +274,9 @@ class QuarrySystem {
                 quarry.speed = this.getSpeedFromIndex(speedIndex);
                 
                 player.sendMessage("§a Configurações atualizadas!");
-                player.sendMessage(`§7Tamanho: §f${quarry.size}x${quarry.size}`);
-                player.sendMessage(`§7Profundidade: §f${quarry.maxDepth} blocos`);
-                player.sendMessage(`§7Velocidade: §f${this.getSpeedDescription(quarry.speed)}`);
+                player.sendMessage(`§8Tamanho: §f${quarry.size}x${quarry.size}`);
+                player.sendMessage(`§8Profundidade: §f${quarry.maxDepth} blocos`);
+                player.sendMessage(`§8Velocidade: §f${this.getSpeedDescription(quarry.speed)}`);
                 
                 this.saveData();
             });
@@ -333,7 +333,7 @@ class QuarrySystem {
             
             if (quarry.active) {
                 player.sendMessage("§a✅ Mineradora iniciada!");
-                player.sendMessage("§7Minerando apenas minérios automaticamente...");
+                player.sendMessage("§8Minerando apenas minérios automaticamente...");
             } else {
                 player.sendMessage("§c⏹️ Mineradora parada!");
             }
@@ -349,7 +349,7 @@ class QuarrySystem {
         try {
             const form = new MessageFormData()
                 .title("§8 REMOVER MINERADORA")
-                .body("§8 ATENÇÃO!\n\n§fTem certeza que deseja remover esta mineradora?\n\n§7O bloco será devolvido ao seu inventário.")
+                .body("§8 ATENÇÃO!\n\n§fTem certeza que deseja remover esta mineradora?\n\n§8O bloco será devolvido ao seu inventário.")
                 .button1("§8 SIM, REMOVER")
                 .button2("§8 CANCELAR");
 
@@ -421,7 +421,7 @@ class QuarrySystem {
                 const owner = world.getPlayers().find(p => p.name === quarry.owner);
                 if (owner) {
                     owner.sendMessage(`§e Mineradora em (${quarry.location.x}, ${quarry.location.y}, ${quarry.location.z}) terminou de minerar!`);
-                    owner.sendMessage(`§7 Total minerado: §f${quarry.minedBlocks} blocos`);
+                    owner.sendMessage(`§8 Total minerado: §f${quarry.minedBlocks} blocos`);
                 }
                 this.saveData();
                 return;

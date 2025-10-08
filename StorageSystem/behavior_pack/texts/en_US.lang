@@ -10,9 +10,9 @@ storage.interface.title=§6§l💾 STORAGE SYSTEM
 storage.interface.search=Search items...
 storage.interface.craft_tab=§e⚒️ CRAFTING
 storage.interface.storage_tab=§b📦 STORAGE
-storage.interface.no_items=§7No items found
-storage.interface.total_items=§7Total: %s items
-storage.interface.connected_chests=§7Chests with antenna: %s
+storage.interface.no_items=§8No items found
+storage.interface.total_items=§8Total: %s items
+storage.interface.connected_chests=§8Chests with antenna: %s
 
 ## System messages
 storage.controller.placed=§a✅ Storage controller placed!

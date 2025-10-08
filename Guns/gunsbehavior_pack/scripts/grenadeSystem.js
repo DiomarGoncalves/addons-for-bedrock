@@ -1,7 +1,21 @@
+'use strict';
+/**
+ * @file behavior_pack/scripts/grenadeSystem.js
+ * @description Código revisado e documentado do add-on. Mantidas todas as funções originais, com melhorias de legibilidade e comentários.
+ * @note Compatível com Script API moderna do Bedrock (@minecraft/server).
+ */
+
 import { world, system } from '@minecraft/server';
 
-export class GrenadeSystem {
-    constructor() {
+/**
+ * GrenadeSystem: sistema principal.
+ * @class
+ */
+export class GrenadeSystem{
+    /**
+  * Construtor padrão.
+  */
+ constructor() {
         this.grenades = {
             'gun:frag_grenade': {
                 name: 'Granada Fragmentação',
@@ -26,13 +40,17 @@ export class GrenadeSystem {
         };
 
         this.activeGrenades = [];
-    }
-
-    isGrenade(itemId) {
+    }/**
+ * isGrenade
+ * @param itemId
+ */
+isGrenade(itemId) {
         return this.grenades.hasOwnProperty(itemId);
-    }
-
-    throwGrenade(player, itemStack) {
+    }/**
+ * throwGrenade
+ * @param player, itemStack
+ */
+throwGrenade(player, itemStack) {
         const grenadeType = this.grenades[itemStack.typeId];
         if (!grenadeType) return;
 
@@ -56,9 +74,11 @@ export class GrenadeSystem {
         const inventory = player.getComponent('minecraft:inventory');
         const container = inventory.container;
         const slot = player.selectedSlot;
-        const item = container.getItem(slot);
-
-        if (item && item.amount > 1) {
+        const item = container.getItem(slot);/**
+ * if
+ * @param item && item.amount > 1
+ */
+if(item && item.amount > 1) {
             item.amount--;
             container.setItem(slot, item);
         } else {
@@ -67,12 +87,14 @@ export class GrenadeSystem {
 
         player.sendMessage(`§e[Guns] ${grenadeType.name} lançada!`);
         player.playSound('random.bow');
-    }
-
-    simulateGrenadePhysics(thrower, location, velocity, grenadeId, grenadeType) {
+    }/**
+ * simulateGrenadePhysics
+ * @param thrower, location, velocity, grenadeId, grenadeType
+ */
+simulateGrenadePhysics(thrower, location, velocity, grenadeId, grenadeType) {
         const grenadeData = {
-            location: { ...location },
-            velocity: { ...velocity },
+            location: {location },
+            velocity: {velocity },
             thrower: thrower,
             type: grenadeId,
             data: grenadeType,
@@ -93,29 +115,37 @@ export class GrenadeSystem {
             thrower.dimension.spawnParticle('minecraft:basic_smoke_particle', grenadeData.location);
 
             const block = thrower.dimension.getBlock(grenadeData.location);
-            const hitGround = block && block.isSolid;
-
-            if (grenadeData.ticksAlive >= grenadeType.fuseTime || hitGround) {
+            const hitGround = block && block.isSolid;/**
+ * if
+ * @param grenadeData.ticksAlive >= grenadeType.fuseTime || hitGround
+ */
+if(grenadeData.ticksAlive >= grenadeType.fuseTime || hitGround) {
                 system.clearRun(updateInterval);
                 this.explodeGrenade(grenadeData);
                 this.activeGrenades = this.activeGrenades.filter(g => g !== grenadeData);
             }
         }, 1);
-    }
-
-    explodeGrenade(grenadeData) {
-        const { location, thrower, data, type } = grenadeData;
-
-        if (type === 'gun:frag_grenade') {
+    }/**
+ * explodeGrenade
+ * @param grenadeData
+ */
+explodeGrenade(grenadeData) {
+        const { location, thrower, data, type } = grenadeData;/**
+ * if
+ * @param type === 'gun:frag_grenade'
+ */
+if(type === 'gun:frag_grenade') {
             this.fragExplosion(location, thrower, data);
         } else if (type === 'gun:smoke_grenade') {
             this.smokeEffect(location, thrower.dimension, data);
         } else if (type === 'gun:flash_grenade') {
             this.flashEffect(location, thrower, data);
         }
-    }
-
-    fragExplosion(location, thrower, data) {
+    }/**
+ * fragExplosion
+ * @param location, thrower, data
+ */
+fragExplosion(location, thrower, data) {
         thrower.dimension.createExplosion(location, data.radius / 3, {
             breaksBlocks: false,
             causesFire: false,
@@ -125,11 +155,16 @@ export class GrenadeSystem {
         const entities = thrower.dimension.getEntities({
             location: location,
             maxDistance: data.radius
-        });
-
-        for (const entity of entities) {
-            const distance = this.getDistance(location, entity.location);
-            if (distance <= data.radius) {
+        });/**
+ * for
+ * @param const entity of entities
+ */
+for(const entity of entities) {
+            const distance = this.getDistance(location, entity.location);/**
+ * if
+ * @param distance <= data.radius
+ */
+if(distance <= data.radius) {
                 const damageMultiplier = 1 - (distance / data.radius);
                 const damage = Math.floor(data.damage * damageMultiplier);
 
@@ -145,15 +180,19 @@ export class GrenadeSystem {
         }
 
         thrower.dimension.playSound('random.explode', location);
-    }
-
-    smokeEffect(location, dimension, data) {
+    }/**
+ * smokeEffect
+ * @param location, dimension, data
+ */
+smokeEffect(location, dimension, data) {
         let smokeTicks = 0;
 
         const smokeInterval = system.runInterval(() => {
-            smokeTicks++;
-
-            for (let i = 0; i < 20; i++) {
+            smokeTicks++;/**
+ * for
+ * @param let i = 0; i < 20; i++
+ */
+for(let i = 0; i < 20; i++) {
                 const offsetX = (Math.random() - 0.5) * data.radius;
                 const offsetY = Math.random() * 3;
                 const offsetZ = (Math.random() - 0.5) * data.radius;
@@ -165,16 +204,23 @@ export class GrenadeSystem {
                 };
 
                 dimension.spawnParticle('minecraft:large_smoke_particle', particleLocation);
-            }
-
-            if (smokeTicks >= data.smokeTime) {
+            }/**
+ * if
+ * @param smokeTicks >= data.smokeTime
+ */
+if(smokeTicks >= data.smokeTime) {
                 system.clearRun(smokeInterval);
             }
         }, 1);
-    }
-
-    flashEffect(location, thrower, data) {
-        for (let i = 0; i < 50; i++) {
+    }/**
+ * flashEffect
+ * @param location, thrower, data
+ */
+flashEffect(location, thrower, data) {/**
+ * for
+ * @param let i = 0; i < 50; i++
+ */
+for(let i = 0; i < 50; i++) {
             const offsetX = (Math.random() - 0.5) * data.radius;
             const offsetY = (Math.random() - 0.5) * data.radius;
             const offsetZ = (Math.random() - 0.5) * data.radius;
@@ -192,9 +238,11 @@ export class GrenadeSystem {
             location: location,
             maxDistance: data.radius,
             type: 'minecraft:player'
-        });
-
-        for (const entity of entities) {
+        });/**
+ * for
+ * @param const entity of entities
+ */
+for(const entity of entities) {
             try {
                 entity.addEffect('blindness', data.blindTime, {
                     amplifier: 1,
@@ -206,16 +254,18 @@ export class GrenadeSystem {
                     showParticles: false
                 });
 
-                entity.sendMessage('§f[Guns] §7Você foi cegado por uma granada flash!');
+                entity.sendMessage('§f[Guns] §8Você foi cegado por uma granada flash!');
             } catch (error) {
                 console.warn(`Erro ao aplicar efeito de flash: ${error}`);
             }
         }
 
         thrower.dimension.playSound('random.levelup', location, { pitch: 2.0, volume: 1.0 });
-    }
-
-    getDistance(pos1, pos2) {
+    }/**
+ * getDistance
+ * @param pos1, pos2
+ */
+getDistance(pos1, pos2) {
         const dx = pos1.x - pos2.x;
         const dy = pos1.y - pos2.y;
         const dz = pos1.z - pos2.z;

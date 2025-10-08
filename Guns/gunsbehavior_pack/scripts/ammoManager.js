@@ -1,5 +1,19 @@
-export class AmmoManager {
-    constructor() {
+'use strict';
+/**
+ * @file behavior_pack/scripts/ammoManager.js
+ * @description Código revisado e documentado do add-on. Mantidas todas as funções originais, com melhorias de legibilidade e comentários.
+ * @note Compatível com Script API moderna do Bedrock (@minecraft/server).
+ */
+
+/**
+ * AmmoManager: sistema principal.
+ * @class
+ */
+export class AmmoManager{
+    /**
+  * Construtor padrão.
+  */
+ constructor() {
         this.ammoTypes = {
             'gun:ammo_762': { name: '7.62x39mm', stackSize: 64 },
             'gun:ammo_556': { name: '5.56x45mm', stackSize: 64 },
@@ -21,24 +35,36 @@ export class AmmoManager {
             'gun:mag_57': { name: 'Carregador 5.7mm', ammoType: 'gun:ammo_57', capacity: 50 },
             'gun:mag_792': { name: 'Carregador 7.92mm', ammoType: 'gun:ammo_792', capacity: 5 }
         };
-    }
-
-    isAmmo(itemId) {
+    }/**
+ * isAmmo
+ * @param itemId
+ */
+isAmmo(itemId) {
         return this.ammoTypes.hasOwnProperty(itemId);
-    }
-
-    isMagazine(itemId) {
+    }/**
+ * isMagazine
+ * @param itemId
+ */
+isMagazine(itemId) {
         return this.magazines.hasOwnProperty(itemId);
-    }
-
-    getAmmoCount(player, ammoType) {
+    }/**
+ * getAmmoCount
+ * @param player, ammoType
+ */
+getAmmoCount(player, ammoType) {
         const inventory = player.getComponent('minecraft:inventory');
         const container = inventory.container;
 
-        let count = 0;
-        for (let i = 0; i < container.size; i++) {
-            const item = container.getItem(i);
-            if (item && item.typeId === ammoType) {
+        let count = 0;/**
+ * for
+ * @param let i = 0; i < container.size; i++
+ */
+for(let i = 0; i < container.size; i++) {
+            const item = container.getItem(i);/**
+ * if
+ * @param item && item.typeId === ammoType
+ */
+if(item && item.typeId === ammoType) {
                 count += item.amount;
             }
         }

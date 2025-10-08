@@ -81,7 +81,7 @@ class ProtectionSystem {
             world.setDynamicProperty('protectionData', JSON.stringify(saveData));
             
             // Debug opcional
-            // world.sendMessage(`§7[Protection] Dados salvos: ${this.protectedAreas.size} áreas, ${this.blockOwners.size} blocos`);
+            // world.sendMessage(`§8[Protection] Dados salvos: ${this.protectedAreas.size} áreas, ${this.blockOwners.size} blocos`);
             
         } catch (error) {
             world.sendMessage(`§c[Protection] Erro ao salvar dados: ${error}`);
@@ -182,7 +182,7 @@ class ProtectionSystem {
 
         player.teleport(safePos);
         player.sendMessage(`§c🛡️ Você foi teleportado para fora da área protegida!`);
-        player.sendMessage(`§7Área: §f${area.name} §7- Dono: §f${area.owner}`);
+        player.sendMessage(`§8Área: §f${area.name} §8- Dono: §f${area.owner}`);
 
     } catch (error) {
         world.sendMessage(`§c[Error] Erro no teleporte defensivo: ${error}`);
@@ -366,10 +366,10 @@ class ProtectionSystem {
                             const player = event.sender;
                             
                             player.sendMessage("§e=== DEBUG PROTECTION SYSTEM ===");
-                            player.sendMessage(`§7Áreas protegidas: §f${this.protectedAreas.size}`);
-                            player.sendMessage(`§7Jogadores com tags: §f${this.playerTags.size}`);
-                            player.sendMessage(`§7Blocos registrados: §f${this.blockOwners.size}`);
-                            player.sendMessage(`§7Sistema inicializado: §f${this.initialized}`);
+                            player.sendMessage(`§8Áreas protegidas: §f${this.protectedAreas.size}`);
+                            player.sendMessage(`§8Jogadores com tags: §f${this.playerTags.size}`);
+                            player.sendMessage(`§8Blocos registrados: §f${this.blockOwners.size}`);
+                            player.sendMessage(`§8Sistema inicializado: §f${this.initialized}`);
                         }
                         
                         if (message === "!protection-test") {
@@ -430,16 +430,16 @@ class ProtectionSystem {
         try {
             const form = new ActionFormData()
                 .title("§6§l🛡️ BLOCO DE PROTEÇÃO")
-                .body("§f§lEscolha uma opção para configurar a proteção da sua área:\n\n§7Use as opções abaixo para gerenciar sua área protegida")
-                .button("§2§l✅ DEFINIR ÁREA PROTEGIDA\n§7Configurar limites da área")
-                .button("§3§l👥 GERENCIAR JOGADORES\n§7Adicionar/remover membros")
-                .button("§e§l🚫 CONFIGURAR TELEPORTE\n§7Definir ponto de expulsão")
-                .button("§4§l❌ REMOVER PROTEÇÃO\n§7Desativar proteção")
-                .button("§b§lℹ️ INFORMAÇÕES DA ÁREA\n§7Ver detalhes da área");
+                .body("§f§lEscolha uma opção para configurar a proteção da sua área:\n\n§8Use as opções abaixo para gerenciar sua área protegida")
+                .button("§2§l✅ DEFINIR ÁREA PROTEGIDA\n§8Configurar limites da área")
+                .button("§3§l👥 GERENCIAR JOGADORES\n§8Adicionar/remover membros")
+                .button("§e§l🚫 CONFIGURAR TELEPORTE\n§8Definir ponto de expulsão")
+                .button("§4§l❌ REMOVER PROTEÇÃO\n§8Desativar proteção")
+                .button("§b§lℹ️ INFORMAÇÕES DA ÁREA\n§8Ver detalhes da área");
 
             form.show(player).then((response) => {
                 if (response.canceled) {
-                    player.sendMessage("§7Interface cancelada");
+                    player.sendMessage("§8Interface cancelada");
                     return;
                 }
                 
@@ -479,13 +479,13 @@ class ProtectionSystem {
     try {
         const form = new ModalFormData()
             .title("§6§l📍 DEFINIR ÁREA PROTEGIDA")
-            .textField("§f§lCanto 1:\n§7Digite as coordenadas X Y Z (ex: 100 64 200)", "Ex: 100 64 200", "")
-            .textField("§f§lCanto 2:\n§7Digite as coordenadas X Y Z (ex: 150 80 250)", "Ex: 150 80 250", "")
-            .textField("§f§lNome da Área:\n§7Digite um nome para sua área protegida", "Ex: Minha Base", "");
+            .textField("§f§lCanto 1:\n§8Digite as coordenadas X Y Z (ex: 100 64 200)", "Ex: 100 64 200", "")
+            .textField("§f§lCanto 2:\n§8Digite as coordenadas X Y Z (ex: 150 80 250)", "Ex: 150 80 250", "")
+            .textField("§f§lNome da Área:\n§8Digite um nome para sua área protegida", "Ex: Minha Base", "");
 
         form.show(player).then((response) => {
             if (response.canceled || !response.formValues) {
-                player.sendMessage("§7Formulário cancelado");
+                player.sendMessage("§8Formulário cancelado");
                 return;
             }
 
@@ -521,8 +521,8 @@ class ProtectionSystem {
             this.saveData();
 
             player.sendMessage(`§a✅ Área protegida criada com sucesso!`);
-            player.sendMessage(`§7Nome: §f${areaName || "Área Protegida"}`);
-            player.sendMessage(`§7Coordenadas: §f(${c1.x}, ${c1.y}, ${c1.z}) até (${c2.x}, ${c2.y}, ${c2.z})`);
+            player.sendMessage(`§8Nome: §f${areaName || "Área Protegida"}`);
+            player.sendMessage(`§8Coordenadas: §f(${c1.x}, ${c1.y}, ${c1.z}) até (${c2.x}, ${c2.y}, ${c2.z})`);
         }).catch((error) => {
             world.sendMessage(`§c[Error] Erro no formulário de área: ${error}`);
         });
@@ -536,10 +536,10 @@ class ProtectionSystem {
         try {
             const form = new ActionFormData()
                 .title("§3§l👥 GERENCIAR JOGADORES")
-                .body("§f§lGerencie as permissões de acesso à sua área:\n\n§7Use as opções abaixo para controlar quem pode acessar sua área")
-                .button("§2§l➕ ADICIONAR JOGADOR\n§7Permitir acesso a um jogador")
-                .button("§4§l➖ REMOVER JOGADOR\n§7Remover acesso de um jogador")
-                .button("§e§l📋 LISTAR JOGADORES\n§7Ver todos os membros");
+                .body("§f§lGerencie as permissões de acesso à sua área:\n\n§8Use as opções abaixo para controlar quem pode acessar sua área")
+                .button("§2§l➕ ADICIONAR JOGADOR\n§8Permitir acesso a um jogador")
+                .button("§4§l➖ REMOVER JOGADOR\n§8Remover acesso de um jogador")
+                .button("§e§l📋 LISTAR JOGADORES\n§8Ver todos os membros");
 
             form.show(player).then((response) => {
                 if (response.canceled || response.selection === undefined) return;
@@ -567,8 +567,8 @@ class ProtectionSystem {
         try {
             const form = new ModalFormData()
                 .title("§2§l➕ ADICIONAR JOGADOR")
-                .textField("§f§lNome do Jogador:\n§7Digite o nome exato do jogador", "Ex: Steve", "")
-                .dropdown("§f§lNível de Permissão:\n§7Escolha o tipo de acesso", ["👁️ Visitante (apenas entrar)", "🔨 Construtor (construir/quebrar)", "👑 Admin (acesso total)"], 0);
+                .textField("§f§lNome do Jogador:\n§8Digite o nome exato do jogador", "Ex: Steve", "")
+                .dropdown("§f§lNível de Permissão:\n§8Escolha o tipo de acesso", ["👁️ Visitante (apenas entrar)", "🔨 Construtor (construir/quebrar)", "👑 Admin (acesso total)"], 0);
 
             form.show(player).then((response) => {
                 if (response.canceled || !response.formValues) return;
@@ -596,7 +596,7 @@ class ProtectionSystem {
         try {
             const form = new ModalFormData()
                 .title("§4§l➖ REMOVER JOGADOR")
-                .textField("§f§lNome do Jogador:\n§7Digite o nome do jogador para remover", "Ex: Steve", "");
+                .textField("§f§lNome do Jogador:\n§8Digite o nome do jogador para remover", "Ex: Steve", "");
 
             form.show(player).then((response) => {
                 if (response.canceled || !response.formValues) return;
@@ -630,9 +630,9 @@ class ProtectionSystem {
 
             const form = new ModalFormData()
                 .title("§e§l🚫 CONFIGURAR TELEPORTE DE EXPULSÃO")
-                .textField("§f§lCoordenada X do ponto de expulsão:\n§7Para onde invasores serão teleportados", "Ex: 125", currentTp.x.toString())
-                .textField("§f§lCoordenada Y do ponto de expulsão:\n§7Altura do teleporte", "Ex: 70", currentTp.y.toString())
-                .textField("§f§lCoordenada Z do ponto de expulsão:\n§7Coordenada Z do teleporte", "Ex: 225", currentTp.z.toString());
+                .textField("§f§lCoordenada X do ponto de expulsão:\n§8Para onde invasores serão teleportados", "Ex: 125", currentTp.x.toString())
+                .textField("§f§lCoordenada Y do ponto de expulsão:\n§8Altura do teleporte", "Ex: 70", currentTp.y.toString())
+                .textField("§f§lCoordenada Z do ponto de expulsão:\n§8Coordenada Z do teleporte", "Ex: 225", currentTp.z.toString());
 
             form.show(player).then((response) => {
                 if (response.canceled || !response.formValues) return;
@@ -653,7 +653,7 @@ class ProtectionSystem {
                 this.saveData(); // Salvar dados
 
                 player.sendMessage("§a✅ Ponto de expulsão configurado com sucesso!");
-                player.sendMessage(`§7Invasores serão teleportados para: §f(${tpX}, ${tpY}, ${tpZ})`);
+                player.sendMessage(`§8Invasores serão teleportados para: §f(${tpX}, ${tpY}, ${tpZ})`);
             }).catch((error) => {
                 world.sendMessage(`§c[Error] Erro na configuração de teleporte: ${error}`);
             });
@@ -740,13 +740,13 @@ class ProtectionSystem {
         membersList += `§f§l👑 Dono: §a${area.owner}\n\n`;
         
         if (area.members.size === 0) {
-            membersList += "§7Nenhum membro adicionado.";
+            membersList += "§8Nenhum membro adicionado.";
         } else {
             membersList += "§f§lMembros:\n";
             area.members.forEach((permission, playerName) => {
                 const permissionColor = permission === "admin" ? "§c👑" : 
-                                      permission === "builder" ? "§a🔨" : "§7👁️";
-                membersList += `§f- §e${playerName} ${permissionColor} §7(${permission})\n`;
+                                      permission === "builder" ? "§a🔨" : "§8👁️";
+                membersList += `§f- §e${playerName} ${permissionColor} §8(${permission})\n`;
             });
         }
 
@@ -768,7 +768,7 @@ class ProtectionSystem {
         if (!playerPermission || (playerPermission === "visitor")) {
             event.cancel = true;
             player.sendMessage("§c🛡️ Você não tem permissão para fazer isso nesta área!");
-            player.sendMessage(`§7Área: §f${area.name} §7- Dono: §f${area.owner}`);
+            player.sendMessage(`§8Área: §f${area.name} §8- Dono: §f${area.owner}`);
         }
     }
 
@@ -815,9 +815,9 @@ class ProtectionSystem {
         
         let info = `§6§l=== ℹ️ INFORMAÇÕES DA ÁREA ===\n`;
         info += `§f§l📝 Nome: §a${area.name}\n`;
-        info += `§f§l📍 Coordenadas: §e(${area.x1}, ${area.y1}, ${area.z1}) §7até §e(${area.x2}, ${area.y2}, ${area.z2})\n`;
+        info += `§f§l📍 Coordenadas: §e(${area.x1}, ${area.y1}, ${area.z1}) §8até §e(${area.x2}, ${area.y2}, ${area.z2})\n`;
         info += `§f§l👥 Membros: §b${memberCount}\n`;
-        info += `§f§l📅 Criada em: §7${new Date(area.created).toLocaleDateString()}\n`;
+        info += `§f§l📅 Criada em: §8${new Date(area.created).toLocaleDateString()}\n`;
         
         if (expulsionPoint) {
             info += `§f§l🚫 Ponto de Expulsão: §c(${expulsionPoint.x}, ${expulsionPoint.y}, ${expulsionPoint.z})`;
@@ -832,9 +832,9 @@ class ProtectionSystem {
         try {
             const form = new MessageFormData()
                 .title("§4§l❌ REMOVER PROTEÇÃO")
-                .body("§c§l⚠️ ATENÇÃO!\n\n§fTem certeza que deseja remover a proteção desta área?\n\n§7Esta ação não pode ser desfeita e todos os dados serão perdidos!")
+                .body("§c§l⚠️ ATENÇÃO!\n\n§fTem certeza que deseja remover a proteção desta área?\n\n§8Esta ação não pode ser desfeita e todos os dados serão perdidos!")
                 .button1("§4§l✅ SIM, REMOVER")
-                .button2("§7§l❌ CANCELAR");
+                .button2("§8§l❌ CANCELAR");
 
             form.show(player).then((response) => {
                 if (response.canceled || response.selection === 1) return;

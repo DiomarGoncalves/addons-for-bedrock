@@ -46,7 +46,7 @@
       {
         "items_count_label": {
           "type": "label",
-          "text": "§7Itens: §f#items_count",
+          "text": "§8Itens: §f#items_count",
           "color": [1.0, 1.0, 1.0],
           "anchor_from": "left_middle",
           "anchor_to": "left_middle",

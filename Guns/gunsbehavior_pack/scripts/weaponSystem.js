@@ -1,7 +1,21 @@
+'use strict';
+/**
+ * @file behavior_pack/scripts/weaponSystem.js
+ * @description Código revisado e documentado do add-on. Mantidas todas as funções originais, com melhorias de legibilidade e comentários.
+ * @note Compatível com Script API moderna do Bedrock (@minecraft/server).
+ */
+
 import { world, system } from '@minecraft/server';
 
-export class WeaponSystem {
-    constructor() {
+/**
+ * WeaponSystem: sistema principal.
+ * @class
+ */
+export class WeaponSystem{
+    /**
+  * Construtor padrão.
+  */
+ constructor() {
         this.weapons = {
             'gun:ak47': {
                 name: 'AK-47',
@@ -118,44 +132,59 @@ export class WeaponSystem {
 
         this.cooldowns = new Map();
         this.reloading = new Map();
-    }
-
-    isWeapon(itemId) {
+    }/**
+ * isWeapon
+ * @param itemId
+ */
+isWeapon(itemId) {
         return this.weapons.hasOwnProperty(itemId);
-    }
-
-    getWeaponData(itemId) {
+    }/**
+ * getWeaponData
+ * @param itemId
+ */
+getWeaponData(itemId) {
         return this.weapons[itemId];
-    }
-
-    getCurrentAmmo(player, itemStack) {
-        const ammo = itemStack.getDynamicProperty('current_ammo');
-        if (ammo === undefined) {
+    }/**
+ * getCurrentAmmo
+ * @param player, itemStack
+ */
+getCurrentAmmo(player, itemStack) {
+        const ammo = itemStack.getDynamicProperty('current_ammo');/**
+ * if
+ * @param ammo === undefined
+ */
+if(ammo === undefined) {
             const weapon = this.getWeaponData(itemStack.typeId);
             itemStack.setDynamicProperty('current_ammo', weapon.magazineSize);
             return weapon.magazineSize;
         }
         return ammo;
-    }
-
-    setCurrentAmmo(itemStack, amount) {
+    }/**
+ * setCurrentAmmo
+ * @param itemStack, amount
+ */
+setCurrentAmmo(itemStack, amount) {
         itemStack.setDynamicProperty('current_ammo', amount);
-    }
-
-    canShoot(player, weapon) {
+    }/**
+ * canShoot
+ * @param player, weapon
+ */
+canShoot(player, weapon) {
         const now = Date.now();
         const lastShot = this.cooldowns.get(player.id) || 0;
         const cooldown = 1000 / weapon.fireRate;
 
         return now - lastShot >= cooldown;
-    }
-
-    shoot(player, itemStack) {
+    }/**
+ * shoot
+ * @param player, itemStack
+ */
+shoot(player, itemStack) {
         const weapon = this.getWeaponData(itemStack.typeId);
         if (!weapon) return;
 
         if (this.reloading.get(player.id)) {
-            player.sendMessage('§c[Guns] Recarregando...');
+            player.sendMessage('§c[Guns] Recarregando');
             return;
         }
 
@@ -163,9 +192,11 @@ export class WeaponSystem {
             return;
         }
 
-        const currentAmmo = this.getCurrentAmmo(player, itemStack);
-
-        if (currentAmmo <= 0) {
+        const currentAmmo = this.getCurrentAmmo(player, itemStack);/**
+ * if
+ * @param currentAmmo <= 0
+ */
+if(currentAmmo <= 0) {
             player.sendMessage('§c[Guns] Sem munição! Segure para recarregar.');
             player.playSound('random.click');
             return;
@@ -183,16 +214,20 @@ export class WeaponSystem {
         player.playSound('mob.irongolem.hit', { pitch: 1.5, volume: 0.5 });
 
         this.updateAmmoDisplay(player, itemStack);
-    }
-
-    fireProjectile(player, weapon) {
+    }/**
+ * fireProjectile
+ * @param player, weapon
+ */
+fireProjectile(player, weapon) {
         const viewDirection = player.getViewDirection();
         const location = player.location;
         location.y += 1.5;
 
-        const pellets = weapon.pellets || 1;
-
-        for (let i = 0; i < pellets; i++) {
+        const pellets = weapon.pellets || 1;/**
+ * for
+ * @param let i = 0; i < pellets; i++
+ */
+for(let i = 0; i < pellets; i++) {
             const spread = weapon.spread * 0.1;
             const spreadX = (Math.random() - 0.5) * spread;
             const spreadY = (Math.random() - 0.5) * spread;
@@ -206,23 +241,30 @@ export class WeaponSystem {
 
             this.rayCast(player, location, direction, weapon);
         }
-    }
-
-    rayCast(shooter, start, direction, weapon) {
+    }/**
+ * rayCast
+ * @param shooter, start, direction, weapon
+ */
+rayCast(shooter, start, direction, weapon) {
         const step = 0.5;
         const maxDistance = weapon.range;
         let currentDistance = 0;
 
-        const location = { ...start };
-
-        while (currentDistance < maxDistance) {
+        const location = {start };/**
+ * while
+ * @param currentDistance < maxDistance
+ */
+while(currentDistance < maxDistance) {
             location.x += direction.x * step;
             location.y += direction.y * step;
             location.z += direction.z * step;
             currentDistance += step;
 
-            const block = shooter.dimension.getBlock(location);
-            if (block && block.isSolid) {
+            const block = shooter.dimension.getBlock(location);/**
+ * if
+ * @param block && block.isSolid
+ */
+if(block && block.isSolid) {
                 shooter.dimension.spawnParticle('minecraft:critical_hit_emitter', location);
                 break;
             }
@@ -231,10 +273,15 @@ export class WeaponSystem {
                 location: location,
                 maxDistance: 2,
                 excludeTypes: ['minecraft:item']
-            });
-
-            for (const entity of entities) {
-                if (entity.id !== shooter.id && entity.typeId !== 'minecraft:armor_stand') {
+            });/**
+ * for
+ * @param const entity of entities
+ */
+for(const entity of entities) {/**
+ * if
+ * @param entity.id !== shooter.id && entity.typeId !== 'minecraft:armor_stand'
+ */
+if(entity.id !== shooter.id && entity.typeId !== 'minecraft:armor_stand') {
                     try {
                         entity.applyDamage(weapon.damage, {
                             cause: 'entityAttack',
@@ -251,9 +298,11 @@ export class WeaponSystem {
                 }
             }
         }
-    }
-
-    reload(player, itemStack) {
+    }/**
+ * reload
+ * @param player, itemStack
+ */
+reload(player, itemStack) {
         const weapon = this.getWeaponData(itemStack.typeId);
         if (!weapon) return;
 
@@ -261,8 +310,11 @@ export class WeaponSystem {
             return;
         }
 
-        const currentAmmo = this.getCurrentAmmo(player, itemStack);
-        if (currentAmmo >= weapon.magazineSize) {
+        const currentAmmo = this.getCurrentAmmo(player, itemStack);/**
+ * if
+ * @param currentAmmo >= weapon.magazineSize
+ */
+if(currentAmmo >= weapon.magazineSize) {
             player.sendMessage('§e[Guns] Carregador cheio!');
             return;
         }
@@ -272,34 +324,49 @@ export class WeaponSystem {
         const inventory = player.getComponent('minecraft:inventory');
         const container = inventory.container;
 
-        let ammoCount = 0;
-        for (let i = 0; i < container.size; i++) {
-            const item = container.getItem(i);
-            if (item && item.typeId === weapon.ammoType) {
+        let ammoCount = 0;/**
+ * for
+ * @param let i = 0; i < container.size; i++
+ */
+for(let i = 0; i < container.size; i++) {
+            const item = container.getItem(i);/**
+ * if
+ * @param item && item.typeId === weapon.ammoType
+ */
+if(item && item.typeId === weapon.ammoType) {
                 ammoCount += item.amount;
             }
-        }
-
-        if (ammoCount <= 0) {
+        }/**
+ * if
+ * @param ammoCount <= 0
+ */
+if(ammoCount <= 0) {
             player.sendMessage(`§c[Guns] Sem munição de ${weapon.ammoType}!`);
             return;
         }
 
         this.reloading.set(player.id, true);
-        player.sendMessage('§6[Guns] Recarregando...');
+        player.sendMessage('§6[Guns] Recarregando');
         player.playSound('random.break');
 
         system.runTimeout(() => {
             const ammoToAdd = Math.min(ammoNeeded, ammoCount);
-            let ammoRemaining = ammoToAdd;
-
-            for (let i = 0; i < container.size && ammoRemaining > 0; i++) {
-                const item = container.getItem(i);
-                if (item && item.typeId === weapon.ammoType) {
+            let ammoRemaining = ammoToAdd;/**
+ * for
+ * @param let i = 0; i < container.size && ammoRemaining > 0; i++
+ */
+for(let i = 0; i < container.size && ammoRemaining > 0; i++) {
+                const item = container.getItem(i);/**
+ * if
+ * @param item && item.typeId === weapon.ammoType
+ */
+if(item && item.typeId === weapon.ammoType) {
                     const removeAmount = Math.min(item.amount, ammoRemaining);
-                    ammoRemaining -= removeAmount;
-
-                    if (item.amount > removeAmount) {
+                    ammoRemaining -= removeAmount;/**
+ * if
+ * @param item.amount > removeAmount
+ */
+if(item.amount > removeAmount) {
                         item.amount -= removeAmount;
                         container.setItem(i, item);
                     } else {
@@ -311,8 +378,11 @@ export class WeaponSystem {
             const newAmmo = currentAmmo + ammoToAdd;
             this.setCurrentAmmo(itemStack, newAmmo);
 
-            const currentItem = container.getItem(player.selectedSlot);
-            if (currentItem && currentItem.typeId === itemStack.typeId) {
+            const currentItem = container.getItem(player.selectedSlot);/**
+ * if
+ * @param currentItem && currentItem.typeId === itemStack.typeId
+ */
+if(currentItem && currentItem.typeId === itemStack.typeId) {
                 container.setItem(player.selectedSlot, itemStack);
             }
 
@@ -322,13 +392,15 @@ export class WeaponSystem {
 
             this.updateAmmoDisplay(player, itemStack);
         }, weapon.reloadTime);
-    }
-
-    updateAmmoDisplay(player, itemStack) {
+    }/**
+ * updateAmmoDisplay
+ * @param player, itemStack
+ */
+updateAmmoDisplay(player, itemStack) {
         const weapon = this.getWeaponData(itemStack.typeId);
         if (!weapon) return;
 
         const currentAmmo = this.getCurrentAmmo(player, itemStack);
-        player.onScreenDisplay.setActionBar(`§7Munição: §f${currentAmmo}§7/§f${weapon.magazineSize}`);
+        player.onScreenDisplay.setActionBar(`§8Munição: §f${currentAmmo}§8/§f${weapon.magazineSize}`);
     }
 }
