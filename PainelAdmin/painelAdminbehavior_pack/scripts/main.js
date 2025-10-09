@@ -5,12 +5,6 @@ import { PlayerManager } from './playerManager.js';
 import { InventoryManager } from './inventoryManager.js';
 import { BanManager } from './banManager.js';
 
-const __resgate = new BanManager();
-system.runTimeout(() => {
-  __resgate.unbanPlayer('Diomar1205');
-  world.sendMessage('§8[admin panel] Resgate: jogador desbanido por nome.');
-}, 40);
-
 const permissionManager = new PermissionManager();
 const playerManager = new PlayerManager();
 const inventoryManager = new InventoryManager();
@@ -24,7 +18,7 @@ function dbg(player, msg) {
     if (DEBUG && player && typeof player.sendMessage === 'function') {
       player.sendMessage(`§8[debug] ${msg}`);
     }
-  } catch { }
+  } catch {}
 }
 
 /** Abre o painel quando usar o item do painel (ajuste o id se necessário) */
@@ -65,17 +59,14 @@ async function showMainMenu(player) {
   if (isdono) {
     form.button(`§8debug: ${DEBUG ? 'on' : 'off'}`, 'textures/ui/icon_setting');
   }
-  form
-    .button('§8teleportar player', 'textures/ui/icon_steve');
-
+  form.button('§8teleportar player', 'textures/ui/icon_steve');
   form.button('§8fechar', 'textures/ui/cancel');
 
   const resp = await form.show(player);
-  if (resp.canceled) return; // X fecha tudo
+  if (resp.canceled) return;
 
-  // Mapeamento por índice dependendo de dono/staff
   if (isdono) {
-    // 0 gerenciar | 1 inv players | 2 unban | 3 gamemode | 4 invis | 5 debug | 6 fechar
+    // 0 gerenciar | 1 inv players | 2 unban | 3 gamemode | 4 invis | 5 debug | 6 tp | 7 fechar
     switch (resp.selection) {
       case 0: await showPlayerManagement(player); break;
       case 1: await showInventoryMenu(player); break;
@@ -88,16 +79,17 @@ async function showMainMenu(player) {
         await showMainMenu(player);
         break;
       case 6: await showTeleportMenu(player); break;
-      default: /* fechar */ break;
+      default: break;
     }
   } else {
-    // 0 gerenciar | 1 inv players | 2 gamemode | 3 invis | 4 fechar
+    // 0 gerenciar | 1 inv players | 2 gamemode | 3 invis | 4 tp | 5 fechar
     switch (resp.selection) {
       case 0: await showPlayerManagement(player); break;
       case 1: await showInventoryMenu(player); break;
       case 2: await showGameModeMenu(player); break;
       case 3: await toggleInvisibility(player); break;
-      default: /* fechar */ break;
+      case 4: await showTeleportMenu(player); break;
+      default: break;
     }
   }
 }
@@ -119,18 +111,18 @@ async function showPlayerManagement(admin) {
     .title('§8gerenciar jogadores')
     .body('§8escolha uma opção:')
     .button('§8listar jogadores online', 'textures/ui/icon_steve')
-    .button('§8kickar jogador', 'textures/ui/cancel')
+    // .button('§8kickar jogador', 'textures/ui/cancel') // REMOVIDO
     .button('§8banir jogador', 'textures/ui/icon_lock')
     .button('§8voltar', 'textures/ui/arrow_left');
 
   const r = await form.show(admin);
-  if (r.canceled) { return; } // X fecha tudo
-  if (r.selection === 3) { await showMainMenu(admin); return; } // botão voltar
+  if (r.canceled) return;
+  if (r.selection === 2) { await showMainMenu(admin); return; }
 
   switch (r.selection) {
     case 0: await showPlayerList(admin); break;
-    case 1: await kickPlayer(admin); break;
-    case 2:
+    // case 1: await kickPlayer(admin); break; // REMOVIDO
+    case 1:
       if (!isdono) {
         admin.sendMessage('§8apenas o dono pode banir jogadores.');
         await showPlayerManagement(admin);
@@ -143,7 +135,7 @@ async function showPlayerManagement(admin) {
 
 /** Lista e seleciona jogador alvo */
 async function showPlayerList(admin) {
-  const list = playerManager.getOnlinePlayers(); // pode ser [Player] ou wrappers
+  const list = playerManager.getOnlinePlayers();
   dbg(admin, `listando jogadores online (${list.length})`);
   const form = new ActionFormData()
     .title('§8jogadores online')
@@ -157,11 +149,10 @@ async function showPlayerList(admin) {
   form.button('§8voltar', 'textures/ui/arrow_left');
 
   const r = await form.show(admin);
-  if (r.canceled) { return; } // X fecha tudo
-  if (r.selection === list.length) { await showPlayerManagement(admin); return; } // voltar
+  if (r.canceled) return;
+  if (r.selection === list.length) { await showPlayerManagement(admin); return; }
 
   const picked = list[r.selection];
-  // normaliza para Player
   const target = picked?.player ?? picked;
   if (!target || !target.name) {
     admin.sendMessage('§8[debug] alvo inválido.');
@@ -179,8 +170,8 @@ async function showPlayerActions(admin, targetPlayer) {
   const form = new ActionFormData()
     .title(`§8gerenciar: ${targetPlayer.name}`)
     .body('§8escolha uma ação:')
-    .button('§8ver inventário', 'textures/ui/invisibility_effect')
-    .button('§8kickar', 'textures/ui/cancel');
+    .button('§8ver inventário', 'textures/ui/invisibility_effect');
+    // .button('§8kickar', 'textures/ui/cancel'); // REMOVIDO
 
   if (isdono) {
     form.button('§8dar item', 'textures/ui/upload_glyph');
@@ -191,32 +182,30 @@ async function showPlayerActions(admin, targetPlayer) {
   form.button('§8voltar', 'textures/ui/arrow_left');
 
   const r = await form.show(admin);
-  if (r.canceled) { return; } // X fecha tudo
+  if (r.canceled) return;
 
-  // índices: staff => 0 ver inv | 1 kick | 2 voltar
-  // índices: dono => 0 ver inv | 1 kick | 2 dar | 3 clear | 4 ban | 5 voltar
   if (!isdono) {
-    if (r.selection === 2) { await showPlayerList(admin); return; } // voltar
+    if (r.selection === 1) { await showPlayerList(admin); return; }
     switch (r.selection) {
       case 0: await showPlayerInventory(admin, targetPlayer); break;
-      case 1: playerManager.kickPlayer(targetPlayer, admin); break;
+      // case 1: playerManager.kickPlayer(targetPlayer, admin); break; // REMOVIDO
     }
     return;
   }
 
-  if (r.selection === 5) { await showPlayerList(admin); return; } // voltar (dono)
+  if (r.selection === 4) { await showPlayerList(admin); return; }
   switch (r.selection) {
     case 0: await showPlayerInventory(admin, targetPlayer); break;
-    case 1: playerManager.kickPlayer(targetPlayer, admin); break;
-    case 2: await giveItemToPlayer(admin, targetPlayer); break;
-    case 3:
+    // case 1: playerManager.kickPlayer(targetPlayer, admin); break; // REMOVIDO
+    case 1: await giveItemToPlayer(admin, targetPlayer); break;
+    case 2:
       try {
         (admin.runCommandAsync || admin.runCommand).call(admin, `clear "${targetPlayer.name}"`);
         admin.sendMessage(`§8inventário de ${targetPlayer.name} limpo.`);
       } catch { admin.sendMessage('§8erro ao limpar inventário.'); }
       await showPlayerActions(admin, targetPlayer);
       break;
-    case 4: await banPlayer(admin, targetPlayer); break;
+    case 3: await banPlayer(admin, targetPlayer); break;
   }
 }
 
@@ -238,8 +227,8 @@ async function showPlayerInventory(admin, targetPlayer) {
     .button('§8voltar', 'textures/ui/arrow_left');
 
   const r = await form.show(admin);
-  if (r.canceled) { return; } // X fecha tudo
-  if (r.selection === 2) { await showPlayerActions(admin, targetPlayer); return; } // voltar
+  if (r.canceled) return;
+  if (r.selection === 2) { await showPlayerActions(admin, targetPlayer); return; }
 
   if (r.selection === 0) {
     await removeItemFromPlayer(admin, targetPlayer, items);
@@ -279,8 +268,8 @@ async function removeItemFromPlayer(admin, targetPlayer, snapshot) {
   form.button('§8cancelar', 'textures/ui/arrow_left');
 
   const r = await form.show(admin);
-  if (r.canceled) { return; } // X fecha tudo
-  if (r.selection === snapshot.length) { await showPlayerInventory(admin, targetPlayer); return; } // voltar
+  if (r.canceled) return;
+  if (r.selection === snapshot.length) { await showPlayerInventory(admin, targetPlayer); return; }
 
   const chosen = snapshot[r.selection];
   const ok = inventoryManager.removeItem(targetPlayer, chosen.slot);
@@ -300,11 +289,11 @@ async function giveItemToPlayer(admin, targetPlayer) {
   }
 
   const basicItems = [
-    "stone", "cobblestone", "dirt", "grass_block", "sand", "gravel", "glass", "oak_log", "birch_log", "spruce_log", "acacia_log",
-    "oak_planks", "stick", "torch", "crafting_table", "furnace", "chest", "ladder", "iron_ingot", "gold_ingot", "diamond", "emerald",
-    "coal", "redstone", "lapis_lazuli", "iron_sword", "diamond_sword", "bow", "arrow", "shield", "iron_pickaxe", "diamond_pickaxe",
-    "iron_shovel", "diamond_shovel", "iron_axe", "diamond_axe", "apple", "bread", "cooked_beef", "cooked_chicken", "golden_apple",
-    "bucket", "water_bucket", "lava_bucket", "flint_and_steel", "fishing_rod", "compass", "clock"
+    "stone","cobblestone","dirt","grass_block","sand","gravel","glass","oak_log","birch_log","spruce_log","acacia_log",
+    "oak_planks","stick","torch","crafting_table","furnace","chest","ladder","iron_ingot","gold_ingot","diamond","emerald",
+    "coal","redstone","lapis_lazuli","iron_sword","diamond_sword","bow","arrow","shield","iron_pickaxe","diamond_pickaxe",
+    "iron_shovel","diamond_shovel","iron_axe","diamond_axe","apple","bread","cooked_beef","cooked_chicken","golden_apple",
+    "bucket","water_bucket","lava_bucket","flint_and_steel","fishing_rod","compass","clock"
   ];
 
   const form = new ActionFormData()
@@ -315,9 +304,8 @@ async function giveItemToPlayer(admin, targetPlayer) {
   basicItems.forEach(i => form.button(`§8${i}`));
 
   const r = await form.show(admin);
-  if (r.canceled) { return; } // X fecha tudo
+  if (r.canceled) return;
 
-  // 0 -> personalizado; demais -> lista
   if (r.selection === 0) {
     const modal = new ModalFormData()
       .title(`§8item personalizado para ${targetPlayer.name}`)
@@ -325,7 +313,7 @@ async function giveItemToPlayer(admin, targetPlayer) {
       .slider('§8quantidade:', 1, 64, 1, 1);
 
     const m = await modal.show(admin);
-    if (m.canceled) { return; } // X fecha tudo
+    if (m.canceled) return;
 
     const id = String(m.formValues[0] ?? '').trim();
     const amount = Number(m.formValues[1] ?? 1);
@@ -335,7 +323,7 @@ async function giveItemToPlayer(admin, targetPlayer) {
     try {
       ok = inventoryManager.giveItem(targetPlayer, finalId, amount);
       dbg(admin, `give via container id=${finalId} q=${amount} ok=${ok}`);
-    } catch { }
+    } catch {}
     if (!ok) {
       try {
         (admin.runCommandAsync || admin.runCommand).call(admin, `give "${targetPlayer.name}" ${finalId} ${amount}`);
@@ -353,7 +341,7 @@ async function giveItemToPlayer(admin, targetPlayer) {
   try {
     ok = inventoryManager.giveItem(targetPlayer, finalId, 1);
     dbg(admin, `give via container id=${finalId} q=1 ok=${ok}`);
-  } catch { }
+  } catch {}
   if (!ok) {
     try {
       (admin.runCommandAsync || admin.runCommand).call(admin, `give "${targetPlayer.name}" ${finalId} 1`);
@@ -365,7 +353,7 @@ async function giveItemToPlayer(admin, targetPlayer) {
 }
 
 /** =========================
- *  DESBANIR / BANIR / KICK / GM / INVIS
+ *  DESBANIR / BANIR / GM / INVIS
  *  ========================= */
 async function showUnbanMenu(admin) {
   const banned = banManager.getBannedPlayers();
@@ -375,7 +363,6 @@ async function showUnbanMenu(admin) {
     .body(`§8banidos: ${banned.length}\n§8escolha uma opção:`)
     .button('§8digitar nome para desbanir', 'textures/ui/icon_setting');
 
-  // lista (opcional) dos banidos atuais
   banned.forEach(b => {
     form.button(b.name, 'textures/ui/icon_lock');
   });
@@ -383,24 +370,15 @@ async function showUnbanMenu(admin) {
   form.button('§8voltar', 'textures/ui/arrow_left');
 
   const r = await form.show(admin);
-  if (r.canceled) {
-    return; // X fecha tudo
-  }
+  if (r.canceled) return;
 
-  // Índices:
-  // 0 -> Digitar nome
-  // 1..banned.length -> Itens da lista
-  // banned.length + 1 -> Voltar
   if (r.selection === 0) {
-    // Modal para digitar nome
     const modal = new ModalFormData()
       .title('§8desbanir por nome')
       .textField('§8nome do jogador:', 'ex: Fulano', '');
 
     const m = await modal.show(admin);
-    if (m.canceled) {
-      return; // X fecha tudo
-    }
+    if (m.canceled) return;
 
     const typedName = String(m.formValues[0] ?? '').trim();
     if (!typedName) {
@@ -409,32 +387,33 @@ async function showUnbanMenu(admin) {
       return;
     }
 
-    const ok = banManager.unbanPlayer(typedName);
+    const res = banManager.unbanByAny(typedName, admin);
+    const ok = res.removed > 0;
     admin.sendMessage(ok ? `§8${typedName} desbanido.` : '§8nome não encontrado na lista de banidos.');
     return;
   }
 
   if (r.selection === banned.length + 1) {
-    await showMainMenu(admin); // botão Voltar
+    await showMainMenu(admin);
     return;
   }
 
-  // Clique em um dos nomes da lista
-  const idx = r.selection - 1; // pois 0 é "digitar nome"
+  const idx = r.selection - 1;
   const entry = banned[idx];
   if (!entry) {
     admin.sendMessage('§8entrada inválida.');
     return;
   }
 
-  const ok = banManager.unbanPlayer(entry.name);
+  const ok = await banManager.unbanPlayer(entry.name, admin);
   admin.sendMessage(ok ? `§8${entry.name} desbanido.` : '§8falha ao desbanir.');
 }
 
 async function banPlayer(admin, targetMaybe) {
+  // passa Player quando disponível; o banManager grava por NOME (sem kick)
   if (targetMaybe && targetMaybe.name) {
-    const ok = banManager.banPlayer(targetMaybe, admin);
-    admin.sendMessage(ok ? `§8${targetMaybe.name} banido.` : '§8já estava banido.');
+    const ok = await banManager.banPlayer(targetMaybe, admin);
+    admin.sendMessage(ok ? `§8${targetMaybe.name} banido (sem kick).` : '§8já estava banido.');
     return;
   }
   const list = playerManager.getOnlinePlayers();
@@ -444,27 +423,12 @@ async function banPlayer(admin, targetMaybe) {
   list.forEach(p => form.button(p.name ?? p?.player?.name ?? 'desconhecido', 'textures/ui/icon_steve'));
   form.button('§8voltar', 'textures/ui/arrow_left');
   const r = await form.show(admin);
-  if (r.canceled) { return; } // X fecha tudo
-  if (r.selection === list.length) { await showPlayerManagement(admin); return; } // voltar
+  if (r.canceled) return;
+  if (r.selection === list.length) { await showPlayerManagement(admin); return; }
   const picked = list[r.selection];
   const target = picked?.player ?? picked;
-  const ok = banManager.banPlayer(target.name);
-  admin.sendMessage(ok ? `§8${target.name} banido.` : '§8já estava banido.');
-}
-
-async function kickPlayer(admin) {
-  const list = playerManager.getOnlinePlayers();
-  const form = new ActionFormData()
-    .title('§8kickar jogador')
-    .body('§8selecione o jogador:');
-  list.forEach(p => form.button(p.name ?? p?.player?.name ?? 'desconhecido', 'textures/ui/icon_steve'));
-  form.button('§8voltar', 'textures/ui/arrow_left');
-  const r = await form.show(admin);
-  if (r.canceled) { return; } // X fecha tudo
-  if (r.selection === list.length) { await showPlayerManagement(admin); return; } // voltar
-  const picked = list[r.selection];
-  const target = picked?.player ?? picked;
-  playerManager.kickPlayer(target, admin);
+  const ok = await banManager.banPlayer(target, admin);
+  admin.sendMessage(ok ? `§8${target.name} banido (sem kick).` : '§8já estava banido.');
 }
 
 async function showGameModeMenu(player) {
@@ -478,8 +442,8 @@ async function showGameModeMenu(player) {
     .button('§8voltar', 'textures/ui/arrow_left');
 
   const r = await form.show(player);
-  if (r.canceled) { return; } // X fecha tudo
-  if (r.selection === 4) { await showMainMenu(player); return; } // voltar
+  if (r.canceled) return;
+  if (r.selection === 4) { await showMainMenu(player); return; }
 
   switch (r.selection) {
     case 0: player.runCommand('gamemode survival'); break;
@@ -498,6 +462,7 @@ async function toggleInvisibility(player) {
       player.setDynamicProperty('admin_invisible', false);
       player.sendMessage('§8modo invisível desativado.');
     } else {
+      // duração grande, amplificador 1, "true" oculta partículas
       player.runCommand('effect @s invisibility 999999 1 true');
       player.setDynamicProperty('admin_invisible', true);
       player.sendMessage('§8modo invisível ativado.');
@@ -508,26 +473,15 @@ async function toggleInvisibility(player) {
   await showMainMenu(player);
 }
 
-/** Auto-kick de banido no spawn */
-// main.js
-world.afterEvents.playerSpawn.subscribe(({ player }) => {
-  if (banManager.isBanned(player)) {
-    system.run(() => {
-      (player.runCommandAsync || player.runCommand).call(
-        player,
-        `kick "${player.name}" §8você está banido deste servidor!`
-      );
-    });
-  }
-});
-
+/** ===== IMPORTANTE: sem auto-kick de banido no spawn =====
+ *  (Quem estiver banido fica marcado no scoreboard; expulsão é manual.)
+ */
 
 /** =========================
  *  GERENCIAR teleporte
  *  ========================= */
-
 async function showTeleportMenu(admin) {
-  const list = playerManager.getOnlinePlayers(); // pode ser [Player] ou wrappers
+  const list = playerManager.getOnlinePlayers();
   dbg(admin, `listando jogadores online (${list.length})`);
   const form = new ActionFormData()
     .title('§8teleportar jogadores')
@@ -538,8 +492,8 @@ async function showTeleportMenu(admin) {
   });
   form.button('§8voltar', 'textures/ui/arrow_left');
   const r = await form.show(admin);
-  if (r.canceled) { return; } // X fecha tudo
-  if (r.selection === list.length) { await showMainMenu(admin); return; } // voltar
+  if (r.canceled) return;
+  if (r.selection === list.length) { await showMainMenu(admin); return; }
   const picked = list[r.selection];
   const target = picked?.player ?? picked;
   if (!target || !target.name) {
@@ -552,7 +506,7 @@ async function showTeleportMenu(admin) {
     admin.sendMessage(`§8teleportado para ${target.name}.`);
   } catch {
     admin.sendMessage('§8falha ao teleportar.');
-  };
-};
+  }
+}
 
-console.warn('[Admin Panel] Sistema carregado com sucesso!');
+console.warn('[Admin Panel] Sistema carregado com sucesso (kick desativado)!');
