@@ -99,25 +99,25 @@ export class BanManager {
   async banPlayer(playerOrName, admin) {
     const name = this._safeName(playerOrName);
     if (!name) {
-      admin?.sendMessage?.('§8[admin panel] alvo inválido para banir.');
+      admin?.sendMessage?.('§8[admin painel] alvo inválido para banir.');
       return false;
     }
 
     // evita duplicar/“travar”: só grava se NÃO estiver banido
     const already = (this.isBannedQuick(name)) || (await this._hasBanByCmd(name, admin));
     if (already) {
-      admin?.sendMessage?.(`§8[admin panel] ${name} já está banido!`);
+      admin?.sendMessage?.(`§8[admin painel] ${name} já está banido!`);
       return false;
     }
 
     // grava SEMPRE por NOME (comando), nunca por identity
     const ok = this._exec(`scoreboard players set "${name}" ${this.objectiveName} 1`, admin);
     if (!ok) {
-      admin?.sendMessage?.('§8[admin panel] falha ao acessar o scoreboard.');
+      admin?.sendMessage?.('§8[admin painel] falha ao acessar o scoreboard.');
       return false;
     }
 
-    world.sendMessage(`§8[admin panel] ${name} foi banido por ${admin?.name ?? 'sistema'}!`);
+    world.sendMessage(`§8[admin painel] ${name} foi banido por ${admin?.name ?? 'sistema'}!`);
 
     // kicka se o alvo estiver online
     try {
@@ -141,7 +141,7 @@ export class BanManager {
       this._exec(`scoreboard players set "${name}" ${this.objectiveName} 0`, admin);
     if (!ok) return false;
 
-    world.sendMessage(`§8[admin panel] ${name} foi desbanido!`);
+    world.sendMessage(`§8[admin painel] ${name} foi desbanido!`);
     return true;
   }
 

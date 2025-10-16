@@ -24,11 +24,11 @@ export class PlayerManager {
 
     kickPlayer(targetPlayer, admin) {
         try {
-            world.sendMessage(`§8[admin panel] ${targetPlayer.name} foi expulso por ${admin.name}`);
+            world.sendMessage(`§8[admin painel] ${targetPlayer.name} foi expulso por ${admin.name}`);
             targetPlayer.runCommand(`kick "${targetPlayer.name}" §cVocê foi expulso do servidor por um administrador!`);
             return true;
         } catch (error) {
-            admin.sendMessage(`§8[admin panel] erro ao expulsar jogador: ${error.message}`);
+            admin.sendMessage(`§8[admin painel] erro ao expulsar jogador: ${error.message}`);
             return false;
         }
     }

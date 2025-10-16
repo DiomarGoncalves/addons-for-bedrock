@@ -29,18 +29,18 @@ export class PermissionManager {
     setdono(player) {
         player.addTag(this.donoTag);
         player.removeTag(this.staffTag);
-        player.sendMessage('§8[admin panel] você agora é dono!');
+        player.sendMessage('§8[admin painel] você agora é dono!');
     }
 
     setStaff(player) {
         player.removeTag(this.donoTag);
         player.addTag(this.staffTag);
-        player.sendMessage('§8[admin panel] você agora é staff!');
+        player.sendMessage('§8[admin painel] você agora é staff!');
     }
 
     removePermissions(player) {
         player.removeTag(this.donoTag);
         player.removeTag(this.staffTag);
-        player.sendMessage('§8[admin panel] suas permissões foram removidas!');
+        player.sendMessage('§8[admin painel] suas permissões foram removidas!');
     }
 }

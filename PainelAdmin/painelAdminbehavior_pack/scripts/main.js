@@ -25,7 +25,7 @@ function dbg(player, msg) {
 world.afterEvents.itemUse.subscribe((event) => {
   const { source: player, itemStack } = event;
   if (!player || !itemStack) return;
-  if (itemStack.typeId === 'admin:panel') {
+  if (itemStack.typeId === 'admin:painel') {
     system.run(() => showMainMenu(player));
   }
 });
@@ -509,4 +509,4 @@ async function showTeleportMenu(admin) {
   }
 }
 
-console.warn('[Admin Panel] Sistema carregado com sucesso (kick desativado)!');
+console.warn('[Admin painel] Sistema carregado com sucesso (kick desativado)!');

@@ -1,9 +1,9 @@
 {
-  "resource_pack_name": "Admin Panel RP",
+  "resource_pack_name": "Admin painel RP",
   "texture_name": "atlas.items",
   "texture_data": {
-    "admin_panel": {
-      "textures": "textures/items/admin_panel"
+    "admin_painel": {
+      "textures": "textures/items/admin_painel"
     }
   }
 }

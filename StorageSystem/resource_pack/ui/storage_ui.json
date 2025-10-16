@@ -9,15 +9,15 @@
         "mapping_type": "global"
       }
     ],
-    "$screen_content": "storage_ui.storage_main_panel"
+    "$screen_content": "storage_ui.storage_main_painel"
   },
 
-  "storage_main_panel": {
-    "type": "panel",
+  "storage_main_painel": {
+    "type": "painel",
     "size": [320, 240],
     "controls": [
       {
-        "background@common.common_panel": {
+        "background@common.common_painel": {
           "size": [320, 240],
           "layer": 1
         }
@@ -34,8 +34,8 @@
         }
       },
       {
-        "search_panel": {
-          "type": "panel",
+        "search_painel": {
+          "type": "painel",
           "size": [300, 30],
           "anchor_from": "top_middle",
           "anchor_to": "top_middle",
@@ -43,7 +43,7 @@
           "layer": 10,
           "controls": [
             {
-              "search_background@common.common_panel": {
+              "search_background@common.common_painel": {
                 "size": [300, 30],
                 "layer": 1
               }
@@ -66,8 +66,8 @@
         }
       },
       {
-        "items_grid_panel": {
-          "type": "panel",
+        "items_grid_painel": {
+          "type": "painel",
           "size": [288, 144],
           "anchor_from": "top_middle",
           "anchor_to": "top_middle",
@@ -75,7 +75,7 @@
           "layer": 10,
           "controls": [
             {
-              "items_background@common.common_panel": {
+              "items_background@common.common_painel": {
                 "size": [288, 144],
                 "layer": 1
               }
@@ -96,8 +96,8 @@
         }
       },
       {
-        "info_panel": {
-          "type": "panel",
+        "info_painel": {
+          "type": "painel",
           "size": [300, 25],
           "anchor_from": "bottom_middle",
           "anchor_to": "bottom_middle",
@@ -105,7 +105,7 @@
           "layer": 10,
           "controls": [
             {
-              "info_background@common.common_panel": {
+              "info_background@common.common_painel": {
                 "size": [300, 25],
                 "layer": 1
               }

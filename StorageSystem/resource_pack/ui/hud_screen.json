@@ -1,8 +1,8 @@
 {
   "namespace": "hud",
   
-  "storage_hud_panel": {
-    "type": "panel",
+  "storage_hud_painel": {
+    "type": "painel",
     "size": [200, 40],
     "anchor_from": "top_right",
     "anchor_to": "top_right",
@@ -10,7 +10,7 @@
     "visible": "#storage_hud_visible",
     "controls": [
       {
-        "background@common.common_panel": {
+        "background@common.common_painel": {
           "size": [200, 40],
           "layer": 1
         }

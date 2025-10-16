@@ -34,7 +34,7 @@ export class InventoryManager {
         if (!container) return false;
         for (let i = 0; i < container.size; i++) { try { container.setItem(i, undefined); } catch { } }
         return true;
-        player.sendMessage('§8[admin panel] seu inventário foi limpo por um administrador!');
+        player.sendMessage('§8[admin painel] seu inventário foi limpo por um administrador!');
     }
 
     removeItem(player, slot) {
@@ -60,7 +60,7 @@ export class InventoryManager {
             const container = inventory.container;
 
             container.addItem(item);
-            player.sendMessage(`§8[admin panel] você recebeu ${amount}x ${itemId}!`);
+            player.sendMessage(`§8[admin painel] você recebeu ${amount}x ${itemId}!`);
             return true;
         } catch (error) {
             throw new Error(`Item inválido: ${itemId}`);
