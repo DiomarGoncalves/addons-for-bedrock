@@ -1,0 +1,23 @@
+{
+  "format_version": 2,
+  "header": {
+    "name": "Wireless Storage RP",
+    "description": "Recursos visuais para o addon Wireless Storage",
+    "uuid": "2b20a8cb-dcb1-47f0-86e4-6421de5c2e5c",
+    "version": [1, 0, 0],
+    "min_engine_version": [1, 21, 0]
+  },
+  "modules": [
+    {
+      "type": "resources",
+      "uuid": "b2f9c3d8-5a46-4764-b978-5e1e9f50a6dc",
+      "version": [1, 0, 0]
+    }
+  ],
+  "dependencies": [
+    {
+      "uuid": "7b49b4e3-65aa-41f2-9836-73e6d1c1b23e",
+      "version": [1, 0, 0]
+    }
+  ]
+}
