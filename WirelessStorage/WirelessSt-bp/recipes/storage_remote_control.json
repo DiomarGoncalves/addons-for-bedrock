@@ -21,10 +21,17 @@
         "item": "minecraft:chest"
       }
     },
-    "result": {
-      "item": "wireless:remote_control",
-      "count": 1
-    }
+    "result": [
+      {
+        "item": "wireless:remote_control",
+        "count": 1
+      }
+    ],
+    "unlock": [
+      {
+        "item": "minecraft:redstone"
+      }
+    ]
   }
 }
 
