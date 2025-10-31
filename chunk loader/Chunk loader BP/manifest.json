@@ -1,0 +1,59 @@
+{
+	"format_version": 2,
+	"metadata": {
+		"authors": [
+			"Diomar."
+		],
+		"generated_with": {
+			"bridge": [
+				"2.7.51"
+			],
+			"dash": [
+				"0.11.7"
+			]
+		}
+	},
+	"header": {
+		"name": "Chunk loader",
+		"description": "addon de chunk loader",
+		"min_engine_version": [
+			1,
+			21,
+			90
+		],
+		"uuid": "36a3c903-f211-4ca4-b7b8-67d0addeb00c",
+		"version": [
+			1,
+			0,
+			0
+		]
+	},
+	"modules": [
+		{
+			"type": "data",
+			"uuid": "d3cd41b0-f35b-4eb4-af2d-153c290a5c63",
+			"version": [
+				1,
+				0,
+				0
+			]
+		},
+		{
+			"type": "script",
+			"language": "javascript",
+			"uuid": "db9cef8a-45fe-4dbc-9cad-0fbec34d56a4",
+			"entry": "scripts/main.js",
+			"version": [
+				1,
+				0,
+				0
+			]
+		}
+	],
+	"dependencies": [
+		{
+			"module_name": "@minecraft/server",
+			"version": "1.10.0"
+		}
+	]
+}

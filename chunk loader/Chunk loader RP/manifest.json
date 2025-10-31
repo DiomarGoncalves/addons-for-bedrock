@@ -1,0 +1,42 @@
+{
+	"format_version": 2,
+	"metadata": {
+		"authors": [
+			"Diomar."
+		],
+		"generated_with": {
+			"bridge": [
+				"2.7.51"
+			],
+			"dash": [
+				"0.11.7"
+			]
+		}
+	},
+	"header": {
+		"name": "Chunk loader",
+		"description": "addon de chunk loader",
+		"min_engine_version": [
+			1,
+			21,
+			90
+		],
+		"uuid": "4b010a5d-651d-4afa-8a4d-8381e8a63eb5",
+		"version": [
+			1,
+			0,
+			0
+		]
+	},
+	"modules": [
+		{
+			"type": "resources",
+			"uuid": "cbecaf36-cb7c-4963-afed-bf933618b36b",
+			"version": [
+				1,
+				0,
+				0
+			]
+		}
+	]
+}
