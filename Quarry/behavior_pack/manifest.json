@@ -19,7 +19,7 @@
       "type": "script",
       "uuid": "21111111-2222-3333-4444-555555555555",
       "version": [1, 0, 0],
-      "entry": "scripts/quarry.js"
+      "entry": "scripts/main.js"
     }
   ],
   "dependencies": [

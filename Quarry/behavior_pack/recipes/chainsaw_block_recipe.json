@@ -1,0 +1,32 @@
+{
+  "format_version": "1.19.0",
+  "minecraft:recipe_shaped": {
+    "description": {
+      "identifier": "chainsaw:chainsaw_block_recipe"
+    },
+    "tags": ["crafting_table"],
+    "pattern": [
+      "DRD",
+      "IPI",
+      "DRD"
+    ],
+    "key": {
+      "D": {
+        "item": "minecraft:diamond"
+      },
+      "R": {
+        "item": "minecraft:redstone"
+      },
+      "I": {
+        "item": "minecraft:iron_ingot"
+      },
+      "P": {
+        "item": "minecraft:diamond_axe"
+      }
+    },
+    "result": {
+      "item": "chainsaw:chainsaw_block",
+      "count": 1
+    }
+  }
+}

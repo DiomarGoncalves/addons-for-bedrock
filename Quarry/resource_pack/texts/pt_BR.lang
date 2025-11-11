@@ -1,2 +1,4 @@
 item.quarry:quarry_block=Mineradora Automática
 tile.quarry:quarry_block.name=Mineradora Automática
+item.chainsaw:chainsaw_block=Motosserra Automática
+tile.chainsaw:chainsaw_block.name=Motosserra Automática

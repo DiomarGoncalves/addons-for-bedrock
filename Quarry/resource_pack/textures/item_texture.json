@@ -4,6 +4,9 @@
   "texture_data": {
     "quarry_block": {
       "textures": "textures/blocks/Quarry"
+    },
+    "chainsaw_block": {
+      "textures": "textures/blocks/Chainsaw"
     }
   }
 }

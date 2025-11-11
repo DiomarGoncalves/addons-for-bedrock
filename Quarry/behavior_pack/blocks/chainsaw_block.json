@@ -1,0 +1,32 @@
+{
+  "format_version": "1.21.0",
+  "minecraft:block": {
+    "description": {
+      "identifier": "chainsaw:chainsaw_block",
+      "menu_category": {
+        "category": "construction"
+      }
+    },
+    "components": {
+      "minecraft:material_instances": {
+        "*": {
+          "texture": "Chainsaw",
+          "render_method": "opaque"
+        }
+      },
+      "minecraft:geometry": "geometry.chainsaw_block",
+      "minecraft:destructible_by_mining": {
+        "seconds_to_destroy": 5.0
+      },
+      "minecraft:destructible_by_explosion": {
+        "explosion_resistance": 10.0
+      },
+      "minecraft:flammable": {
+        "flame_odds": 0,
+        "burn_odds": 0
+      },
+      "minecraft:map_color": "#FF6600",
+      "minecraft:light_emission": 8
+    }
+  }
+}

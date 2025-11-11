@@ -1,2 +1,4 @@
 item.quarry:quarry_block=Automatic Quarry
 tile.quarry:quarry_block.name=Automatic Quarry
+item.chainsaw:chainsaw_block=Automatic Chainsaw
+tile.chainsaw:chainsaw_block.name=Automatic Chainsaw
