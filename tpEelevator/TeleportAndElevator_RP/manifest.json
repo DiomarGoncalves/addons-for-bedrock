@@ -1,0 +1,40 @@
+{
+  "format_version": 2,
+  "header": {
+    "description": "Resource pack for TeleportAndElevator",
+    "name": "TeleportAndElevator RP",
+    "uuid": "37190386-1da6-4fb0-a485-42d6d3aa319e",
+    "version": [
+      1,
+      0,
+      0
+    ],
+    "min_engine_version": [
+      1,
+      20,
+      60
+    ]
+  },
+  "modules": [
+    {
+      "description": "Resources",
+      "type": "resources",
+      "uuid": "edf2df19-9ff9-4c9b-9af0-4cf24b6cae80",
+      "version": [
+        1,
+        0,
+        0
+      ]
+    }
+  ],
+  "dependencies": [
+    {
+      "uuid": "ffcee6f1-5124-40e6-9910-4775c4d09557",
+      "version": [
+        1,
+        0,
+        0
+      ]
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "resource_pack_name": "custom_rp",
+  "texture_name": "atlas.terrain",
+  "texture_data": {
+    "elevator": {
+      "textures": "textures/blocks/elevator"
+    }
+  }
+}

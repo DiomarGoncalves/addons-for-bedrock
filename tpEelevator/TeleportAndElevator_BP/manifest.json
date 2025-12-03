@@ -1,0 +1,50 @@
+{
+  "format_version": 2,
+  "header": {
+    "description": "Behavior pack for TeleportAndElevator",
+    "name": "TeleportAndElevator BP",
+    "uuid": "a99a547f-a172-4c14-a0de-ac341ac412e1",
+    "version": [
+      1,
+      0,
+      0
+    ],
+    "min_engine_version": [
+      1,
+      20,
+      60
+    ]
+  },
+  "modules": [
+    {
+      "description": "Scripting Logic",
+      "type": "script",
+      "language": "javascript",
+      "uuid": "937a9e27-1634-49fe-9dc6-c404d80e2ee3",
+      "entry": "scripts/main.js",
+      "version": [
+        1,
+        0,
+        0
+      ]
+    }
+  ],
+  "dependencies": [
+    {
+      "uuid": "de8a7a91-b2e3-4e42-b254-eb5b6a1253b7",
+      "version": [
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "module_name": "@minecraft/server",
+      "version": "1.13.0"
+    },
+    {
+      "module_name": "@minecraft/server-ui",
+      "version": "1.3.0"
+    }
+  ]
+}

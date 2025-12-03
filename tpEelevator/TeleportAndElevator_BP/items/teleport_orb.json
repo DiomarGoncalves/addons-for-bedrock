@@ -1,0 +1,23 @@
+{
+  "format_version": "1.20.50",
+  "minecraft:item": {
+    "description": {
+      "identifier": "custom:teleport_orb",
+      "menu_category": {
+        "category": "equipment",
+        "group": "itemGroup.name.misc"
+      }
+    },
+    "components": {
+      "minecraft:icon": "teleport_orb",
+      "minecraft:display_name": {
+        "value": "Teleport Orb"
+      },
+      "minecraft:max_stack_size": 1,
+      "minecraft:cooldown": {
+        "category": "teleport_orb",
+        "duration": 1
+      }
+    }
+  }
+}
