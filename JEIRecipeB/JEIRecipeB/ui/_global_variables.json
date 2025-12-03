@@ -1,4 +1,0 @@
-{
-  "$JEI:limit_slot_layout": false, // limit the max size for layout slots to only 9 slots per row.
-	"$JEI:layout_size": ["100% - 20px", "100%"] // change 20px to widen/narrow the layout.
-}
