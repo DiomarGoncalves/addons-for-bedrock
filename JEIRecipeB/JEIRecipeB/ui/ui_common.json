@@ -1,0 +1,6 @@
+{
+	"toggle": {
+		"$toggle_sound_volume|default": 1.0,
+		"sound_volume": "$toggle_sound_volume"
+	}
+}

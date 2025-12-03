@@ -1,0 +1,21 @@
+{
+  "format_version": 2,
+  "header": {
+    "description": "v1.1.0 by @§eItzriyo157\n§7Change Recipe Book layout to look like Just Enough Items (JEI)",
+    "name": "JEI Recipe Book Layout",
+    "uuid": "a09090a0-91ca-bccc-0b26-157157157157",
+    "version": [ 1, 1, 0 ],
+    "min_engine_version": [ 1, 16, 0 ]
+  },
+  "modules": [
+    {
+      "description": "v1.1.0 by @Itzriyo157",
+      "type": "resources",
+      "uuid": "a17a9090-9a91-bccc-0b26-157157157157",
+      "version": [ 1, 0, 0 ]
+    }
+  ],
+  "metadata": {
+    "authors": [ "itzriyo157" ]
+  }
+}

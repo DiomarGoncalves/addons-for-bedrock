@@ -1,0 +1,38 @@
+{
+  "format_version": 2,
+  "header": {
+    "name": "Wireless Storage BP",
+    "description": "Um addon que permite acessar baús e containers remotamente usando um controle de armazenamento wireless",
+    "uuid": "7b49b4e3-65aa-41f2-9836-73e6d1c1b23e",
+    "version": [1, 0, 0],
+    "min_engine_version": [1, 21, 0]
+  },
+  "modules": [
+    {
+      "type": "data",
+      "uuid": "6a5f6e27-8d3b-4bb1-b8d7-f3a6a0a4f8b2",
+      "version": [1, 0, 0]
+    },
+    {
+      "type": "script",
+      "uuid": "0e3c7a9f-b9c1-4d55-b637-3a4872d71b6d",
+      "version": [1, 0, 0],
+      "entry": "scripts/main.js",
+      "language": "javascript"
+    }
+  ],
+  "dependencies": [
+    {
+      "uuid": "2b20a8cb-dcb1-47f0-86e4-6421de5c2e5c",
+      "version": [1, 0, 0]
+    },
+    {
+      "module_name": "@minecraft/server",
+      "version": "1.10.0"
+    },
+    {
+      "module_name": "@minecraft/server-ui",
+      "version": "1.2.0"
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "format_version": 2,
+  "header": {
+    "name": "ServerStaff BP",
+    "description": "Staff Management Logic",
+    "uuid": "66c6e9a8-3093-462a-9c36-dbb052165822",
+    "version": [1, 0, 1],
+    "min_engine_version": [1, 21, 0]
+  },
+  "modules": [
+    {
+      "description": "Script Logic",
+      "type": "script",
+      "language": "javascript",
+      "uuid": "743f697b-83c3-41c8-9e5d-161c94d01524",
+      "entry": "scripts/main.js",
+      "version": [1, 0, 0]
+    }
+  ],
+  "dependencies": [
+    {
+      "module_name": "@minecraft/server",
+      "version": "1.13.0"
+    },
+    {
+      "module_name": "@minecraft/server-ui",
+      "version": "1.3.0"
+    }
+  ]
+}

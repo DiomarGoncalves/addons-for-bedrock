@@ -1,0 +1,9 @@
+{
+  "resource_pack_name": "ServerStaffRP",
+  "texture_name": "atlas.items",
+  "texture_data": {
+    "staff_panel": {
+      "textures": "textures/items/staff_panel"
+    }
+  }
+}

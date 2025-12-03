@@ -1,0 +1,38 @@
+{
+  "format_version": "1.21.0",
+  "minecraft:recipe_shaped": {
+    "description": {
+      "identifier": "wireless:remote_control_recipe"
+    },
+    "tags": ["crafting_table"],
+    "pattern": [
+      "RRR",
+      "ICI",
+      "RRR"
+    ],
+    "key": {
+      "R": {
+        "item": "minecraft:redstone"
+      },
+      "I": {
+        "item": "minecraft:iron_ingot"
+      },
+      "C": {
+        "item": "minecraft:chest"
+      }
+    },
+    "result": [
+      {
+        "item": "wireless:remote_control",
+        "count": 1
+      }
+    ],
+    "unlock": [
+      {
+        "item": "minecraft:redstone"
+      }
+    ]
+  }
+}
+
+

@@ -1,0 +1,18 @@
+{
+  "format_version": 2,
+  "header": {
+    "name": "ServerStaff RP",
+    "description": "Staff Management Resources",
+    "uuid": "4e1a7218-364b-4c9e-b9f1-285601552833",
+    "version": [1, 0, 0],
+    "min_engine_version": [1, 21, 0]
+  },
+  "modules": [
+    {
+      "description": "Resources",
+      "type": "resources",
+      "uuid": "6f2e8319-475c-5d0f-ca02-396712663944",
+      "version": [1, 0, 0]
+    }
+  ]
+}
