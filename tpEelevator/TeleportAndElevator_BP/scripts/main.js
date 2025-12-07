@@ -6,10 +6,9 @@ const ORB_ID = "custom:teleport_orb";
 const ELEVATOR_ID = "custom:elevator";
 const ELEVATOR_MAX_DIST = 1000;
 
-// --- LÓGICA DO ORBE DE TELEPORTE ---
+// ===================== ORBE DE TELEPORTE =====================
 
 // Funções utilitárias do orbe
-
 function getPlayerWarps(player) {
     const data = player.getDynamicProperty("saved_warps");
     if (!data) return [];
@@ -29,7 +28,6 @@ function getDimensionName(dimId) {
 }
 
 // --- UI do Orbe ---
-
 world.beforeEvents.itemUse.subscribe((ev) => {
     if (ev.itemStack.typeId !== ORB_ID) return;
     const player = ev.source;
@@ -49,7 +47,17 @@ function showMainMenu(player) {
     // Lista os warps salvos
     warps.forEach((warp) => {
         form.button(
-            `§${getColorCode(warp.color)}${warp.name}\n§F${getDimensionName(warp.dimId)}: ${Math.floor(warp.x)}, ${Math.floor(warp.y)}, ${Math.floor(warp.z)}`,
+            "§" +
+                getColorCode(warp.color) +
+                warp.name +
+                "\n§F" +
+                getDimensionName(warp.dimId) +
+                ": " +
+                Math.floor(warp.x) +
+                ", " +
+                Math.floor(warp.y) +
+                ", " +
+                Math.floor(warp.z),
             getIconTexture(warp.icon)
         );
     });
@@ -59,11 +67,10 @@ function showMainMenu(player) {
     form.show(player).then((response) => {
         if (response.canceled) return;
 
-        // Se clicou em "Adicionar novo ponto" (último botão)
         if (response.selection === warps.length) {
+            // Clicou em "Adicionar novo ponto"
             showAddWarpMenu(player);
-        } else {
-            // Clicou em um warp existente
+        } else if (response.selection >= 0 && response.selection < warps.length) {
             showWarpOptions(player, response.selection);
         }
     });
@@ -79,13 +86,20 @@ function showAddWarpMenu(player) {
     form.show(player).then((res) => {
         if (res.canceled) return;
 
-        const [name, colorIndex, iconIndex] = res.formValues;
-        const color = ["White", "Green", "Blue", "Yellow", "Purple", "Red"][colorIndex];
-        const icon = ["Star", "House", "Sword", "Portal", "Chest"][iconIndex];
+        const values = res.formValues;
+        const name = values[0];
+        const colorIndex = values[1];
+        const iconIndex = values[2];
+
+        const colors = ["White", "Green", "Blue", "Yellow", "Purple", "Red"];
+        const icons = ["Star", "House", "Sword", "Portal", "Chest"];
+
+        const color = colors[colorIndex] || "White";
+        const icon = icons[iconIndex] || "Star";
 
         const newWarp = {
             id: Date.now().toString(),
-            name: name,
+            name: String(name || "Ponto"),
             color: color,
             icon: icon,
             x: player.location.x,
@@ -105,10 +119,18 @@ function showAddWarpMenu(player) {
 function showWarpOptions(player, warpIndex) {
     const warps = getPlayerWarps(player);
     const warp = warps[warpIndex];
+    if (!warp) return;
 
     const form = new ActionFormData()
         .title(warp.name)
-        .body(`Posição: ${Math.floor(warp.x)}, ${Math.floor(warp.y)}, ${Math.floor(warp.z)}`)
+        .body(
+            "Posição: " +
+                Math.floor(warp.x) +
+                ", " +
+                Math.floor(warp.y) +
+                ", " +
+                Math.floor(warp.z)
+        )
         .button("§l§2Teleportar", "textures/ui/portalBg")
         .button("Atualizar posição", "textures/ui/refresh")
         .button("Editar detalhes", "textures/ui/pencil_edit_icon")
@@ -120,19 +142,22 @@ function showWarpOptions(player, warpIndex) {
         if (res.selection === 0) {
             // Teleportar
             try {
+                const targetLoc = { x: warp.x, y: warp.y, z: warp.z };
                 if (warp.dimId !== player.dimension.id) {
-                    // Teleporte entre dimensões
-                    player.teleport(
-                        { x: warp.x, y: warp.y, z: warp.z },
-                        { dimension: world.getDimension(warp.dimId) }
-                    );
+                    const targetDim = world.getDimension(warp.dimId);
+                    player.teleport(targetLoc, { dimension: targetDim });
                 } else {
-                    player.teleport({ x: warp.x, y: warp.y, z: warp.z });
+                    player.teleport(targetLoc);
                 }
+
                 player.playSound("mob.endermen.portal");
-                player.runCommand("particle minecraft:ender_explosion_emitter ~ ~ ~");
+                try {
+                    player.runCommandAsync("particle minecraft:ender_explosion_emitter ~ ~ ~");
+                } catch (e) {}
             } catch (e) {
-                player.sendMessage("§cErro: não foi possível teleportar. A dimensão pode estar descarregada.");
+                player.sendMessage(
+                    "§cErro: não foi possível teleportar. A dimensão pode estar descarregada."
+                );
             }
         } else if (res.selection === 1) {
             // Atualizar posição
@@ -157,23 +182,31 @@ function showWarpOptions(player, warpIndex) {
 function showEditWarpMenu(player, index) {
     const warps = getPlayerWarps(player);
     const warp = warps[index];
+    if (!warp) return;
 
     const colors = ["White", "Green", "Blue", "Yellow", "Purple", "Red"];
     const icons = ["Star", "House", "Sword", "Portal", "Chest"];
 
+    const colorIndex = Math.max(0, colors.indexOf(warp.color));
+    const iconIndex = Math.max(0, icons.indexOf(warp.icon));
+
     const form = new ModalFormData()
         .title("Editar Ponto")
         .textField("Nome", "Nome do ponto", warp.name)
-        .dropdown("Cor do nome", colors, Math.max(0, colors.indexOf(warp.color)))
-        .dropdown("Ícone", icons, Math.max(0, icons.indexOf(warp.icon)));
+        .dropdown("Cor do nome", colors, colorIndex)
+        .dropdown("Ícone", icons, iconIndex);
 
     form.show(player).then((res) => {
         if (res.canceled) return;
-        const [name, cIdx, iIdx] = res.formValues;
 
-        warp.name = name;
-        warp.color = colors[cIdx];
-        warp.icon = icons[iIdx];
+        const values = res.formValues;
+        const name = values[0];
+        const cIdx = values[1];
+        const iIdx = values[2];
+
+        warp.name = String(name || warp.name);
+        warp.color = colors[cIdx] || warp.color;
+        warp.icon = icons[iIdx] || warp.icon;
 
         savePlayerWarps(player, warps);
         player.sendMessage("§aPonto de teleporte atualizado.");
@@ -183,43 +216,35 @@ function showEditWarpMenu(player, index) {
 // Helpers (cores e ícones)
 function getColorCode(colorName) {
     const map = {
-        "White": "f",
-        "Green": "a",
-        "Blue": "b",
-        "Yellow": "e",
-        "Purple": "d",
-        "Red": "c"
+        White: "f",
+        Green: "a",
+        Blue: "b",
+        Yellow: "e",
+        Purple: "d",
+        Red: "c"
     };
     return map[colorName] || "f";
 }
 
 function getIconTexture(iconName) {
     const map = {
-        "Star": "textures/items/nether_star",
-        "House": "textures/items/bed_red",
-        "Sword": "textures/items/diamond_sword",
-        "Portal": "textures/ui/portalBg",
-        "Chest": "textures/blocks/chest_front"
+        Star: "textures/items/nether_star",
+        House: "textures/items/bed_red",
+        Sword: "textures/items/diamond_sword",
+        Portal: "textures/ui/portalBg",
+        Chest: "textures/blocks/chest_front"
     };
-    return map[iconName];
+    return map[iconName] || "textures/items/ender_pearl";
 }
 
-// ========= Função pra checar espaço em cima do elevador =========
-function hasSafeHeadroom(dim, x, elevatorY, z) {
-    const head1 = dim.getBlock({ x, y: elevatorY + 1, z });
-    const head2 = dim.getBlock({ x, y: elevatorY + 2, z });
+// ===================== ELEVADOR =====================
 
-    const isAir = (b) => !b || b.typeId === "minecraft:air";
-
-    // Só é seguro se os dois blocos acima forem ar
-    return isAir(head1) && isAir(head2);
-}
-
-// --- LÓGICA DO ELEVADOR ---
-
+// Lógica do elevador (subir e descer no mesmo loop)
 system.runInterval(() => {
     for (const player of world.getPlayers()) {
         try {
+            if (!player.isValid()) continue;
+
             // cooldown de teleporte
             if (player.hasTag("elevator_cd")) continue;
 
@@ -230,68 +255,67 @@ system.runInterval(() => {
             const y = Math.floor(loc.y);
             const z = Math.floor(loc.z);
 
-            const blockUnder = dim.getBlock({ x: x, y: y - 1, z: z });
+            // Alturas seguras do mundo
+            const minY =
+                typeof dim.getMinHeight === "function" ? dim.getMinHeight() : -64;
+            const maxY =
+                typeof dim.getMaxHeight === "function" ? dim.getMaxHeight() - 1 : 319;
+
+            // bloco diretamente embaixo do player
+            const baseY = Math.floor(y - 1);
+            if (baseY < minY || baseY > maxY) continue;
+
+            const blockUnder = dim.getBlock({ x: x, y: baseY, z: z });
 
             // Precisa estar em cima de um elevador
             if (!blockUnder || blockUnder.typeId !== ELEVATOR_ID) continue;
 
-            // --- DESCER (agachando / sneak) ---
+            const vel = player.getVelocity();
+
+            // ============ DESCER (agachando) ============
             if (player.isSneaking) {
-                let targetY = -999;
+                let targetY = null;
 
-                // Procura elevador para baixo até o limite configurado
-                for (let i = 2; i <= ELEVATOR_MAX_DIST; i++) {
-                    const checkY = y - i;
-
-                    // limite inferior do mundo
-                    if (checkY < dim.getMinHeight()) break;
+                for (let dist = 1; dist <= ELEVATOR_MAX_DIST; dist++) {
+                    const checkY = baseY - dist;
+                    if (checkY < minY) break;
 
                     const block = dim.getBlock({ x: x, y: checkY, z: z });
-
                     if (block && block.typeId === ELEVATOR_ID) {
-                        if (hasSafeHeadroom(dim, x, checkY, z)) {
-                            targetY = checkY + 1; // posição em cima do elevador
-                            break;
-                        }
+                        targetY = checkY + 1;
+                        break;
                     }
                 }
 
-                if (targetY !== -999) {
+                if (targetY !== null) {
+                    teleportPlayer(player, targetY, x, z);
+                }
+
+                // se está agachando, não tenta subir no mesmo tick
+                continue;
+            }
+
+            // ============ SUBIR (pulando) ============
+            if (vel.y > 0.05) {
+                let targetY = null;
+
+                for (let dist = 1; dist <= ELEVATOR_MAX_DIST; dist++) {
+                    const checkY = baseY + dist;
+                    if (checkY > maxY) break;
+
+                    const block = dim.getBlock({ x: x, y: checkY, z: z });
+                    if (block && block.typeId === ELEVATOR_ID) {
+                        targetY = checkY + 1;
+                        break;
+                    }
+                }
+
+                if (targetY !== null) {
                     teleportPlayer(player, targetY, x, z);
                 }
             }
-
-            // --- SUBIR (pulando) ---
-            else {
-                const vel = player.getVelocity();
-                if (vel.y > 0.05) {
-                    let targetY = -999;
-
-                    // Procura elevador para cima até o limite configurado
-                    for (let i = 1; i <= ELEVATOR_MAX_DIST; i++) {
-                        const checkY = y + i;
-
-                        // limite superior (ajusta se usar altura custom)
-                        if (checkY > 320) break;
-
-                        const block = dim.getBlock({ x: x, y: checkY, z: z });
-
-                        if (block && block.typeId === ELEVATOR_ID) {
-                            if (hasSafeHeadroom(dim, x, checkY, z)) {
-                                targetY = checkY + 1;
-                                break;
-                            }
-                        }
-                    }
-
-                    if (targetY !== -999) {
-                        teleportPlayer(player, targetY, x, z);
-                    }
-                }
-            }
         } catch (e) {
-            // Se quiser debugar, descomenta:
-            // console.warn("Erro no elevador:", e);
+            console.warn("Erro no elevador:", e);
         }
     }
 }, 2);
@@ -304,7 +328,7 @@ function teleportPlayer(player, targetY, blockX, blockZ) {
 
     try {
         player.runCommandAsync("particle minecraft:villager_happy ~ ~ ~");
-    } catch (e) { }
+    } catch (e) {}
 
     // cooldown pra não teleportar duas vezes seguidas sem querer
     player.addTag("elevator_cd");
