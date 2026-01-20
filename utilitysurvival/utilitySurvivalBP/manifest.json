@@ -1,13 +1,13 @@
 {
   "format_version": 2,
   "header": {
-    "description": "Behavior pack for TeleportAndElevator",
-    "name": "TeleportAndElevator BP",
+    "description": "Sistema de rede de baús com Wrench. Crie redes para compartilhar itens entre baús. Use a Wrench para configurar baús como entrada/saída. Combine Wrench + Funil para criar um Vacuum Hopper que coleta itens automaticamente.",
+    "name": "UtilitySurvival BP",
     "uuid": "a99a547f-a172-4c14-a0de-ac341ac412e1",
     "version": [
       1,
       0,
-      0
+      1
     ],
     "min_engine_version": [
       1,

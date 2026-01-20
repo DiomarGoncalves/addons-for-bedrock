@@ -14,6 +14,7 @@ export const WRENCH_ID = "custom:wrench";
 
 // Vanilla
 export const HOPPER_ID = "minecraft:hopper";
+export const CHEST_ID = "minecraft:chest";
 
 // =====================
 // DYNAMIC PROPERTIES
@@ -42,3 +43,25 @@ export const EH_DEBUG = false   ;
 export const REGISTRY_ENTITY_ID = "minecraft:armor_stand";
 export const TAG_REGISTRY = "eh_registry";
 export const TAG_ACTIVE_PREFIX = "eha:"; // eha:dim|x|y|z|range
+
+// =====================
+// CHEST NETWORK (ENDER-CHEST STYLE)
+// =====================
+
+// Stored as tags on the same registry entity (TAG_REGISTRY)
+// Def:   cn_def:<netId>|<displayName>|<colorId>
+// Input: cn_in:<dim|x|y|z>|<netId>
+// Output subscription (many): cn_out:<dim|x|y|z>|<netId>
+export const CN_DEF_PREFIX = "cn_def:";
+export const CN_IN_PREFIX = "cn_in:";
+export const CN_OUT_PREFIX = "cn_out:";
+
+// Color palette for links (id -> label)
+export const CN_COLORS = [
+  { id: "red", label: "Vermelho" },
+  { id: "green", label: "Verde" },
+  { id: "blue", label: "Azul" },
+  { id: "yellow", label: "Amarelo" },
+  { id: "purple", label: "Roxo" },
+  { id: "white", label: "Branco" },
+];

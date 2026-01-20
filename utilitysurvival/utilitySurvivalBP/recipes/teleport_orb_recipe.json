@@ -7,9 +7,9 @@
     "tags": [
       "crafting_table"
     ],
-    "unlock": {
-      "context": "none"
-    },
+    "unlock": [
+      "planks_obtained"
+    ],
     "pattern": [
       "EIE",
       "ICI",
