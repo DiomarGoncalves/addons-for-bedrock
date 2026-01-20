@@ -4,6 +4,9 @@
   "texture_data": {
     "teleport_orb": {
       "textures": "textures/items/teleport_orb"
+    },
+    "wrench": {
+      "textures": "textures/items/wrench"
     }
   }
 }
