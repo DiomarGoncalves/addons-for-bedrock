@@ -1,39 +1,69 @@
 import { world } from "@minecraft/server";
 import {
-  REGISTRY_ENTITY_ID,
-  TAG_REGISTRY,
   CN_DEF_PREFIX,
   CN_IN_PREFIX,
   CN_OUT_PREFIX,
+  CN_DEF_PREFIX_OLD,
+  CN_IN_PREFIX_OLD,
+  CN_OUT_PREFIX_OLD,
 } from "../../config/constants";
 
 // -----------------------------------------------------
-// Single global registry entity (1 armor stand) stores
-// all networks + mappings as tags.
+// Chest Network Registry (SEM ARMOR STAND)
+// -----------------------------------------------------
+// Motivo:
+// - Armor stands (registry) somem quando chunk descarrega.
+// - Aí ensureRegistry() não encontra e cria outro perto do player,
+//   gerando "enxame" de armor stand e quebrando o addon.
 //
-// Agora suporta:
-// - Senha por rede (opcional)
-// - Deletar/editar rede (com migração de netId)
-// - Remover uma rede limpa todos os vínculos
+// Solução:
+// - Armazenar tudo em Dynamic Property do mundo (JSON).
+// - Não depende de chunk carregado.
+// - Sem spawn/teleport de entidade.
 // -----------------------------------------------------
 
-function findRegistry(overworld) {
-  const ents = overworld.getEntities({ tags: [TAG_REGISTRY] });
-  for (const e of ents) return e;
-  return null;
+const DP_CHEST_NET = "us_chest_net_v1";
+
+function readData() {
+  const raw = world.getDynamicProperty(DP_CHEST_NET);
+  if (!raw) return { networks: {}, inputs: {}, outputs: {} };
+  try {
+    const obj = JSON.parse(raw);
+    if (!obj || typeof obj !== "object") return { networks: {}, inputs: {}, outputs: {} };
+    return {
+      networks: obj.networks && typeof obj.networks === "object" ? obj.networks : {},
+      inputs: obj.inputs && typeof obj.inputs === "object" ? obj.inputs : {},
+      outputs: obj.outputs && typeof obj.outputs === "object" ? obj.outputs : {},
+    };
+  } catch {
+    return { networks: {}, inputs: {}, outputs: {} };
+  }
 }
 
-export function ensureRegistry() {
-  const overworld = world.getDimension("overworld");
-  let reg = findRegistry(overworld);
-  if (reg) return reg;
+function writeData(data) {
+  world.setDynamicProperty(DP_CHEST_NET, JSON.stringify(data));
+}
 
-  reg = overworld.spawnEntity(REGISTRY_ENTITY_ID, { x: 0.5, y: 1.0, z: 0.5 });
-  try { reg.addTag(TAG_REGISTRY); } catch {}
-  try { reg.nameTag = ""; } catch {}
-  // best-effort invisibility (if not allowed, ignore)
-  try { reg.addEffect("invisibility", 999999, { amplifier: 1, showParticles: false }); } catch {}
-  return reg;
+function safeField(s) {
+  return String(s ?? "").replace(/\|/g, " ").trim();
+}
+
+function encodePwd(pwd) {
+  const p = String(pwd ?? "").trim();
+  if (!p) return "";
+  return encodeURIComponent(p);
+}
+
+function decodePwd(enc) {
+  const e = String(enc ?? "").trim();
+  if (!e) return "";
+  try { return decodeURIComponent(e); } catch { return e; }
+}
+
+export function ensureRegistry(_nearLocation) {
+  // Mantido por compatibilidade (calls existentes),
+  // mas não cria entidade nenhuma.
+  return {};
 }
 
 export function blockKey(block) {
@@ -52,27 +82,21 @@ export function parseKey(key) {
 }
 
 // ---------------- Networks ----------------
-function safeField(s) {
-  // tags use "|" as delimiter
-  return String(s ?? "").replace(/\|/g, " ").trim();
-}
-
-function encodePwd(pwd) {
-  const p = String(pwd ?? "").trim();
-  if (!p) return "";
-  // encode to be safe inside a tag (avoid pipes)
-  return encodeURIComponent(p);
-}
-
-function decodePwd(enc) {
-  const e = String(enc ?? "").trim();
-  if (!e) return "";
-  try { return decodeURIComponent(e); } catch { return e; }
+function buildNetworkDefTag(netId, displayName, colorId, password) {
+  const name = safeField(displayName);
+  const color = safeField(colorId);
+  const pwdEnc = encodePwd(password);
+  if (pwdEnc) return `${CN_DEF_PREFIX}${netId}|${name}|${color}|p=${pwdEnc}`;
+  return `${CN_DEF_PREFIX}${netId}|${name}|${color}`;
 }
 
 function parseNetworkDefTag(tag) {
-  if (!String(tag).startsWith(CN_DEF_PREFIX)) return null;
-  const raw = String(tag).substring(CN_DEF_PREFIX.length);
+  const s = String(tag);
+  let raw = null;
+  if (s.startsWith(CN_DEF_PREFIX)) raw = s.substring(CN_DEF_PREFIX.length);
+  else if (s.startsWith(CN_DEF_PREFIX_OLD)) raw = s.substring(CN_DEF_PREFIX_OLD.length);
+  else return null;
+
   const parts = raw.split("|");
   if (parts.length < 3) return null;
   const netId = parts[0];
@@ -87,38 +111,28 @@ function parseNetworkDefTag(tag) {
   return { netId, displayName, colorId, password };
 }
 
-function buildNetworkDefTag(netId, displayName, colorId, password) {
-  const name = safeField(displayName);
-  const color = safeField(colorId);
-  const pwdEnc = encodePwd(password);
-  if (pwdEnc) return `${CN_DEF_PREFIX}${netId}|${name}|${color}|p=${pwdEnc}`;
-  return `${CN_DEF_PREFIX}${netId}|${name}|${color}`;
-}
-
-export function getAllNetworks(registry) {
-  const out = [];
-  for (const t of registry.getTags()) {
-    const def = parseNetworkDefTag(t);
-    if (!def) continue;
-    out.push(def);
-  }
+export function getAllNetworks(_registry) {
+  const data = readData();
+  const out = Object.entries(data.networks).map(([netId, v]) => ({
+    netId,
+    displayName: String(v?.displayName ?? ""),
+    colorId: String(v?.colorId ?? ""),
+    password: String(v?.password ?? ""),
+  }));
   out.sort((a, b) => String(a.displayName).localeCompare(String(b.displayName)));
   return out;
 }
 
-export function getNetworkById(registry, netId) {
-  // Be robust against older versions that may have left duplicated tags.
-  // Prefer the *last* matching tag (newest) and accept both "<prefix><id>|" and "<prefix><id>".
-  const p1 = `${CN_DEF_PREFIX}${netId}|`;
-  const p2 = `${CN_DEF_PREFIX}${netId}`;
-  let found = null;
-  for (const t of registry.getTags()) {
-    if (t.startsWith(p1) || t === p2 || t.startsWith(p2 + "|")) {
-      const def = parseNetworkDefTag(t);
-      if (def) found = def;
-    }
-  }
-  return found;
+export function getNetworkById(_registry, netId) {
+  const data = readData();
+  const v = data.networks?.[netId];
+  if (!v) return null;
+  return {
+    netId,
+    displayName: String(v.displayName ?? ""),
+    colorId: String(v.colorId ?? ""),
+    password: String(v.password ?? ""),
+  };
 }
 
 export function networkHasPassword(registry, netId) {
@@ -130,174 +144,150 @@ export function verifyNetworkPassword(registry, netId, passwordAttempt) {
   const def = getNetworkById(registry, netId);
   if (!def) return false;
   const real = String(def.password ?? "").trim();
-  if (!real) return true; // no password => always ok
+  if (!real) return true;
   return String(passwordAttempt ?? "").trim() === real;
 }
 
-export function upsertNetworkDef(registry, netId, displayName, colorId, password) {
-  const p1 = `${CN_DEF_PREFIX}${netId}|`;
-  const p2 = `${CN_DEF_PREFIX}${netId}`;
-  for (const t of registry.getTags()) {
-    if (t.startsWith(p1) || t === p2 || t.startsWith(p2 + "|")) {
-      try { registry.removeTag(t); } catch {}
-    }
-  }
-  try {
-    registry.addTag(buildNetworkDefTag(netId, displayName, colorId, password));
-  } catch {}
+export function upsertNetworkDef(_registry, netId, displayName, colorId, password) {
+  const data = readData();
+  data.networks[netId] = {
+    displayName: safeField(displayName),
+    colorId: safeField(colorId),
+    password: String(password ?? "").trim(),
+    tagPreview: buildNetworkDefTag(netId, displayName, colorId, password), // debug/compat
+  };
+  writeData(data);
 }
 
-export function removeNetworkDef(registry, netId) {
-  const p1 = `${CN_DEF_PREFIX}${netId}|`;
-  const p2 = `${CN_DEF_PREFIX}${netId}`;
-  for (const t of registry.getTags()) {
-    if (t.startsWith(p1) || t === p2 || t.startsWith(p2 + "|")) {
-      try { registry.removeTag(t); } catch {}
-    }
-  }
+export function removeNetworkDef(_registry, netId) {
+  const data = readData();
+  delete data.networks[netId];
+  writeData(data);
 }
 
-function migrateNetIdInMappings(registry, prefix, oldNetId, newNetId) {
-  // prefix is CN_IN_PREFIX or CN_OUT_PREFIX
-  const toChange = [];
-  for (const t of registry.getTags()) {
-    if (!t.startsWith(prefix)) continue;
-    const raw = t.substring(prefix.length);
-    const idx = raw.lastIndexOf("|");
-    if (idx <= 0) continue;
-    const chestKey = raw.substring(0, idx);
-    const netId = raw.substring(idx + 1);
-    if (netId !== oldNetId) continue;
-    toChange.push({ oldTag: t, newTag: `${prefix}${chestKey}|${newNetId}` });
+function removeAllMappingsForNet(data, netId) {
+  // inputs: chestKey -> netId
+  for (const [ck, id] of Object.entries(data.inputs)) {
+    if (id === netId) delete data.inputs[ck];
   }
-  for (const ch of toChange) {
-    try { registry.removeTag(ch.oldTag); } catch {}
-    try { registry.addTag(ch.newTag); } catch {}
+  // outputs: chestKey -> [netId...]
+  for (const [ck, arr] of Object.entries(data.outputs)) {
+    const next = (Array.isArray(arr) ? arr : []).filter((id) => id !== netId);
+    if (next.length === 0) delete data.outputs[ck];
+    else data.outputs[ck] = next;
   }
 }
 
-export function migrateNetworkId(registry, oldNetId, newNetId) {
+export function deleteNetwork(_registry, netId) {
+  const data = readData();
+  removeAllMappingsForNet(data, netId);
+  delete data.networks[netId];
+  writeData(data);
+}
+
+export function migrateNetworkId(_registry, oldNetId, newNetId) {
   if (!oldNetId || !newNetId || oldNetId === newNetId) return;
-  migrateNetIdInMappings(registry, CN_IN_PREFIX, oldNetId, newNetId);
-  migrateNetIdInMappings(registry, CN_OUT_PREFIX, oldNetId, newNetId);
-}
+  const data = readData();
 
-export function removeAllMappingsForNet(registry, netId) {
-  const toRemove = [];
-  for (const t of registry.getTags()) {
-    if (t.startsWith(CN_IN_PREFIX) || t.startsWith(CN_OUT_PREFIX)) {
-      const raw = t.startsWith(CN_IN_PREFIX)
-        ? t.substring(CN_IN_PREFIX.length)
-        : t.substring(CN_OUT_PREFIX.length);
-
-      const idx = raw.lastIndexOf("|");
-      if (idx <= 0) continue;
-      const id = raw.substring(idx + 1);
-      if (id === netId) toRemove.push(t);
-    }
+  // networks
+  if (data.networks[oldNetId] && !data.networks[newNetId]) {
+    data.networks[newNetId] = data.networks[oldNetId];
   }
-  for (const t of toRemove) {
-    try { registry.removeTag(t); } catch {}
-  }
-}
+  delete data.networks[oldNetId];
 
-export function deleteNetwork(registry, netId) {
-  // remove def + all mappings
-  removeAllMappingsForNet(registry, netId);
-  removeNetworkDef(registry, netId);
+  // inputs
+  for (const [ck, id] of Object.entries(data.inputs)) {
+    if (id === oldNetId) data.inputs[ck] = newNetId;
+  }
+
+  // outputs
+  for (const [ck, arr] of Object.entries(data.outputs)) {
+    if (!Array.isArray(arr)) continue;
+    data.outputs[ck] = Array.from(new Set(arr.map((id) => (id === oldNetId ? newNetId : id))));
+  }
+
+  writeData(data);
 }
 
 // ---------------- Inputs ----------------
-function clearInputTagsFor(registry, chestKey) {
-  const prefix = `${CN_IN_PREFIX}${chestKey}|`;
-  for (const t of registry.getTags()) {
-    if (t.startsWith(prefix)) {
-      try { registry.removeTag(t); } catch {}
-    }
-  }
+export function removeChestInput(_registry, chestKey) {
+  const data = readData();
+  delete data.inputs[chestKey];
+  writeData(data);
 }
 
-// EXPORT: remove input mapping (tirar da rede)
-export function removeChestInput(registry, chestKey) {
-  clearInputTagsFor(registry, chestKey);
+export function setChestAsInput(_registry, chestKey, netId) {
+  const data = readData();
+
+  // TRAVA: se virar entrada, não pode ser saída
+  delete data.outputs[chestKey];
+
+  data.inputs[chestKey] = netId;
+  writeData(data);
 }
 
-export function setChestAsInput(registry, chestKey, netId) {
-  // TRAVA: se virar entrada, não pode ser saída ao mesmo tempo
-  clearChestOutputs(registry, chestKey);
-
-  // remove input anterior e set novo
-  clearInputTagsFor(registry, chestKey);
-  try { registry.addTag(`${CN_IN_PREFIX}${chestKey}|${netId}`); } catch {}
+export function getChestInputNetId(_registry, chestKey) {
+  const data = readData();
+  return data.inputs[chestKey] ?? null;
 }
 
-export function getChestInputNetId(registry, chestKey) {
-  const prefix = `${CN_IN_PREFIX}${chestKey}|`;
-  for (const t of registry.getTags()) {
-    if (t.startsWith(prefix)) return t.substring(prefix.length);
-  }
-  return null;
-}
-
-export function getInputsByNet(registry) {
-  // map netId -> [chestKey]
+export function getInputsByNet(_registry) {
+  const data = readData();
   const map = new Map();
-  for (const t of registry.getTags()) {
-    if (!t.startsWith(CN_IN_PREFIX)) continue;
-    const raw = t.substring(CN_IN_PREFIX.length);
-    const idx = raw.lastIndexOf("|");
-    if (idx <= 0) continue;
-    const chestKey = raw.substring(0, idx);
-    const netId = raw.substring(idx + 1);
+  for (const [ck, netId] of Object.entries(data.inputs)) {
     if (!map.has(netId)) map.set(netId, []);
-    map.get(netId).push(chestKey);
+    map.get(netId).push(ck);
   }
   return map;
 }
 
-// ---------------- Outputs (subscriptions) ----------------
-export function getChestOutputNetIds(registry, chestKey) {
-  const prefix = `${CN_OUT_PREFIX}${chestKey}|`;
-  const ids = [];
-  for (const t of registry.getTags()) {
-    if (t.startsWith(prefix)) ids.push(t.substring(prefix.length));
-  }
-  return Array.from(new Set(ids));
+// ---------------- Outputs ----------------
+export function getChestOutputNetIds(_registry, chestKey) {
+  const data = readData();
+  const arr = data.outputs[chestKey];
+  if (!Array.isArray(arr)) return [];
+  return Array.from(new Set(arr.map(String)));
 }
 
-export function addChestOutput(registry, chestKey, netId) {
-  // TRAVA: se virar saída, não pode ser entrada ao mesmo tempo
-  removeChestInput(registry, chestKey);
+export function addChestOutput(_registry, chestKey, netId) {
+  const data = readData();
 
-  try { registry.addTag(`${CN_OUT_PREFIX}${chestKey}|${netId}`); } catch {}
+  // TRAVA: se virar saída, não pode ser entrada
+  delete data.inputs[chestKey];
+
+  const cur = Array.isArray(data.outputs[chestKey]) ? data.outputs[chestKey] : [];
+  data.outputs[chestKey] = Array.from(new Set([...cur, netId]));
+  writeData(data);
 }
 
-export function removeChestOutput(registry, chestKey, netId) {
-  const tag = `${CN_OUT_PREFIX}${chestKey}|${netId}`;
-  try { registry.removeTag(tag); } catch {}
+export function removeChestOutput(_registry, chestKey, netId) {
+  const data = readData();
+  const cur = Array.isArray(data.outputs[chestKey]) ? data.outputs[chestKey] : [];
+  const next = cur.filter((id) => id !== netId);
+  if (next.length === 0) delete data.outputs[chestKey];
+  else data.outputs[chestKey] = next;
+  writeData(data);
 }
 
-export function clearChestOutputs(registry, chestKey) {
-  const prefix = `${CN_OUT_PREFIX}${chestKey}|`;
-  for (const t of registry.getTags()) {
-    if (t.startsWith(prefix)) {
-      try { registry.removeTag(t); } catch {}
-    }
-  }
+export function clearChestOutputs(_registry, chestKey) {
+  const data = readData();
+  delete data.outputs[chestKey];
+  writeData(data);
 }
 
-export function getOutputsByNet(registry) {
-  // map netId -> [chestKey]
+export function getOutputsByNet(_registry) {
+  const data = readData();
   const map = new Map();
-  for (const t of registry.getTags()) {
-    if (!t.startsWith(CN_OUT_PREFIX)) continue;
-    const raw = t.substring(CN_OUT_PREFIX.length);
-    const idx = raw.lastIndexOf("|");
-    if (idx <= 0) continue;
-    const chestKey = raw.substring(0, idx);
-    const netId = raw.substring(idx + 1);
-    if (!map.has(netId)) map.set(netId, []);
-    map.get(netId).push(chestKey);
+  for (const [ck, arr] of Object.entries(data.outputs)) {
+    if (!Array.isArray(arr)) continue;
+    for (const netId of arr) {
+      if (!map.has(netId)) map.set(netId, []);
+      map.get(netId).push(ck);
+    }
   }
   return map;
 }
+
+// Backwards-compat helpers (not used in current code but exported previously)
+export function removeNetworkDefLegacy(_registry, netId) { removeNetworkDef(_registry, netId); }
+export function upsertNetworkDefLegacy(_registry, netId, displayName, colorId, password) { upsertNetworkDef(_registry, netId, displayName, colorId, password); }

@@ -1,5 +1,5 @@
 import { system, world } from "@minecraft/server";
-import { CHEST_ID } from "../../config/constants";
+import { CONTAINER_BLOCK_IDS } from "../../config/constants";
 import {
   ensureRegistry,
   parseKey,
@@ -50,8 +50,21 @@ function getContainerFromBlock(block) {
   return null;
 }
 
-function isChestBlock(block) {
-  try { return block?.typeId === CHEST_ID; } catch { return false; }
+function isContainerBlock(block) {
+  if (!block) return false;
+  try {
+    const c1 = block.getComponent("inventory")?.container;
+    if (c1) return true;
+  } catch {}
+  try {
+    const c2 = block.getComponent("minecraft:inventory")?.container;
+    if (c2) return true;
+  } catch {}
+  try {
+    return CONTAINER_BLOCK_IDS.includes(block.typeId);
+  } catch {
+    return false;
+  }
 }
 
 function tryMoveStackFromSlot(inputContainer, slotIndex, outputContainer) {
@@ -126,7 +139,7 @@ function runOnce() {
     const outputContainers = [];
     for (const ok of outputKeys) {
       const ob = getBlockAtKey(ok);
-      if (!isChestBlock(ob)) continue;
+      if (!isContainerBlock(ob)) continue;
       const oc = getContainerFromBlock(ob);
       if (!oc) continue;
       outputContainers.push(oc);
@@ -138,7 +151,7 @@ function runOnce() {
       if (movesRef.count >= MAX_STACKS_MOVED_PER_RUN) return;
 
       const ib = getBlockAtKey(ik);
-      if (!isChestBlock(ib)) continue;
+      if (!isContainerBlock(ib)) continue;
 
       const ic = getContainerFromBlock(ib);
       if (!ic) continue;

@@ -1,5 +1,5 @@
 import { world, system } from "@minecraft/server";
-import { CHEST_ID, WRENCH_ID } from "../../config/constants";
+import { CONTAINER_BLOCK_IDS, WRENCH_ID, HOPPER_ID, EH_DEBUG } from "../../config/constants";
 import {
   ensureRegistry,
   blockKey,
@@ -50,6 +50,27 @@ function isSneaking(player) {
 
 function playerKey(player) {
   return player?.id ?? player?.name ?? "unknown";
+}
+
+function isContainerBlock(block) {
+  if (!block) return false;
+  // Preferir detecção por componente (funciona para baú, trapped, barrel, shulker, etc.)
+  try {
+    if (block.getComponent("inventory")?.container) return true;
+  } catch {}
+  try {
+    if (block.getComponent("minecraft:inventory")?.container) return true;
+  } catch {}
+  try {
+    return CONTAINER_BLOCK_IDS.includes(block.typeId);
+  } catch {
+    return false;
+  }
+}
+
+function debug(player, msg) {
+  if (!EH_DEBUG) return;
+  try { player?.sendMessage(`§7[Utilities]§r ${msg}`); } catch {}
 }
 
 function slugify(s) {
@@ -406,7 +427,9 @@ world.beforeEvents.itemUseOn.subscribe((ev) => {
 
   if (!player || !block || !item) return;
   if (item.typeId !== WRENCH_ID) return;
-  if (block.typeId !== CHEST_ID) return;
+  // HOPPER é gerenciado pela UI do Ender/Vacuum Hopper (wrench.events.js)
+  if (block.typeId === HOPPER_ID) return;
+  if (!isContainerBlock(block)) return;
   if (!isSneaking(player)) return;
 
   const pk = playerKey(player);
@@ -420,6 +443,8 @@ world.beforeEvents.itemUseOn.subscribe((ev) => {
   try { ev.cancel = true; } catch {}
 
   system.run(() => {
-    handleChestConfig(player, block).catch(() => {});
+    handleChestConfig(player, block).catch((err) => {
+      if (EH_DEBUG) console.warn(`[ChestNet] erro ao abrir UI: ${err}`);
+    });
   });
 });

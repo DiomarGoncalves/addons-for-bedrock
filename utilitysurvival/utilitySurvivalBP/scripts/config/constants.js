@@ -14,7 +14,32 @@ export const WRENCH_ID = "custom:wrench";
 
 // Vanilla
 export const HOPPER_ID = "minecraft:hopper";
-export const CHEST_ID = "minecraft:chest";
+
+// Containers (compatibilidade com mundos que usam baús diferentes / barrels / etc.)
+// A lógica também tenta detectar container via component "inventory".
+export const CONTAINER_BLOCK_IDS = [
+  "minecraft:chest",
+  "minecraft:trapped_chest",
+  "minecraft:barrel",
+  "minecraft:ender_chest",
+  "minecraft:shulker_box",
+  "minecraft:white_shulker_box",
+  "minecraft:orange_shulker_box",
+  "minecraft:magenta_shulker_box",
+  "minecraft:light_blue_shulker_box",
+  "minecraft:yellow_shulker_box",
+  "minecraft:lime_shulker_box",
+  "minecraft:pink_shulker_box",
+  "minecraft:gray_shulker_box",
+  "minecraft:light_gray_shulker_box",
+  "minecraft:cyan_shulker_box",
+  "minecraft:purple_shulker_box",
+  "minecraft:blue_shulker_box",
+  "minecraft:brown_shulker_box",
+  "minecraft:green_shulker_box",
+  "minecraft:red_shulker_box",
+  "minecraft:black_shulker_box",
+];
 
 // =====================
 // DYNAMIC PROPERTIES
@@ -34,15 +59,25 @@ export const DP_ENDER_HOPPER = "ender_hopper_map";
 export const ENDER_HOPPER_MAX_RANGE = 15;
 
 export const VACUUM_ENTITY_ID = "minecraft:armor_stand";
-export const TAG_VACUUM = "eh_vacuum";
-export const TAG_VACUUM_KEY_PREFIX = "ehk:";
-export const TAG_RANGE_PREFIX = "ehr:";
+// Tags antigos (para manter mundos já configurados funcionando)
+export const TAG_VACUUM_OLD = "eh_vacuum";
+export const TAG_VACUUM_KEY_PREFIX_OLD = "ehk:";
+export const TAG_RANGE_PREFIX_OLD = "ehr:";
 
-export const EH_DEBUG = false   ; 
+// Tags novos (namespaced para evitar conflito com outros addons)
+export const TAG_VACUUM = "us_eh_vacuum";
+export const TAG_VACUUM_KEY_PREFIX = "us_ehk:";
+export const TAG_RANGE_PREFIX = "us_ehr:";
+
+export const EH_DEBUG = true   ; 
 
 export const REGISTRY_ENTITY_ID = "minecraft:armor_stand";
-export const TAG_REGISTRY = "eh_registry";
-export const TAG_ACTIVE_PREFIX = "eha:"; // eha:dim|x|y|z|range
+
+export const TAG_REGISTRY_OLD = "eh_registry";
+export const TAG_ACTIVE_PREFIX_OLD = "eha:"; // eha:dim|x|y|z|range
+
+export const TAG_REGISTRY = "us_eh_registry";
+export const TAG_ACTIVE_PREFIX = "us_eha:"; // us_eha:dim|x|y|z|range
 
 // =====================
 // CHEST NETWORK (ENDER-CHEST STYLE)
@@ -52,9 +87,14 @@ export const TAG_ACTIVE_PREFIX = "eha:"; // eha:dim|x|y|z|range
 // Def:   cn_def:<netId>|<displayName>|<colorId>
 // Input: cn_in:<dim|x|y|z>|<netId>
 // Output subscription (many): cn_out:<dim|x|y|z>|<netId>
-export const CN_DEF_PREFIX = "cn_def:";
-export const CN_IN_PREFIX = "cn_in:";
-export const CN_OUT_PREFIX = "cn_out:";
+export const CN_DEF_PREFIX_OLD = "cn_def:";
+export const CN_IN_PREFIX_OLD = "cn_in:";
+export const CN_OUT_PREFIX_OLD = "cn_out:";
+
+// Prefixes novos (namespaced)
+export const CN_DEF_PREFIX = "us_cn_def:";
+export const CN_IN_PREFIX = "us_cn_in:";
+export const CN_OUT_PREFIX = "us_cn_out:";
 
 // Color palette for links (id -> label)
 export const CN_COLORS = [

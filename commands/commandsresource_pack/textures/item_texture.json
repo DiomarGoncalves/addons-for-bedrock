@@ -1,0 +1,9 @@
+{
+  "resource_pack_name": "Command painel Plus",
+  "texture_name": "atlas.items",
+  "texture_data": {
+    "painel_comandos": {
+      "textures": "textures/items/painel_comandos"
+    }
+  }
+}
