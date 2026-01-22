@@ -1,0 +1,43 @@
+{
+  "format_version": "1.21.100",
+  "minecraft:item": {
+    "description": {
+      "identifier": "cloudwands:stone_wand",
+      "menu_category": {
+        "category": "items"
+      }
+    },
+    "components": {
+      "minecraft:hand_equipped": false,
+      "minecraft:max_stack_size": 1,
+      "minecraft:glint": false,
+      "minecraft:use_modifiers": {
+        "movement_modifier": 1,
+        "use_duration": 0
+      },
+      "minecraft:icon": "cloudwands:stone_wand",
+      "builder_wands:wand": {
+        "block_placed": 5
+      },
+      "minecraft:durability": {
+        "max_durability": 130
+      },
+      "minecraft:repairable": {
+        "repair_items": [
+          {
+            "items": [
+              "minecraft:cobblestone"
+            ],
+            "repair_amount": 30
+          },
+          {
+            "items": [
+              "cloudwands:stone_wand"
+            ],
+            "repair_amount": "context.other->query.remaining_durability + 0.25 * context.other->query.max_durability"
+          }
+        ]
+      }
+    }
+  }
+}

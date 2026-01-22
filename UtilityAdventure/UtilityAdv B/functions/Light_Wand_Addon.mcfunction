@@ -1,0 +1,16 @@
+give @s lightwand:light_block_12
+give @s lightwand:light_block_13
+give @s lightwand:light_block_1
+give @s lightwand:light_block_10
+give @s lightwand:light_block_11
+give @s lightwand:light_block_14
+give @s lightwand:light_block_15
+give @s lightwand:light_block_2
+give @s lightwand:light_block_3
+give @s lightwand:light_block_5
+give @s lightwand:light_block_7
+give @s lightwand:light_block_4
+give @s lightwand:light_block_9
+give @s lightwand:light_block_6
+give @s lightwand:light_block_8
+give @s lightwand:light_wand

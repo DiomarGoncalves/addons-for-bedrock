@@ -1,0 +1,1 @@
+give @s cloudwands:diamond_wand

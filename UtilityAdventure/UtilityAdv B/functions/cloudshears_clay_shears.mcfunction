@@ -1,0 +1,1 @@
+give @s cloudshears:clay_shears

@@ -1,0 +1,30 @@
+{
+  "format_version": "1.21.100",
+  "minecraft:item": {
+    "description": {
+      "identifier": "fluidcells:lava_cell",
+      "menu_category": {
+        "category": "nature"
+      }
+    },
+    "components": {
+      "using_converts_to": "fluidcells:lava_cell_1",
+      "minecraft:hand_equipped": false,
+      "minecraft:max_stack_size": 64,
+      "minecraft:glint": false,
+      "minecraft:use_modifiers": {
+        "movement_modifier": 1,
+        "use_duration": 0
+      },
+      "fluidcells:fluidCell":{},
+      "minecraft:icon": "fluidcells:lava_cell",
+      "minecraft:allow_off_hand": false,
+      "minecraft:tags": {
+        "tags": [
+          "minecraft:transform_materials",
+          "fluidcells:fluidCell"
+        ]
+      }
+    }
+  }
+}

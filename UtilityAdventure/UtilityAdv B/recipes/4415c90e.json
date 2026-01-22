@@ -1,0 +1,25 @@
+{
+  "format_version": "1.12",
+  "minecraft:recipe_shapeless": {
+    "description": {
+      "identifier": "recipes_e8d188c7"
+    },
+    "tags": [
+      "smithing_table"
+    ],
+    "ingredients": [
+      {
+        "item": "cloudwands:diamond_wand",
+        "data": 0
+      },
+      {
+        "item": "minecraft:netherite_ingot",
+        "data": 0
+      }
+    ],
+    "result": {
+      "item": "cloudwands:netherite_wand",
+      "count": 1
+    }
+  }
+}

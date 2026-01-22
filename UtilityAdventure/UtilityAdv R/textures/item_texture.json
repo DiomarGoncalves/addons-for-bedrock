@@ -1,0 +1,159 @@
+{
+  "resource_pack_name": "vanilla",
+  "texture_name": "atlas.items",
+  "texture_data": {
+    "lightwand:light_wand": {
+      "textures": "textures/items/cloud/lightwand_light_wand"
+    },
+    "fluidcells:empty_cell": {
+      "textures": "textures/items/cloud/fluidcells_empty_cell"
+    },
+    "fluidcells:lava_cell": {
+      "textures": "textures/items/cloud/fluidcells_lava_cell"
+    },
+    "fluidcells:lava_cell_1": {
+      "textures": "textures/items/cloud/fluidcells_lava_cell_1"
+    },
+    "fluidcells:lava_cell_2": {
+      "textures": "textures/items/cloud/fluidcells_lava_cell_2"
+    },
+    "fluidcells:lava_cell_3": {
+      "textures": "textures/items/cloud/fluidcells_lava_cell_3"
+    },
+    "fluidcells:water_cell": {
+      "textures": "textures/items/cloud/fluidcells_water_cell"
+    },
+    "fluidcells:water_cell_1": {
+      "textures": "textures/items/cloud/fluidcells_water_cell_1"
+    },
+    "fluidcells:water_cell_2": {
+      "textures": "textures/items/cloud/fluidcells_water_cell_2"
+    },
+    "fluidcells:water_cell_3": {
+      "textures": "textures/items/cloud/fluidcells_water_cell_3"
+    },
+    "claybucket:clay_bucket": {
+      "textures": "textures/items/cloud/claybucket_clay_bucket"
+    },
+    "claybucket:clay_bucket_lava": {
+      "textures": "textures/items/cloud/claybucket_clay_bucket_lava"
+    },
+    "claybucket:unfired_clay_bucket": {
+      "textures": "textures/items/cloud/claybucket_unfired_clay_bucket"
+    },
+    "claybucket:clay_bucket_water": {
+      "textures": "textures/items/cloud/claybucket_clay_bucket_water"
+    },
+    "cloudwands:infinite_wand": {
+      "textures": "textures/items/cloud/cloudwands_infinite_wand"
+    },
+    "cloudwands:diamond_wand": {
+      "textures": "textures/items/cloud/cloudwands_diamond_wand"
+    },
+    "cloudwands:stone_wand": {
+      "textures": "textures/items/cloud/cloudwands_stone_wand"
+    },
+    "cloudwands:netherite_wand": {
+      "textures": "textures/items/cloud/cloudwands_netherite_wand"
+    },
+    "cloudwands:iron_wand": {
+      "textures": "textures/items/cloud/cloudwands_iron_wand"
+    },
+    "cloudwands:wooden_wand": {
+      "textures": "textures/items/cloud/cloudwands_wooden_wand"
+    },
+    "cloudshears:clay_shears": {
+      "textures": "textures/items/cloud/cloudshears_clay_shears"
+    },
+    "cloudshears:unfired_shears": {
+      "textures": "textures/items/cloud/cloudshears_unfired_shears"
+    },
+      "loot_bags:common_loot_bag": {
+			"textures": "textures/items/cloud/common_loot_bag"
+		},
+		"loot_bags:uncommon_loot_bag": {
+			"textures": "textures/items/cloud/uncommon_loot_bag"
+		},
+		"loot_bags:rare_loot_bag": {
+			"textures": "textures/items/cloud/rare_loot_bag"
+		},
+		"loot_bags:epic_loot_bag": {
+			"textures": "textures/items/cloud/epic_loot_bag"
+		},
+		"loot_bags:legendary_loot_bag": {
+			"textures": "textures/items/cloud/legendary_loot_bag"
+		},
+		"loot_bags:transcendent_loot_bag": {
+			"textures": "textures/items/cloud/transcendent_loot_bag"
+		},
+		"loot_bags:divine_loot_bag": {
+			"textures": "textures/items/cloud/divine_loot_bag"
+		},
+    "cloudwands:bronze_wand": {
+      "textures": "textures/items/cloud/cloudwands_bronze_wand"
+    },
+    "cloudwands:energized_iron_wand": {
+      "textures": "textures/items/cloud/cloudwands_energized_iron_wand"
+    },
+    "cloudwands:copper_wand": {
+      "textures": "textures/items/cloud/cloudwands_copper_wand"
+    },
+    "cloudwands:gold_wand": {
+      "textures": "textures/items/cloud/cloudwands_gold_wand"
+    },
+    "cloudwands:platinum_wand": {
+      "textures": "textures/items/cloud/cloudwands_platinum_wand"
+    },
+    "cloudwands:steel_wand": {
+      "textures": "textures/items/cloud/cloudwands_steel_wand"
+    },
+    "cloudwands:tin_wand": {
+      "textures": "textures/items/cloud/cloudwands_tin_wand"
+    },
+    "cloudwands_Aetherium_wand": {
+      "textures": "textures/items/cloud/cloudwands_Aetherium_wand"
+    },
+    "cloudham:infinite_ham_3": {
+      "textures": "textures/items/cloud/cloudham_infinite_ham_3"
+    },
+    "cloudham:infinite_ham_2": {
+      "textures": "textures/items/cloud/cloudham_infinite_ham_2"
+    },
+    "cloudham:infinite_ham": {
+      "textures": "textures/items/cloud/cloudham_infinite_ham"
+    },
+    "cloudham:infinite_ham_0": {
+      "textures": "textures/items/cloud/cloudham_infinite_ham_0"
+    },
+    "cloudham:infinite_ham_4": {
+      "textures": "textures/items/cloud/cloudham_infinite_ham_4"
+    },
+    "cloudham:infinite_ham_1": {
+      "textures": "textures/items/cloud/cloudham_infinite_ham_1"
+    },
+    "cloudham:infinite_ham_5": {
+      "textures": "textures/items/pamobile/cloudham_infinite_ham_5"
+    },
+    "cloudham:infinite_ham_6": {
+      "textures": "textures/items/cloud/cloudham_infinite_ham_6"
+    },
+    "holycloud:angelic_feather": {
+      "textures": "textures/items/cloud/holycloud_angelic_feather"
+    },
+    "cloudham:infinite_ham_7": {
+      "textures": "textures/items/cloud/cloudham_infinite_ham_7"
+    },
+    "cloudrelic:knowledge_seeker": {
+      "textures": "textures/items/cloud/cloudrelic_knowledge_seeker"
+    },
+    "cloudham:infinite_ham_8": {
+      "textures": "textures/items/cloud/cloudham_infinite_ham_8"
+    },
+    "holycloud:miners_dream": {
+      "textures": "textures/items/cloud/holycloud_miners_dream"
+    },
+    "holycloud:rending_gale": {
+      "textures": "textures/items/cloud/holycloud_rending_gale"
+    }
+  }
+}

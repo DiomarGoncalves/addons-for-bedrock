@@ -1,0 +1,1 @@
+give @s claybucket:clay_bucket

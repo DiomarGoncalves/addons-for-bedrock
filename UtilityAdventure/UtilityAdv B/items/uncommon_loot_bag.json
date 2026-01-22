@@ -1,0 +1,20 @@
+{
+	"format_version": "1.21.100",
+	"minecraft:item": {
+		"description": {
+			"identifier": "cloud_loot_bags:uncommon_loot_bag",
+			"menu_category": { "category": "items" }
+		},
+		"components": {
+			"minecraft:icon": "loot_bags:uncommon_loot_bag",
+			"minecraft:hover_text_color": "light_green",
+			"minecraft:tags": {
+				"tags": [
+					"loot_bags:uncommon_loot_bag"
+				]
+			},
+			"minecraft:rarity": "uncommon",
+			"cloud_loot_bags:on_use": {}
+		}
+	}
+}

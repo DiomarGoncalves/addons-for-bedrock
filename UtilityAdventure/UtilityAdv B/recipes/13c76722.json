@@ -1,0 +1,19 @@
+{
+  "format_version": "1.12",
+  "minecraft:recipe_furnace": {
+    "tags": [
+      "blast_furnace"
+    ],
+    "output": {
+      "item": "claybucket:clay_bucket",
+      "data": 0
+    },
+    "input": {
+      "item": "claybucket:unfired_clay_bucket",
+      "data": 0
+    },
+    "description": {
+      "identifier": "recipes_6ca93e69"
+    }
+  }
+}

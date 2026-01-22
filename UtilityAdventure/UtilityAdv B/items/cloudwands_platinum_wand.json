@@ -1,0 +1,43 @@
+{
+  "format_version": "1.21.100",
+  "minecraft:item": {
+    "description": {
+      "identifier": "cloudwands:platinum_wand",
+      "menu_category": {
+        "category": "items"
+      }
+    },
+    "components": {
+      "minecraft:hand_equipped": false,
+      "minecraft:max_stack_size": 1,
+      "minecraft:glint": false,
+      "minecraft:use_modifiers": {
+        "movement_modifier": 1,
+        "use_duration": 0
+      },
+      "minecraft:icon": "cloudwands:platinum_wand",
+      "builder_wands:wand": {
+        "block_placed": 1900
+      },
+      "minecraft:durability": {
+        "max_durability": 1900
+      },
+      "minecraft:repairable": {
+        "repair_items": [
+          {
+            "items": [
+              "antiquity:platinum_ingot"
+            ],
+            "repair_amount": 200
+          },
+          {
+            "items": [
+              "cloudwands:platinum_wand"
+            ],
+            "repair_amount": "context.other->query.remaining_durability + 0.25 * context.other->query.max_durability"      
+          }
+        ]
+      }
+    }
+  }
+}

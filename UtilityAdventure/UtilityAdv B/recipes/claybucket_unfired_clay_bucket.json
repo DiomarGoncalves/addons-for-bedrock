@@ -1,0 +1,25 @@
+{
+  "format_version": "1.12",
+  "minecraft:recipe_shaped": {
+    "description": {
+      "identifier": "unfired_clay_bucket_b4298a0b"
+    },
+    "tags": [
+      "crafting_table"
+    ],
+    "pattern": [
+      "A A",
+      " A "
+    ],
+    "key": {
+      "A": {
+        "item": "minecraft:clay_ball",
+        "data": 0
+      }
+    },
+    "result": {
+      "item": "claybucket:unfired_clay_bucket",
+      "count": 1
+    }
+  }
+}

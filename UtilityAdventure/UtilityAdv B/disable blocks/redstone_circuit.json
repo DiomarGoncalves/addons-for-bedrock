@@ -1,0 +1,119 @@
+{
+  "format_version": "1.21.120",
+  "minecraft:block": {
+    "description": {
+      "identifier": "cloud_redstone:redstone_circuit",
+      "menu_category": {
+        "category": "construction"
+      },
+      "states": {
+        "ubd:powered": [
+          0,
+          1
+        ]
+      }
+    },
+    "permutations": [
+      {
+        "condition": "q.block_state('ubd:powered') == 0 ",
+        "components": {
+          "minecraft:redstone_producer": {
+            "power": 0,
+            "strongly_powered_face": "up",
+            "connected_faces": [
+              "up",
+              "north",
+              "south",
+              "west",
+              "east"
+            ]
+          },
+          "minecraft:material_instances": {
+            "*": {
+              "texture": "redstone_circuit_off",
+              "render_method": "opaque"
+            }
+          }
+        }
+      },
+      {
+        "condition": "q.block_state('ubd:powered') == 1 ",
+        "components": {
+          "minecraft:redstone_producer": {
+            "power": 15,
+            "strongly_powered_face": "up",
+            "connected_faces": [
+              "up",
+              "north",
+              "south",
+              "west",
+              "east"
+            ]
+          },
+          "minecraft:material_instances": {
+            "*": {
+              "texture": "redstone_circuit_on",
+              "render_method": "opaque"
+            }
+          }
+        }
+      }
+    ],
+    "components": {
+      "minecraft:redstone_conductivity": {
+        "allows_wire_to_step_down": true,
+        "redstone_conductor": true
+      },
+      "minecraft:destructible_by_mining": {
+        "seconds_to_destroy": 0.3
+      },
+      "minecraft:destructible_by_explosion": {
+        "explosion_resistance": 0.3
+      },
+      "minecraft:friction": 0.4,
+      "minecraft:map_color": "#FFFFFF",
+      "minecraft:light_dampening": 0,
+      "minecraft:light_emission": 0,
+      "minecraft:collision_box": {
+        "origin": [
+          -8.0,
+          0.0,
+          -8.0
+        ],
+        "size": [
+          16.0,
+          3.0,
+          16.0
+        ]
+      },
+      "minecraft:selection_box": {
+        "origin": [
+          -8.0,
+          0.0,
+          -8.0
+        ],
+        "size": [
+          16.0,
+          3.0,
+          16.0
+        ]
+      },
+      "minecraft:geometry": "geometry.redstone_circuit",
+      "redstone_circuit:redstone": {},
+      "redstone_circuit:redstone_2": {},
+      "minecraft:material_instances": {
+        "*": {
+          "texture": "redstone_circuit_off",
+          "render_method": "opaque"
+        }
+      },
+      "minecraft:tick": {
+        "interval_range": [
+          4,
+          4
+        ],
+        "looping": true
+      }
+    }
+  }
+}

@@ -1,0 +1,1 @@
+give @s cloudshears:unfired_shears

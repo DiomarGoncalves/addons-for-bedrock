@@ -1,0 +1,1 @@
+give @s lightwand:light_wand

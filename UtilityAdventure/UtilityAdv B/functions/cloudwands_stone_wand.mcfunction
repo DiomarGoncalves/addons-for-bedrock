@@ -1,0 +1,1 @@
+give @s cloudwands:stone_wand

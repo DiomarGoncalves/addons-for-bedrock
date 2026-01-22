@@ -1,0 +1,1 @@
+give @s cloudwands:infinite_wand

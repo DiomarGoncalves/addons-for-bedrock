@@ -1,0 +1,1 @@
+give @s cloudwands:wooden_wand

@@ -1,0 +1,17 @@
+{
+  "resource_pack_name": "Adventure",
+  "texture_name": "atlas.terrain",
+  "padding": 8,
+  "num_mip_levels": 4,
+  "texture_data": {
+    "lightwand_light_block": { 
+      "textures": "textures/blocks/lightwand_light_block" 
+    },
+		"redstone_circuit_off": {
+			"textures": "textures/blocks/redstone_circuit_off"
+		},
+		"redstone_circuit_on": {
+			"textures": "textures/blocks/redstone_circuit_on"
+    }
+  }
+}

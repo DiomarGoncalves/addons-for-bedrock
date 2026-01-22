@@ -1,0 +1,124 @@
+{
+  "format_version": "1.21.100",
+  "minecraft:item": {
+    "description": {
+      "identifier": "cloudshears:clay_shears",
+      "menu_category": {
+        "category": "equipment"
+      }
+    },
+    "components": {
+      "minecraft:icon": "cloudshears:clay_shears",
+      "minecraft:max_stack_size": 1,
+      "minecraft:durability": {
+        "max_durability": 15
+      },
+      "minecraft:enchantable": {
+        "value": 0,
+        "slot": "shears"
+      },
+      "minecraft:tags": {
+        "tags": [
+          "is_shears",
+          "minecraft:is_tool",
+          "minecraft:wooden_tier"
+        ]
+      },
+      "minecraft:repairable": {
+        "repair_items": [
+          {
+            "items": [
+              "minecraft:clay_ball"
+            ],
+            "repair_amount": 10
+          },
+          {
+            "items": [
+              "cloudwands:wooden_wand"
+            ],
+            "repair_amount": "context.other->query.remaining_durability + 0.10 * context.other->query.max_durability"
+          }
+        ]
+      },
+      "minecraft:digger": {
+        "use_efficiency": true,
+        "destroy_speeds": [
+          {
+            "block": "minecraft:leaves",
+            "speed": 8
+          },
+          {
+            "block": "minecraft:pale_oak_leaves",
+            "speed": 8
+          },
+          {
+            "block": "minecraft:acacia_leaves",
+            "speed": 8
+          },
+          {
+            "block": "minecraft:azalea_leaves",
+            "speed": 8
+          },
+          {
+            "block": "minecraft:azalea_leaves_flowered",
+            "speed": 8
+          },
+          {
+            "block": "minecraft:birch_leaves",
+            "speed": 8
+          },
+          {
+            "block": "minecraft:cherry_leaves",
+            "speed": 8
+          },
+          {
+            "block": "minecraft:dark_oak_leaves",
+            "speed": 8
+          },
+          {
+            "block": "minecraft:jungle_leaves",
+            "speed": 8
+          },
+          {
+            "block": "minecraft:mangrove_leaves",
+            "speed": 8
+          },
+          {
+            "block": "minecraft:oak_leaves",
+            "speed": 8
+          },
+          {
+            "block": "minecraft:spruce_leaves",
+            "speed": 8
+          },
+          {
+            "block": "minecraft:vine",
+            "speed": 8
+          },
+          {
+            "block": "minecraft:web",
+            "speed": 8
+          },
+          {
+            "block": "minecraft:wool",
+            "speed": 3
+          },
+          {
+            "block": {
+              "tags": "q.any_tag('minecraft:grass', 'minecraft:tall_grass')"
+            },
+            "speed": 8
+          }
+        ]
+      },
+      "minecraft:glint": false,
+      "minecraft:use_modifiers": {
+        "movement_modifier": 1,
+        "use_duration": 0
+      },
+      "minecraft:hand_equipped": true,
+      "minecraft:allow_off_hand": false,
+      "cloudshears:shears": {}
+    }
+  }
+}

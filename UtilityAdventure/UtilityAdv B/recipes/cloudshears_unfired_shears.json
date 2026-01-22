@@ -1,0 +1,25 @@
+{
+  "format_version": "1.12",
+  "minecraft:recipe_shaped": {
+    "description": {
+      "identifier": "unfired_shears_4a5198bf"
+    },
+    "tags": [
+      "crafting_table"
+    ],
+    "pattern": [
+      " A",
+      "A "
+    ],
+    "key": {
+      "A": {
+        "item": "minecraft:clay_ball",
+        "data": 0
+      }
+    },
+    "result": {
+      "item": "cloudshears:unfired_shears",
+      "count": 1
+    }
+  }
+}

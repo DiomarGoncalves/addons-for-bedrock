@@ -1,0 +1,28 @@
+{
+  "format_version": 2,
+  "header": {
+    "description": "Enjoy and have fun by Cloud",
+    "name": "UtilityAdventure 2.5",
+    "uuid": "8ed96949-e9c0-48c9-b597-ab410812b8cc",
+    "version": [ 21, 21, 21 ],
+    "min_engine_version": [ 1, 21, 0 ],
+    "pack_scope": "world"
+  },
+  "modules": [
+    {
+      "description": "Enjoy and have fun by Cloud",
+      "type": "resources",
+      "uuid": "3992a80d-ce86-48c2-88ac-0402360296af",
+      "version": [ 21, 21, 21 ]
+    }
+  ],
+  "metadata": {
+    "product_type": "addon"
+  },
+  "dependencies": [
+    {
+      "uuid": "0e25b4df-d30a-42d9-afa3-e069a1039176",
+      "version": [ 21, 21, 21 ]
+    }
+  ]
+}

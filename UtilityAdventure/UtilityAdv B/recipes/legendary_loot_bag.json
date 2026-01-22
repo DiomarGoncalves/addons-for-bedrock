@@ -1,0 +1,25 @@
+{
+  "format_version": "1.12",
+  "minecraft:recipe_shaped": {
+    "description": {
+      "identifier": "legendary_loot_bag_4a5198bf"
+    },
+    "tags": [
+      "crafting_table"
+    ],
+    "pattern": [
+      "AA ",
+      "AA "
+    ],
+    "key": {
+      "A": {
+        "item": "cloud_loot_bags:legendary_loot_bag",
+        "data": 0
+      }
+    },
+    "result": {
+      "item": "cloud_loot_bags:divine_loot_bag",
+      "count": 1
+    }
+  }
+}
