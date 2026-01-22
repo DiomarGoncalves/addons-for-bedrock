@@ -122,18 +122,30 @@ system.runInterval(() => {
       const dim = getDimensionById(parsed.dimId);
       if (!dim) continue;
 
-      // Se o chunk do hopper não estiver carregado, getBlock pode falhar → ignora (não cria nada)
-      let hopper;
-      try { hopper = dim.getBlock({ x: parsed.x, y: parsed.y, z: parsed.z }); }
-      catch { hopper = null; }
+      // Tentar acessar o bloco do hopper.
+      // IMPORTANTE: se o chunk estiver descarregado, NÃO desativar config.
+      // Apenas pule este tick; quando o chunk voltar a carregar, retoma sozinho.
+      let hopper = null;
+      let gotBlock = false;
+      try {
+        hopper = dim.getBlock({ x: parsed.x, y: parsed.y, z: parsed.z });
+        gotBlock = true;
+      } catch (e) {
+        // LocationInUnloadedChunkError / chunk não tickando -> ignora
+        gotBlock = false;
+      }
 
-      if (!hopper || hopper.typeId !== HOPPER_ID) {
-        // Hopper removido → desativa config
-        disableHopperByKey(key);
+      // Se não conseguimos ler o bloco (chunk descarregado), apenas ignora.
+      if (!gotBlock || !hopper) {
         continue;
       }
 
-      const range = clamp(Number(cfg.range) || 0, 0, ENDER_HOPPER_MAX_RANGE);
+      // Se conseguimos ler e não é mais um hopper, aí sim desativa (foi removido/trocado).
+      if (hopper.typeId !== HOPPER_ID) {
+        disableHopperByKey(key);
+        continue;
+      }
+const range = clamp(Number(cfg.range) || 0, 0, ENDER_HOPPER_MAX_RANGE);
       if (range <= 0) continue;
 
       // Vacuum marker por hopper (fixo no topo do hopper)
