@@ -1,0 +1,20 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:attachable": {
+    "description": {
+      "identifier": "custom:jetpack_netherite",
+      "materials": {
+        "default": "entity_alphatest"
+      },
+      "textures": {
+        "default": "textures/entity/jetpacks/jetpack_netherite"
+      },
+      "geometry": {
+        "default": "geometry.custom_jetpack"
+      },
+      "render_controllers": [
+        "controller.render.custom_jetpack"
+      ]
+    }
+  }
+}

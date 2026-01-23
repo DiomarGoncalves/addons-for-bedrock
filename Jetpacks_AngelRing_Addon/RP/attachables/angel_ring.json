@@ -1,0 +1,20 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:attachable": {
+    "description": {
+      "identifier": "custom:angel_ring",
+      "materials": {
+        "default": "entity_alphatest"
+      },
+      "textures": {
+        "default": "textures/entity/angel/angel_ring"
+      },
+      "geometry": {
+        "default": "geometry.custom_angel_ring"
+      },
+      "render_controllers": [
+        "controller.render.custom_angel_ring"
+      ]
+    }
+  }
+}
