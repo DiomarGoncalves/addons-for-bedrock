@@ -1,0 +1,52 @@
+{
+  "format_version": 2,
+  "header": {
+    "description": "Adds Jetpacks and Angel Rings to Minecraft Bedrock",
+    "name": "Jetpacks & Angel Ring BP",
+    "uuid": "66c6e9a8-3093-462a-9c36-dbb052165822",
+    "version": [
+      1,
+      0,
+      0
+    ],
+    "min_engine_version": [
+      1,
+      21,
+      0
+    ]
+  },
+  "modules": [
+    {
+      "description": "Scripting module",
+      "type": "script",
+      "uuid": "743f6976-a256-4d23-90e6-97881f3b3b9f",
+      "version": [
+        1,
+        0,
+        0
+      ],
+      "entry": "scripts/main.js",
+      "language": "javascript"
+    },
+    {
+      "description": "Data module",
+      "type": "data",
+      "uuid": "b819d235-55a3-4a2f-9b6d-36c5e2a28931",
+      "version": [
+        1,
+        0,
+        0
+      ]
+    }
+  ],
+  "dependencies": [
+    {
+      "module_name": "@minecraft/server",
+      "version": "1.14.0"
+    },
+    {
+      "module_name": "@minecraft/server-ui",
+      "version": "1.2.0"
+    }
+  ]
+}

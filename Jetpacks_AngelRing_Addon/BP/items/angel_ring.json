@@ -1,0 +1,28 @@
+{
+    "format_version": "1.21.10",
+    "minecraft:item": {
+        "description": {
+            "identifier": "custom:angel_ring",
+            "menu_category": {
+                "category": "equipment",
+                "group": "itemGroup.name.chestplate"
+            }
+        },
+        "components": {
+            "minecraft:icon": "angel_ring",
+            "minecraft:wearable": {
+                "slot": "slot.armor.chest"
+            },
+            "minecraft:enchantable": {
+                "value": 15,
+                "slot": "armor_torso"
+            },
+            "minecraft:tags": {
+                "tags": [
+                    "minecraft:is_armor",
+                    "custom:angel_ring"
+                ]
+            }
+        }
+    }
+}

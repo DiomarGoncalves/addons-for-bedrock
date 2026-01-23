@@ -1,0 +1,39 @@
+{
+    "format_version": "1.21.10",
+    "minecraft:recipe_shaped": {
+        "description": {
+            "identifier": "custom:angel_ring_recipe"
+        },
+        "tags": [
+            "crafting_table"
+        ],
+        "pattern": [
+            "PEP",
+            "DTD",
+            "PDP"
+        ],
+        "key": {
+            "P": {
+                "item": "minecraft:phantom_membrane"
+            },
+            "E": {
+                "item": "minecraft:elytra"
+            },
+            "D": {
+                "item": "minecraft:diamond"
+            },
+            "T": {
+                "item": "custom:thruster"
+            }
+        },
+        "result": {
+            "item": "custom:angel_ring",
+            "count": 1
+        },
+        "unlock": [
+            {
+                "item": "minecraft:elytra"
+            }
+        ]
+    }
+}

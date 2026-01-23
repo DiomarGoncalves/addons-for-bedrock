@@ -1,0 +1,33 @@
+{
+    "resource_pack_name": "jetpack_rp",
+    "texture_name": "atlas.items",
+    "texture_data": {
+        "thruster": {
+            "textures": "textures/items/thruster"
+        },
+        "angel_ring": {
+            "textures": "textures/items/angel_ring"
+        },
+        "jetpack_wood": {
+            "textures": "textures/items/jetpack_wood"
+        },
+        "jetpack_iron": {
+            "textures": "textures/items/jetpack_iron"
+        },
+        "jetpack_copper": {
+            "textures": "textures/items/jetpack_copper"
+        },
+        "jetpack_gold": {
+            "textures": "textures/items/jetpack_gold"
+        },
+        "jetpack_emerald": {
+            "textures": "textures/items/jetpack_emerald"
+        },
+        "jetpack_diamond": {
+            "textures": "textures/items/jetpack_diamond"
+        },
+        "jetpack_netherite": {
+            "textures": "textures/items/jetpack_netherite"
+        }
+    }
+}

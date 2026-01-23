@@ -1,0 +1,36 @@
+{
+    "format_version": "1.21.10",
+    "minecraft:recipe_shaped": {
+        "description": {
+            "identifier": "custom:jetpack_iron_recipe"
+        },
+        "tags": [
+            "crafting_table"
+        ],
+        "pattern": [
+            "M M",
+            "MTM",
+            "R R"
+        ],
+        "key": {
+            "M": {
+                "item": "minecraft:iron_ingot"
+            },
+            "T": {
+                "item": "custom:thruster"
+            },
+            "R": {
+                "item": "minecraft:redstone"
+            }
+        },
+        "result": {
+            "item": "custom:jetpack_iron",
+            "count": 1
+        },
+        "unlock": [
+            {
+                "item": "custom:thruster"
+            }
+        ]
+    }
+}

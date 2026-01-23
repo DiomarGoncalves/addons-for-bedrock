@@ -1,0 +1,29 @@
+{
+    "format_version": "1.21.10",
+    "minecraft:item": {
+        "description": {
+            "identifier": "custom:jetpack_emerald",
+            "menu_category": {
+                "category": "equipment",
+                "group": "itemGroup.name.chestplate"
+            }
+        },
+        "components": {
+            "minecraft:icon": "jetpack_emerald",
+            "minecraft:wearable": {
+                "slot": "slot.armor.chest"
+            },
+            "minecraft:enchantable": {
+                "value": 15,
+                "slot": "armor_torso"
+            },
+            "minecraft:tags": {
+                "tags": [
+                    "minecraft:is_armor",
+                    "custom:jetpack",
+                    "custom:jetpack_emerald"
+                ]
+            }
+        }
+    }
+}
