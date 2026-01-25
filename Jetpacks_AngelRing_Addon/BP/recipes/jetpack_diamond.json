@@ -17,7 +17,7 @@
                 "item": "minecraft:diamond"
             },
             "T": {
-                "item": "custom:thruster"
+                "item": "custom:jetpack_gold"
             },
             "R": {
                 "item": "minecraft:redstone"
@@ -29,7 +29,7 @@
         },
         "unlock": [
             {
-                "item": "custom:thruster"
+                "item": "custom:jetpack_gold"
             }
         ]
     }

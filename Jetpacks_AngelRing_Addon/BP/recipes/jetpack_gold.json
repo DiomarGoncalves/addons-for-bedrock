@@ -17,7 +17,7 @@
                 "item": "minecraft:gold_ingot"
             },
             "T": {
-                "item": "custom:thruster"
+                "item": "custom:jetpack_iron"
             },
             "R": {
                 "item": "minecraft:redstone"
@@ -29,7 +29,7 @@
         },
         "unlock": [
             {
-                "item": "custom:thruster"
+                "item": "custom:jetpack_iron"
             }
         ]
     }
