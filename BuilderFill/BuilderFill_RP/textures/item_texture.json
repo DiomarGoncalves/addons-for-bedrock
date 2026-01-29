@@ -1,0 +1,9 @@
+{
+  "resource_pack_name": "Builder Fill",
+  "texture_name": "atlas.items",
+  "texture_data": {
+    "builder_config": {
+      "textures": "textures/items/builder_config"
+    }
+  }
+}

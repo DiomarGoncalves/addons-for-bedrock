@@ -1,0 +1,58 @@
+{
+  "format_version": 2,
+  "header": {
+    "name": "Builder Fill (Inventário) BP",
+    "description": "Seleção com caixa branca + construção consumindo blocos do inventário",
+    "uuid": "b84b76e2-7080-4bed-b892-86b9e78ccdc2",
+    "version": [
+      1,
+      0,
+      0
+    ],
+    "min_engine_version": [
+      1,
+      20,
+      0
+    ]
+  },
+  "modules": [
+    {
+      "type": "data",
+      "uuid": "1333b16e-3380-408a-92c8-911ae487fa0e",
+      "version": [
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "type": "script",
+      "language": "javascript",
+      "uuid": "8115328d-c1f5-4b53-a14a-5bd2046b12c7",
+      "version": [
+        1,
+        0,
+        0
+      ],
+      "entry": "scripts/main.js"
+    }
+  ],
+  "dependencies": [
+    {
+      "module_name": "@minecraft/server",
+      "version": "1.19.0"
+    },
+    {
+      "module_name": "@minecraft/server-ui",
+      "version": "1.2.0"
+    },
+    {
+      "uuid": "5fc9a148-8c31-4bd8-be8c-2e385f187438",
+      "version": [
+        1,
+        0,
+        0
+      ]
+    }
+  ]
+}

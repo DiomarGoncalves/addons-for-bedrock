@@ -11,7 +11,9 @@ function isCreativeLike(mode) {
 
 function setMayfly(player, enabled) {
     try {
-        player.runCommandAsync(`ability @s mayfly ${enabled ? "true" : "false"}`);
+        player.runCommand("gamerule sendcommandfeedback false");
+        player.runCommand("gamerule commandblockoutput false"); 
+        player.runCommand("ability @s mayfly true");
     } catch (_) { }
 }
 
