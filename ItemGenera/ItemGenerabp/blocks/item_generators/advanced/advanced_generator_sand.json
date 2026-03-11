@@ -2,7 +2,7 @@
   "format_version": "1.20.10",
   "minecraft:block": {
     "description": {
-      "identifier": "blayy:advanced_generator_sand",
+      "identifier": "diomar:advanced_generator_sand",
       "menu_category": {
         "category": "construction"
       }
@@ -20,7 +20,7 @@
         "looping": true
       },
       "minecraft:custom_components": [
-        "blayy:generator_tick"
+        "diomar:generator_tick"
       ],
       "minecraft:material_instances": {
         "*": {

@@ -11,19 +11,31 @@ export function getKeyFromCoords(dimId, x, y, z) {
   return `${dimId}|${x}|${y}|${z}`;
 }
 
+let cachedMap = null;
+
 function readMap() {
+  if (cachedMap) return cachedMap;
   const raw = world.getDynamicProperty(DP_ENDER_HOPPER);
-  if (!raw) return {};
+  if (!raw) {
+    cachedMap = {};
+    return cachedMap;
+  }
   try {
     const obj = JSON.parse(raw);
-    return obj && typeof obj === "object" ? obj : {};
+    cachedMap = obj && typeof obj === "object" ? obj : {};
   } catch {
-    return {};
+    cachedMap = {};
   }
+  return cachedMap;
 }
 
 function writeMap(map) {
+  cachedMap = map;
   world.setDynamicProperty(DP_ENDER_HOPPER, JSON.stringify(map));
+}
+
+export function getAllConfigs() {
+  return readMap();
 }
 
 export function getHopperConfig(block) {

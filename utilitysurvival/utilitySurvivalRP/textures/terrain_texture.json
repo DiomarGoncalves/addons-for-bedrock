@@ -1,9 +1,113 @@
 {
   "resource_pack_name": "custom_rp",
   "texture_name": "atlas.terrain",
+  "padding": 8,
+  "num_mip_levels": 4,
   "texture_data": {
     "elevator": {
       "textures": "textures/blocks/elevator"
+    },
+    "basic_generator_amethyst": {
+      "textures": "textures/item_generators/basic/basic_generator_amethyst"
+    },
+    "advanced_generator_amethyst": {
+      "textures": "textures/item_generators/advanced/advanced_generator_amethyst"
+    },
+    "basic_generator_coal": {
+      "textures": "textures/item_generators/basic/basic_generator_coal"
+    },
+    "advanced_generator_coal": {
+      "textures": "textures/item_generators/advanced/advanced_generator_coal"
+    },
+    "basic_generator_cobblestone": {
+      "textures": "textures/item_generators/basic/basic_generator_cobblestone"
+    },
+    "advanced_generator_cobblestone": {
+      "textures": "textures/item_generators/advanced/advanced_generator_cobblestone"
+    },
+    "basic_generator_copper": {
+      "textures": "textures/item_generators/basic/basic_generator_copper"
+    },
+    "advanced_generator_copper": {
+      "textures": "textures/item_generators/advanced/advanced_generator_copper"
+    },
+    "basic_generator_diamond": {
+      "textures": "textures/item_generators/basic/basic_generator_diamond"
+    },
+    "advanced_generator_diamond": {
+      "textures": "textures/item_generators/advanced/advanced_generator_diamond"
+    },
+    "basic_generator_dirt": {
+      "textures": "textures/item_generators/basic/basic_generator_dirt"
+    },
+    "advanced_generator_dirt": {
+      "textures": "textures/item_generators/advanced/advanced_generator_dirt"
+    },
+    "basic_generator_emerald": {
+      "textures": "textures/item_generators/basic/basic_generator_emerald"
+    },
+    "advanced_generator_emerald": {
+      "textures": "textures/item_generators/advanced/advanced_generator_emerald"
+    },
+    "basic_generator_gold": {
+      "textures": "textures/item_generators/basic/basic_generator_gold"
+    },
+    "advanced_generator_gold": {
+      "textures": "textures/item_generators/advanced/advanced_generator_gold"
+    },
+    "basic_generator_gravel": {
+      "textures": "textures/item_generators/basic/basic_generator_gravel"
+    },
+    "advanced_generator_gravel": {
+      "textures": "textures/item_generators/advanced/advanced_generator_gravel"
+    },
+    "basic_generator_iron": {
+      "textures": "textures/item_generators/basic/basic_generator_iron"
+    },
+    "advanced_generator_iron": {
+      "textures": "textures/item_generators/advanced/advanced_generator_iron"
+    },
+    "basic_generator_lapis": {
+      "textures": "textures/item_generators/basic/basic_generator_lapis"
+    },
+    "advanced_generator_lapis": {
+      "textures": "textures/item_generators/advanced/advanced_generator_lapis"
+    },
+    "basic_generator_netherite": {
+      "textures": "textures/item_generators/basic/basic_generator_netherite"
+    },
+    "advanced_generator_netherite": {
+      "textures": "textures/item_generators/advanced/advanced_generator_netherite"
+    },
+    "basic_generator_quartz": {
+      "textures": "textures/item_generators/basic/basic_generator_quartz"
+    },
+    "advanced_generator_quartz": {
+      "textures": "textures/item_generators/advanced/advanced_generator_quartz"
+    },
+    "basic_generator_redstone": {
+      "textures": "textures/item_generators/basic/basic_generator_redstone"
+    },
+    "advanced_generator_redstone": {
+      "textures": "textures/item_generators/advanced/advanced_generator_redstone"
+    },
+    "basic_generator_sand": {
+      "textures": "textures/item_generators/basic/basic_generator_sand"
+    },
+    "advanced_generator_sand": {
+      "textures": "textures/item_generators/advanced/advanced_generator_sand"
+    },
+    "basic_generator_netherrack": {
+      "textures": "textures/item_generators/basic/basic_generator_netherrack"
+    },
+    "advanced_generator_netherrack": {
+      "textures": "textures/item_generators/advanced/advanced_generator_netherrack"
+    },
+    "basic_generator_clay": {
+      "textures": "textures/item_generators/basic/basic_generator_clay"
+    },
+    "advanced_generator_clay": {
+      "textures": "textures/item_generators/advanced/advanced_generator_clay"
     }
   }
 }

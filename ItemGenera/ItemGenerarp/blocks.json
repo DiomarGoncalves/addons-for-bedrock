@@ -59,6 +59,10 @@
     "textures": "basic_generator_sand",
     "sound": "normal"
   },
+  "basic_generator_clay": {
+    "textures": "basic_generator_clay",
+    "sound": "normal"
+  },
   "advanced_generator_amethyst": {
     "textures": "advanced_generator_amethyst",
     "sound": "normal"
@@ -119,6 +123,10 @@
     "textures": "advanced_generator_sand",
     "sound": "normal"
   },
+  "advanced_generator_clay": {
+    "textures": "advanced_generator_clay",
+    "sound": "normal"
+  },
   "workbench_generator": {
     "textures": "workbench_generator",
     "sound": "normal"
@@ -127,13 +135,5 @@
     1,
     1,
     0
-  ],
-  "basic_generator_clay": {
-    "textures": "basic_generator_clay",
-    "sound": "normal"
-  },
-  "advanced_generator_clay": {
-    "textures": "advanced_generator_clay",
-    "sound": "normal"
-  }
+  ]
 }

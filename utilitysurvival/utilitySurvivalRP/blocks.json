@@ -3,5 +3,141 @@
   "custom:elevator": {
     "textures": "elevator",
     "sound": "metal"
+  },
+  "basic_generator_amethyst": {
+    "textures": "basic_generator_amethyst",
+    "sound": "normal"
+  },
+  "basic_generator_coal": {
+    "textures": "basic_generator_coal",
+    "sound": "normal"
+  },
+  "basic_generator_cobblestone": {
+    "textures": "basic_generator_cobblestone",
+    "sound": "normal"
+  },
+  "basic_generator_copper": {
+    "textures": "basic_generator_copper",
+    "sound": "normal"
+  },
+  "basic_generator_diamond": {
+    "textures": "basic_generator_diamond",
+    "sound": "normal"
+  },
+  "basic_generator_dirt": {
+    "textures": "basic_generator_dirt",
+    "sound": "normal"
+  },
+  "basic_generator_emerald": {
+    "textures": "basic_generator_emerald",
+    "sound": "normal"
+  },
+  "basic_generator_gold": {
+    "textures": "basic_generator_gold",
+    "sound": "normal"
+  },
+  "basic_generator_gravel": {
+    "textures": "basic_generator_gravel",
+    "sound": "normal"
+  },
+  "basic_generator_iron": {
+    "textures": "basic_generator_iron",
+    "sound": "normal"
+  },
+  "basic_generator_lapis": {
+    "textures": "basic_generator_lapis",
+    "sound": "normal"
+  },
+  "basic_generator_netherite": {
+    "textures": "basic_generator_netherite",
+    "sound": "normal"
+  },
+  "basic_generator_quartz": {
+    "textures": "basic_generator_quartz",
+    "sound": "normal"
+  },
+  "basic_generator_redstone": {
+    "textures": "basic_generator_redstone",
+    "sound": "normal"
+  },
+  "basic_generator_sand": {
+    "textures": "basic_generator_sand",
+    "sound": "normal"
+  },
+  "basic_generator_clay": {
+    "textures": "basic_generator_clay",
+    "sound": "normal"
+  },
+  "advanced_generator_amethyst": {
+    "textures": "advanced_generator_amethyst",
+    "sound": "normal"
+  },
+  "advanced_generator_coal": {
+    "textures": "advanced_generator_coal",
+    "sound": "normal"
+  },
+  "advanced_generator_cobblestone": {
+    "textures": "advanced_generator_cobblestone",
+    "sound": "normal"
+  },
+  "advanced_generator_copper": {
+    "textures": "advanced_generator_copper",
+    "sound": "normal"
+  },
+  "advanced_generator_diamond": {
+    "textures": "advanced_generator_diamond",
+    "sound": "normal"
+  },
+  "advanced_generator_dirt": {
+    "textures": "advanced_generator_dirt",
+    "sound": "normal"
+  },
+  "advanced_generator_emerald": {
+    "textures": "advanced_generator_emerald",
+    "sound": "normal"
+  },
+  "advanced_generator_gold": {
+    "textures": "advanced_generator_gold",
+    "sound": "normal"
+  },
+  "advanced_generator_gravel": {
+    "textures": "advanced_generator_gravel",
+    "sound": "normal"
+  },
+  "advanced_generator_iron": {
+    "textures": "advanced_generator_iron",
+    "sound": "normal"
+  },
+  "advanced_generator_lapis": {
+    "textures": "advanced_generator_lapis",
+    "sound": "normal"
+  },
+  "advanced_generator_netherite": {
+    "textures": "advanced_generator_netherite",
+    "sound": "normal"
+  },
+  "advanced_generator_quartz": {
+    "textures": "advanced_generator_quartz",
+    "sound": "normal"
+  },
+  "advanced_generator_redstone": {
+    "textures": "advanced_generator_redstone",
+    "sound": "normal"
+  },
+  "advanced_generator_sand": {
+    "textures": "advanced_generator_sand",
+    "sound": "normal"
+  },
+  "advanced_generator_clay": {
+    "textures": "advanced_generator_clay",
+    "sound": "normal"
+  },
+  "basic_generator_netherrack": {
+    "textures": "basic_generator_netherrack",
+    "sound": "normal"
+  },
+  "advanced_generator_netherrack": {
+    "textures": "advanced_generator_netherrack",
+    "sound": "normal"
   }
 }

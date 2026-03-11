@@ -12,7 +12,7 @@ import {
   DP_ENDER_HOPPER,
   EH_DEBUG,
 } from "../config/constants";
-import { disableHopperByKey } from "./ender_hopper.storage";
+import { disableHopperByKey, getAllConfigs } from "./ender_hopper.storage";
 
 function clamp(n, min, max) {
   return Math.max(min, Math.min(max, n));
@@ -39,16 +39,7 @@ function getDimensionById(dimId) {
   try { return world.getDimension(id); } catch { return null; }
 }
 
-function readMap() {
-  const raw = world.getDynamicProperty(DP_ENDER_HOPPER);
-  if (!raw) return {};
-  try {
-    const obj = JSON.parse(raw);
-    return obj && typeof obj === "object" ? obj : {};
-  } catch {
-    return {};
-  }
-}
+// removed local readMap
 
 function findVacuum(dim, key) {
   let ents = [];
@@ -106,7 +97,7 @@ function spawnVacuum(dim, x, y, z, key, range) {
 // - Só processa o que está carregado no tick atual
 // =====================================================
 system.runInterval(() => {
-  const map = readMap();
+  const map = getAllConfigs();
   const entries = Object.entries(map);
 
   if (!entries.length) return;

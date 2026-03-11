@@ -58,6 +58,7 @@ function showAddWarpMenu(player) {
     savePlayerWarps(player, warps);
 
     player.sendMessage("§aPonto de teleporte salvo com sucesso!");
+    showMainMenu(player);
   });
 }
 
@@ -71,7 +72,8 @@ function showWarpOptions(player, warpIndex) {
     .button("§l§2Teleportar", "textures/ui/portalBg")
     .button("Atualizar posição", "textures/ui/refresh")
     .button("Editar detalhes", "textures/ui/pencil_edit_icon")
-    .button("§cExcluir", "textures/ui/trash");
+    .button("§cExcluir", "textures/ui/trash")
+    .button("Voltar", "textures/ui/cancel");
 
   form.show(player).then((res) => {
     if (res.canceled) return;
@@ -95,12 +97,16 @@ function showWarpOptions(player, warpIndex) {
       warp.dimId = player.dimension.id;
       savePlayerWarps(player, warps);
       player.sendMessage("§ePosição do ponto atualizada.");
+      showWarpOptions(player, warpIndex);
     } else if (res.selection === 2) {
       showEditWarpMenu(player, warpIndex);
     } else if (res.selection === 3) {
       warps.splice(warpIndex, 1);
       savePlayerWarps(player, warps);
       player.sendMessage("§cPonto de teleporte excluído.");
+      showMainMenu(player);
+    } else if (res.selection === 4) {
+      showMainMenu(player);
     }
   });
 }
@@ -128,6 +134,7 @@ function showEditWarpMenu(player, index) {
 
     savePlayerWarps(player, warps);
     player.sendMessage("§aPonto de teleporte atualizado.");
+    showWarpOptions(player, index);
   });
 }
 

@@ -12,3 +12,4 @@ import "./utilities/chest_net/chest_net.events.js";
 import "./utilities/chest_net/chest_net.logic.js";
 
 console.warn("Addon carregado: Orb + Elevator + Utilities (Vacuum Ender Hopper + Chest Network).");
+import "./item_generators/item_generators.js";

@@ -24,23 +24,34 @@ import {
 
 const DP_CHEST_NET = "us_chest_net_v1";
 
+let cachedData = null;
+
 function readData() {
+  if (cachedData) return cachedData;
   const raw = world.getDynamicProperty(DP_CHEST_NET);
-  if (!raw) return { networks: {}, inputs: {}, outputs: {} };
+  if (!raw) {
+    cachedData = { networks: {}, inputs: {}, outputs: {} };
+    return cachedData;
+  }
   try {
     const obj = JSON.parse(raw);
-    if (!obj || typeof obj !== "object") return { networks: {}, inputs: {}, outputs: {} };
-    return {
+    if (!obj || typeof obj !== "object") {
+      cachedData = { networks: {}, inputs: {}, outputs: {} };
+      return cachedData;
+    }
+    cachedData = {
       networks: obj.networks && typeof obj.networks === "object" ? obj.networks : {},
       inputs: obj.inputs && typeof obj.inputs === "object" ? obj.inputs : {},
       outputs: obj.outputs && typeof obj.outputs === "object" ? obj.outputs : {},
     };
   } catch {
-    return { networks: {}, inputs: {}, outputs: {} };
+    cachedData = { networks: {}, inputs: {}, outputs: {} };
   }
+  return cachedData;
 }
 
 function writeData(data) {
+  cachedData = data;
   world.setDynamicProperty(DP_CHEST_NET, JSON.stringify(data));
 }
 

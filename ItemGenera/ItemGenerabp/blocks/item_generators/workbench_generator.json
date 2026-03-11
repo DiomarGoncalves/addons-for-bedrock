@@ -2,7 +2,7 @@
   "format_version": "1.20.20",
   "minecraft:block": {
     "description": {
-      "identifier": "blayy:workbench_generator",
+      "identifier": "diomar:workbench_generator",
       "menu_category": {
         "category": "construction"
       }
