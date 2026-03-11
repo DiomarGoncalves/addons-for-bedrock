@@ -1,0 +1,29 @@
+{
+  "format_version": "1.20.20",
+  "minecraft:block": {
+    "description": {
+      "identifier": "blayy:workbench_generator",
+      "menu_category": {
+        "category": "construction"
+      }
+    },
+    "components": {
+      "minecraft:geometry": "geometry.workbench_generator_model",
+      "minecraft:material_instances": {
+        "*": {
+          "texture": "workbench_generator",
+          "render_method": "alpha_test"
+        }
+      },
+      "minecraft:crafting_table": {
+        "table_name": "Workbench Generator",
+        "grid_size": 3,
+        "crafting_tags": [
+          "workbench_generator"
+        ]
+      },
+      "minecraft:display_name": "%vatonage.item_generators.workbench_generator.name\n§5§oItem Generators§r"
+    },
+    "events": {}
+  }
+}

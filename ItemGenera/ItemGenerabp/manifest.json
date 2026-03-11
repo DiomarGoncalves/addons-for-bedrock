@@ -1,0 +1,55 @@
+{
+   "format_version":2,
+   "header":{
+      "description":"Download free addons on vatonage.com",
+      "name":"Item Generators (vatonage.com)",
+      "uuid":"a8c8869f-322d-4482-ad8f-14e6d49bfbc0",
+      "version":[
+         1,
+         2,
+         0
+      ],
+      "min_engine_version":[
+         1,
+         20,
+         30
+      ]
+   },
+   "modules":[
+      {
+         "description":"Script API Module",
+         "type":"script",
+         "uuid":"77c80171-f1db-4f9b-afa4-6099ee48091d",
+         "version":[
+            1,
+            2,
+            0
+         ],
+         "entry":"scripts/_import.js"
+      },
+      {
+         "description":"Created By Vatonage",
+         "type":"data",
+         "uuid":"ae0de911-0389-4b90-8c19-18960c13775d",
+         "version":[
+            1,
+            2,
+            0
+         ]
+      }
+   ],
+   "dependencies":[
+      {
+         "module_name":"@minecraft/server",
+         "version":"1.10.0"
+      },
+      {
+         "uuid":"6b7b3290-425e-4d80-9ce4-6f200df9c1f4",
+         "version":[
+            1,
+            2,
+            0
+         ]
+      }
+   ]
+}

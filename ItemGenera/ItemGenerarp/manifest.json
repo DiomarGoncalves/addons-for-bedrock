@@ -1,0 +1,30 @@
+{
+   "format_version":2,
+   "header":{
+      "description":"Download free addons on vatonage.com",
+      "name":"Item Generators (vatonage.com)",
+      "uuid":"6b7b3290-425e-4d80-9ce4-6f200df9c1f4",
+      "version":[
+         1,
+         2,
+         0
+      ],
+      "min_engine_version":[
+         1,
+         20,
+         30
+      ]
+   },
+   "modules":[
+      {
+         "description":"Created By Vatonage",
+         "type":"resources",
+         "uuid":"a8c8869f-322d-4482-ad8f-14e6d49bfbc0",
+         "version":[
+            1,
+            2,
+            0
+         ]
+      }
+   ]
+}

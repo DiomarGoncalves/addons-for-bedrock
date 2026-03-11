@@ -1,0 +1,35 @@
+{
+  "format_version": "1.20.10",
+  "minecraft:block": {
+    "description": {
+      "identifier": "blayy:basic_generator_netherite",
+      "menu_category": {
+        "category": "construction"
+      }
+    },
+    "components": {
+      "minecraft:destructible_by_mining": {
+        "seconds_to_destroy": 2
+      },
+      "minecraft:geometry": "geometry.basic_generator_model",
+      "minecraft:tick": {
+        "interval_range": [
+          10,
+          20
+        ],
+        "looping": true
+      },
+      "minecraft:custom_components": [
+        "blayy:generator_tick"
+      ],
+      "minecraft:material_instances": {
+        "*": {
+          "texture": "basic_generator_netherite",
+          "render_method": "alpha_test"
+        }
+      },
+      "minecraft:display_name": "%vatonage.item_generators.basic_generator_netherite.name\n§5§oItem Generators§r"
+    },
+    "events": {}
+  }
+}
